@@ -20,6 +20,8 @@
             --payment-light: #a78bfa;
             --warning: #f97316;
             --warning-light: #fb923c;
+            --success: #059669;
+            --danger: #dc2626;
         }
         
         body {
@@ -31,14 +33,14 @@
         .card {
             background: white;
             border-radius: 1.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .card:hover {
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
         }
         
         .gradient-header {
@@ -68,6 +70,7 @@
             color: white;
             border-color: var(--primary);
             transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.2);
         }
         
         .loading-overlay {
@@ -100,60 +103,84 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
         }
         
         .btn-primary:hover {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
         }
         
         .btn-secondary {
             background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
             color: white;
             transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
         }
         
         .btn-secondary:hover {
             background: linear-gradient(135deg, #0d966c 0%, var(--secondary) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
         
         .btn-accent {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
             color: white;
             transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
         }
         
         .btn-accent:hover {
             background: linear-gradient(135deg, #d97706 0%, var(--accent) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
         }
         
         .btn-payment {
             background: linear-gradient(135deg, var(--payment) 0%, var(--payment-light) 100%);
             color: white;
             transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
         }
         
         .btn-payment:hover {
             background: linear-gradient(135deg, #7c3aed 0%, var(--payment) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
         }
         
         .btn-warning {
             background: linear-gradient(135deg, var(--warning) 0%, var(--warning-light) 100%);
             color: white;
             transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
         }
         
         .btn-warning:hover {
             background: linear-gradient(135deg, #ea580c 0%, var(--warning) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #ef4444 100%);
+            color: white;
+            transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, var(--danger) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
         }
         
         .glass-effect {
@@ -175,7 +202,7 @@
         
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+            70% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
             100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
         }
         
@@ -185,7 +212,7 @@
         
         @keyframes floating {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-5px); }
             100% { transform: translateY(0px); }
         }
         
@@ -193,7 +220,7 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
         }
         
         .student-card-marcelino {
@@ -214,6 +241,7 @@
         .subject-item:hover {
             border-left-color: var(--primary);
             background-color: #f8fafc;
+            transform: translateX(-3px);
         }
         
         .edit-btn {
@@ -238,11 +266,13 @@
         .status-presence {
             background-color: #d1fae5;
             color: #065f46;
+            font-weight: 600;
         }
         
         .status-absence {
             background-color: #fee2e2;
             color: #991b1b;
+            font-weight: 600;
         }
         
         .custom-radio {
@@ -300,7 +330,7 @@
         
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-3px); }
         }
         
         .shake {
@@ -309,8 +339,8 @@
         
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
         }
         
         .student-icon-boy {
@@ -327,7 +357,7 @@
         
         .payment-details-item:hover {
             background-color: #f8fafc;
-            transform: translateX(-5px);
+            transform: translateX(-3px);
         }
         
         .expand-btn {
@@ -347,6 +377,126 @@
         .subject-details.expanded {
             max-height: 500px;
         }
+        
+        .stats-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .quick-action-btn {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .data-table th {
+            background-color: #f8fafc;
+            padding: 1rem;
+            text-align: right;
+            font-weight: 600;
+            color: #4b5563;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            transition: width 0.5s ease;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 100%;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+        
+        .filter-bar {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .urgent-subject {
+            border: 2px solid #f97316;
+            background: linear-gradient(to left, #fffbeb, white);
+            animation: pulse-border 2s infinite;
+        }
+        
+        @keyframes pulse-border {
+            0% { border-color: #f97316; }
+            50% { border-color: #fb923c; }
+            100% { border-color: #f97316; }
+        }
+        
+        .near-subject {
+            border: 2px solid #f59e0b;
+            background: linear-gradient(to left, #fef3c7, white);
+        }
+        
+        .session-count-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+        }
+        
+        .session-count-6 { background-color: #d1fae5; color: #065f46; }
+        .session-count-7 { background-color: #fef3c7; color: #92400e; }
+        .session-count-8 { background-color: #fee2e2; color: #991b1b; }
+        .session-count-over { background-color: #dc2626; color: white; }
     </style>
 </head>
 <body class="p-2 md:p-6">
@@ -387,7 +537,7 @@
         <div class="flex flex-col items-center">
             <div class="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-6 pulse"></div>
             <div class="text-2xl font-bold gradient-text mb-2">نظام متابعة الدروس</div>
-            <div id="loading-text" class="text-gray-600 font-medium">جاري الاتصال بالسحابة...</div>
+            <div id="loading-text" class="text-gray-600 font-medium">جاري تحميل البيانات...</div>
             <div class="mt-4 text-sm text-gray-500">إشراف وتصميم: المهندس بولس سمير</div>
         </div>
     </div>
@@ -514,7 +664,40 @@
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto">
+    <!-- Quick Add Modal -->
+    <div id="quick-add-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center p-4">
+        <div class="card w-full max-w-md p-6 relative shadow-2xl">
+            <button onclick="closeQuickAddModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
+            <h3 class="text-xl font-bold mb-4 text-indigo-700 text-center border-b pb-2">إضافة سريعة</h3>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="openQuickAddStudent()" class="quick-action-btn">
+                        <i class="fas fa-user-plus text-3xl text-indigo-600 mb-2"></i>
+                        <div class="font-bold text-gray-800">إضافة ابن</div>
+                        <div class="text-sm text-gray-500">إضافة ابن جديد للنظام</div>
+                    </button>
+                    <button onclick="openQuickAddSubject()" class="quick-action-btn">
+                        <i class="fas fa-book-medical text-3xl text-green-600 mb-2"></i>
+                        <div class="font-bold text-gray-800">إضافة مادة</div>
+                        <div class="text-sm text-gray-500">إضافة مادة جديدة</div>
+                    </button>
+                    <button onclick="openQuickAttendance()" class="quick-action-btn">
+                        <i class="fas fa-clipboard-check text-3xl text-blue-600 mb-2"></i>
+                        <div class="font-bold text-gray-800">تسجيل حضور</div>
+                        <div class="text-sm text-gray-500">تسجيل حضور أو غياب</div>
+                    </button>
+                    <button onclick="openQuickPayment()" class="quick-action-btn">
+                        <i class="fas fa-money-bill-wave text-3xl text-purple-600 mb-2"></i>
+                        <div class="font-bold text-gray-800">تسجيل دفعة</div>
+                        <div class="text-sm text-gray-500">تسجيل دفعة جديدة</div>
+                    </button>
+                </div>
+                <button onclick="closeQuickAddModal()" class="w-full mt-4 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <header class="gradient-header text-white rounded-2xl p-6 mb-8 shadow-2xl text-center relative overflow-hidden floating">
             <div class="absolute top-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-x-16 -translate-y-16"></div>
@@ -529,8 +712,11 @@
             </div>
         </header>
 
-        <!-- Navigation with Alert Badge -->
+        <!-- Main Navigation -->
         <div class="flex flex-wrap gap-3 mb-8 justify-center relative">
+            <button onclick="switchTab('dashboard')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
+                <i class="fas fa-home ml-2"></i>الرئيسية
+            </button>
             <button onclick="switchTab('quick')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
                 <i class="fas fa-bolt ml-2"></i>تسجيل سريع
             </button>
@@ -541,8 +727,15 @@
                 <i class="fas fa-credit-card ml-2"></i>الدفع الشهري
                 <span id="payment-alert-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden notification-badge"></span>
             </button>
+            <button onclick="switchTab('upcoming')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md relative">
+                <i class="fas fa-clock ml-2"></i>قربت علي الدفع
+                <span id="upcoming-alert-badge" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden notification-badge"></span>
+            </button>
             <button onclick="switchTab('students')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
                 <i class="fas fa-cog ml-2"></i>الإعدادات
+            </button>
+            <button onclick="openQuickAddModal()" class="tab-btn px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
+                <i class="fas fa-plus ml-2"></i>إضافة سريعة
             </button>
         </div>
 
@@ -567,8 +760,55 @@
             </div>
         </div>
 
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content">
+            <!-- Today's Overview -->
+            <div class="card p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center gap-3">
+                    <i class="fas fa-calendar-day text-indigo-600"></i>
+                    <span>نظرة على اليوم</span>
+                </h2>
+                <div id="today-overview" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-history text-blue-600"></i>
+                            <span>آخر التسجيلات</span>
+                        </div>
+                        <button onclick="switchTab('quick')" class="text-sm btn-primary px-4 py-2 rounded-lg">
+                            تسجيل جديد
+                        </button>
+                    </h2>
+                    <div id="recent-attendance" class="max-h-96 overflow-y-auto space-y-3">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-receipt text-purple-600"></i>
+                            <span>آخر المدفوعات</span>
+                        </div>
+                        <button onclick="openPaymentModal()" class="text-sm btn-payment px-4 py-2 rounded-lg">
+                            دفعة جديدة
+                        </button>
+                    </h2>
+                    <div id="recent-payments" class="max-h-96 overflow-y-auto space-y-3">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Quick Attendance Tab -->
-        <div id="quick-tab" class="tab-content">
+        <div id="quick-tab" class="tab-content hidden">
             <!-- Quick Attendance Section -->
             <div class="card p-8 mb-8 border-t-8 border-indigo-600">
                 <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center gap-3">
@@ -617,9 +857,15 @@
             
             <!-- Recent Registrations by Student -->
             <div class="card p-6">
-                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <div class="w-2 h-8 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full"></div>
-                    <span class="gradient-text">آخر عمليات التسجيل</span>
+                <h2 class="text-2xl font-bold mb-6 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-8 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full"></div>
+                        <span class="gradient-text">آخر عمليات التسجيل</span>
+                    </div>
+                    <button onclick="exportAttendanceData()" class="btn-secondary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                        <i class="fas fa-download ml-1"></i>
+                        تصدير البيانات
+                    </button>
                 </h2>
                 
                 <div id="recent-logs-by-student" class="space-y-6">
@@ -636,11 +882,41 @@
                         <div class="w-2 h-8 bg-gradient-to-b from-emerald-500 to-green-500 rounded-full"></div>
                         <span class="gradient-text">تقارير الحصص</span>
                     </div>
-                    <button onclick="generateWhatsAppReport()" class="btn-secondary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                        <i class="fab fa-whatsapp"></i>
-                        إرسال تقرير واتساب
-                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="generateWhatsAppReport()" class="btn-secondary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                            <i class="fab fa-whatsapp"></i>
+                            تقرير واتساب
+                        </button>
+                        <button onclick="exportReportData()" class="btn-primary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                            <i class="fas fa-file-export"></i>
+                            تصدير تقرير
+                        </button>
+                    </div>
                 </h2>
+                
+                <!-- Filters -->
+                <div class="filter-bar mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">الابن</label>
+                            <select id="report-student-filter" onchange="updateReports()" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
+                                <option value="">جميع الأبناء</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">الشهر</label>
+                            <select id="report-month-filter" onchange="updateReports()" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
+                                <option value="">جميع الشهور</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">المادة</label>
+                            <select id="report-subject-filter" onchange="updateReports()" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
+                                <option value="">جميع المواد</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 
                 <div id="expense-report-by-student" class="space-y-6">
                     <!-- سيتم ملؤها بالجافاسكريبت -->
@@ -702,6 +978,51 @@
                             <!-- سيتم ملؤها بالجافاسكريبت -->
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Payments Tab -->
+        <div id="upcoming-tab" class="tab-content hidden">
+            <div class="card p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-clock text-orange-600"></i>
+                        <span>المواد القريبة على الدفع</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600">مواد قاربت على 8 حصص</span>
+                        <span id="upcoming-count" class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold">0</span>
+                    </div>
+                </h2>
+                
+                <div class="mb-6">
+                    <div class="grid grid-cols-4 gap-4 text-center mb-4">
+                        <div class="p-3 bg-blue-50 rounded-xl">
+                            <div class="text-2xl font-bold text-blue-700" id="count-6">0</div>
+                            <div class="text-sm text-gray-600">6 حصص</div>
+                        </div>
+                        <div class="p-3 bg-amber-50 rounded-xl">
+                            <div class="text-2xl font-bold text-amber-700" id="count-7">0</div>
+                            <div class="text-sm text-gray-600">7 حصص</div>
+                        </div>
+                        <div class="p-3 bg-red-50 rounded-xl">
+                            <div class="text-2xl font-bold text-red-700" id="count-8">0</div>
+                            <div class="text-sm text-gray-600">8 حصص</div>
+                        </div>
+                        <div class="p-3 bg-red-100 rounded-xl">
+                            <div class="text-2xl font-bold text-red-800" id="count-over">0</div>
+                            <div class="text-sm text-gray-600">أكثر من 8</div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 text-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        المواد التي وصلت إلى 6 حصص أو أكثر تظهر هنا. عند تسجيل دفعة في تبويب الدفع، ستختفي تلقائياً من هذه القائمة.
+                    </p>
+                </div>
+                
+                <div id="upcoming-subjects-list" class="space-y-6">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -773,10 +1094,10 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+        const firebaseConfig = {
             apiKey: "AIzaSyAYbNXkNQy32UnbsUUrTXyoJluZRS3wP1w",
             authDomain: "droos-33ede.firebaseapp.com",
             databaseURL: "https://droos-33ede-default-rtdb.firebaseio.com",
@@ -789,7 +1110,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'droos-app-v1';
+        const appId = 'droos-app-v1';
 
         window.appState = {
             students: [],
@@ -802,34 +1123,54 @@
             editingSubjectId: null,
             editingAttendanceId: null,
             paymentAlertsShown: false,
-            expandedSubjects: {}
+            expandedSubjects: {},
+            cacheTimestamp: null,
+            upcomingSubjects: []
         };
 
         const WEEKDAYS = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
+        const MONTHS = [
+            "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+            "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+        ];
 
         async function init() {
             renderDaySelectors();
             const authStatus = document.getElementById('auth-status');
             
-            const initAuth = async () => {
+            // إعداد التواريخ تلقائياً
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dashboard-att-date').value = today;
+            document.getElementById('payment-date').value = today;
+            updateDashboardDayName();
+            updatePaymentDayName();
+            
+            // التحميل السريع مع التخزين المؤقت
+            const cachedData = localStorage.getItem('appCache');
+            if (cachedData) {
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        try {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                            return;
-                        } catch (e) {
-                            console.warn("Custom token sign-in failed, falling back to anonymous.");
-                        }
+                    const parsed = JSON.parse(cachedData);
+                    if (parsed.timestamp && Date.now() - parsed.timestamp < 300000) { // 5 دقائق
+                        window.appState.students = parsed.students || [];
+                        window.appState.subjects = parsed.subjects || [];
+                        window.appState.attendance = parsed.attendance || [];
+                        window.appState.payments = parsed.payments || [];
+                        updateUI();
+                        document.getElementById('loading').style.display = 'none';
                     }
-                    await signInAnonymously(auth);
-                } catch (error) {
-                    console.error("Auth System Error:", error);
-                    authStatus.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>خطأ في الاتصال بالسحابة`;
-                    authStatus.className = "mt-4 bg-red-500/20 text-red-100 inline-block px-4 py-2 rounded-full text-sm";
+                } catch (e) {
+                    console.log('No valid cache found');
                 }
-            };
+            }
 
-            await initAuth();
+            try {
+                await signInAnonymously(auth);
+            } catch (error) {
+                console.error("Auth System Error:", error);
+                authStatus.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>خطأ في الاتصال بالسحابة`;
+                authStatus.className = "mt-4 bg-red-500/20 text-red-100 inline-block px-4 py-2 rounded-full text-sm";
+                document.getElementById('loading').style.display = 'none';
+            }
 
             onAuthStateChanged(auth, (user) => {
                 window.appState.user = user;
@@ -837,23 +1178,19 @@
                     authStatus.innerHTML = `<i class="fas fa-cloud mr-2"></i>متصل بالسحابة`;
                     authStatus.className = "mt-4 glass-effect inline-block px-4 py-2 rounded-full text-sm";
                     setupListeners();
+                    // فتح تبويب الرئيسية تلقائياً
+                    switchTab('dashboard');
                 } else {
                     authStatus.innerHTML = `<i class="fas fa-cloud-slash mr-2"></i>غير متصل`;
                 }
             });
 
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('dashboard-att-date').value = today;
-            document.getElementById('payment-date').value = today;
-            updateDashboardDayName();
-            updatePaymentDayName();
-            
             // تحقق من التنبيهات عند التحميل
             setTimeout(() => {
                 if (window.appState.user) {
-                    checkPaymentAlerts();
+                    checkUpcomingPayments();
                 }
-            }, 2000);
+            }, 1000);
         }
 
         function setupListeners() {
@@ -862,43 +1199,65 @@
 
             onSnapshot(path('students'), (snap) => {
                 window.appState.students = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                cacheData();
                 updateUI();
+                checkUpcomingPayments();
                 if(window.appState.isInitializing) {
                     document.getElementById('loading').style.display = 'none';
                     window.appState.isInitializing = false;
-                    checkPaymentAlerts();
                 }
             });
 
             onSnapshot(path('subjects'), (snap) => {
                 window.appState.subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                cacheData();
                 updateUI();
-                checkPaymentAlerts();
+                checkUpcomingPayments();
             });
 
             onSnapshot(path('attendance'), (snap) => {
                 window.appState.attendance = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                cacheData();
                 updateUI();
-                checkPaymentAlerts();
+                checkUpcomingPayments();
             });
 
             onSnapshot(path('payments'), (snap) => {
                 window.appState.payments = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                cacheData();
                 updateUI();
-                checkPaymentAlerts();
+                checkUpcomingPayments();
             });
         }
 
-        // وظيفة للتحقق من مواد تحتاج للدفع (كل 8 حصص)
-        function checkPaymentAlerts() {
+        function cacheData() {
+            const cache = {
+                students: window.appState.students,
+                subjects: window.appState.subjects,
+                attendance: window.appState.attendance,
+                payments: window.appState.payments,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('appCache', JSON.stringify(cache));
+        }
+
+        // وظيفة للتحقق من المواد القريبة على الدفع (6 حصص أو أكثر)
+        function checkUpcomingPayments() {
             const state = window.appState;
+            const upcomingBadge = document.getElementById('upcoming-alert-badge');
+            const paymentBadge = document.getElementById('payment-alert-badge');
             const alertBanner = document.getElementById('alert-banner');
-            const alertBadge = document.getElementById('payment-alert-badge');
-            const paymentAlertsContainer = document.getElementById('payment-alerts');
             
-            let alerts = [];
-            let pendingPayments = []; // المواد التي تحتاج للدفع
-            let alertCount = 0;
+            let upcomingSubjects = [];
+            let paymentAlertSubjects = [];
+            let upcomingCount = 0;
+            let paymentAlertCount = 0;
+            
+            // إحصائيات حسب عدد الحصص
+            let count6 = 0;
+            let count7 = 0;
+            let count8 = 0;
+            let countOver = 0;
             
             state.students.forEach(student => {
                 const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
@@ -907,125 +1266,269 @@
                     const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
                     const attendanceCount = subjectAttendance.length;
                     
-                    if (attendanceCount === 0) return;
-                    
-                    // حساب عدد الدفعات المطلوبة (كل 8 حصص)
-                    const requiredPayments = Math.floor(attendanceCount / 8);
-                    
-                    // حساب عدد الدفعات المدفوعة لهذه المادة
-                    const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
-                    const paidPayments = subjectPayments.length;
-                    
-                    // إذا كانت هناك دفعات مطلوبة ولم تدفع بعد
-                    if (requiredPayments > 0 && paidPayments < requiredPayments) {
-                        alertCount++;
-                        
-                        // حساب عدد الحصص المتبقية حتى الدفعة التالية
+                    if (attendanceCount >= 6) { // بدءاً من 6 حصص
+                        const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
+                        const paidPayments = subjectPayments.length;
+                        const requiredPayments = Math.floor(attendanceCount / 8);
+                        const pendingPayments = Math.max(0, requiredPayments - paidPayments);
                         const sessionsSinceLastPayment = attendanceCount - (paidPayments * 8);
-                        const sessionsToNextPayment = 8 - sessionsSinceLastPayment;
                         
-                        alerts.push({
+                        // إضافة إلى المواد القريبة
+                        upcomingSubjects.push({
                             studentId: student.id,
                             student: student.name,
                             subjectId: subject.id,
                             subject: subject.name,
                             sessions: attendanceCount,
                             sessionsSincePayment: sessionsSinceLastPayment,
-                            sessionsToNextPayment: sessionsToNextPayment,
+                            sessionsToNextPayment: 8 - sessionsSinceLastPayment,
                             requiredPayments: requiredPayments,
                             paidPayments: paidPayments,
-                            pendingPayments: requiredPayments - paidPayments,
+                            pendingPayments: pendingPayments,
                             fee: subject.fee,
-                            totalDue: (requiredPayments - paidPayments) * subject.fee
+                            totalDue: pendingPayments * subject.fee
                         });
                         
-                        pendingPayments.push({
-                            student: student.name,
-                            subject: subject.name,
-                            sessions: attendanceCount,
-                            requiredPayments: requiredPayments,
-                            paidPayments: paidPayments,
-                            pendingPayments: requiredPayments - paidPayments,
-                            fee: subject.fee,
-                            totalDue: (requiredPayments - paidPayments) * subject.fee
-                        });
+                        upcomingCount++;
+                        
+                        // تحديث الإحصائيات
+                        if (attendanceCount === 6) count6++;
+                        else if (attendanceCount === 7) count7++;
+                        else if (attendanceCount === 8) count8++;
+                        else if (attendanceCount > 8) countOver++;
+                        
+                        // إذا كانت تحتاج للدفع (8 حصص أو أكثر)
+                        if (attendanceCount >= 8 && pendingPayments > 0) {
+                            paymentAlertSubjects.push({
+                                studentId: student.id,
+                                student: student.name,
+                                subjectId: subject.id,
+                                subject: subject.name,
+                                sessions: attendanceCount,
+                                requiredPayments: requiredPayments,
+                                paidPayments: paidPayments,
+                                pendingPayments: pendingPayments,
+                                fee: subject.fee,
+                                totalDue: pendingPayments * subject.fee
+                            });
+                            paymentAlertCount++;
+                        }
                     }
                 });
             });
             
-            // تحديث واجهة التنبيهات
-            if (alertCount > 0) {
+            // تحديث حالة المواد القريبة
+            window.appState.upcomingSubjects = upcomingSubjects;
+            
+            // تحديث الإحصائيات
+            document.getElementById('count-6').textContent = count6;
+            document.getElementById('count-7').textContent = count7;
+            document.getElementById('count-8').textContent = count8;
+            document.getElementById('count-over').textContent = countOver;
+            document.getElementById('upcoming-count').textContent = upcomingCount;
+            
+            // تحديث شارة التنبيه
+            if (upcomingCount > 0) {
+                upcomingBadge.classList.remove('hidden');
+                upcomingBadge.textContent = upcomingCount;
+                upcomingBadge.classList.add('shake');
+            } else {
+                upcomingBadge.classList.add('hidden');
+            }
+            
+            // تحديث شارة الدفع
+            if (paymentAlertCount > 0) {
+                paymentBadge.classList.remove('hidden');
+                paymentBadge.textContent = paymentAlertCount;
+                paymentBadge.classList.add('shake');
                 alertBanner.classList.remove('hidden');
-                alertBadge.classList.remove('hidden');
-                alertBadge.textContent = alertCount;
-                alertBadge.classList.add('shake');
+            } else {
+                paymentBadge.classList.add('hidden');
+                alertBanner.classList.add('hidden');
+            }
+            
+            // تحديث قائمة المواد القريبة إذا كان التبويب مفتوحاً
+            if (document.getElementById('upcoming-tab') && !document.getElementById('upcoming-tab').classList.contains('hidden')) {
+                updateUpcomingSubjectsList();
+            }
+            
+            // تحديث تنبيهات الدفع
+            updatePaymentAlerts(paymentAlertSubjects);
+        }
+
+        function updatePaymentAlerts(paymentAlertSubjects) {
+            const paymentAlertsContainer = document.getElementById('payment-alerts');
+            
+            if (!paymentAlertsContainer) return;
+            
+            if (paymentAlertSubjects.length > 0) {
+                let alertsHtml = `
+                    <div class="bg-gradient-to-l from-orange-50 to-amber-50 p-4 rounded-xl border border-orange-200 mb-4">
+                        <h4 class="font-bold text-gray-800 mb-3 text-lg flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle text-orange-500"></i>
+                            مواد تحتاج للدفع (${paymentAlertSubjects.length})
+                        </h4>
+                        <div class="space-y-3">
+                `;
                 
-                // تحديث محتوى التنبيهات في تبويب الدفع
-                if (paymentAlertsContainer) {
-                    let alertsHtml = '';
-                    
-                    if (pendingPayments.length > 0) {
-                        alertsHtml = `
-                            <div class="bg-gradient-to-l from-orange-50 to-amber-50 p-4 rounded-xl border border-orange-200 mb-4">
-                                <h4 class="font-bold text-gray-800 mb-3 text-lg flex items-center gap-2">
-                                    <i class="fas fa-exclamation-triangle text-orange-500"></i>
-                                    مواد تحتاج للدفع (${pendingPayments.length})
-                                </h4>
-                                <div class="space-y-3">
-                        `;
-                        
-                        pendingPayments.forEach(payment => {
-                            alertsHtml += `
-                                <div class="bg-white p-3 rounded-lg border border-orange-100">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-gray-800">${payment.subject}</span>
-                                        <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">
-                                            ${payment.pendingPayments} دفعة
-                                        </span>
-                                    </div>
-                                    <div class="text-sm text-gray-600">
-                                        <div class="flex justify-between">
-                                            <span>${payment.student}</span>
-                                            <span class="font-bold text-green-700">${payment.totalDue} ج.م</span>
-                                        </div>
-                                        <div class="flex justify-between mt-1">
-                                            <span>${payment.sessions} حصة</span>
-                                            <span>${payment.paidPayments}/${payment.requiredPayments} مدفوعة</span>
-                                        </div>
-                                    </div>
+                paymentAlertSubjects.forEach(payment => {
+                    alertsHtml += `
+                        <div class="bg-white p-3 rounded-lg border border-orange-100">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-gray-800">${payment.subject}</span>
+                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">
+                                    ${payment.pendingPayments} دفعة
+                                </span>
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>${payment.student}</span>
+                                    <span class="font-bold text-green-700">${payment.totalDue} ج.م</span>
                                 </div>
-                            `;
-                        });
-                        
-                        alertsHtml += `
+                                <div class="flex justify-between mt-1">
+                                    <span>${payment.sessions} حصة</span>
+                                    <span>${payment.paidPayments}/${payment.requiredPayments} مدفوعة</span>
                                 </div>
                             </div>
-                        `;
-                    }
-                    
-                    paymentAlertsContainer.innerHTML = alertsHtml;
-                }
-                
-                // عرض التنبيه تلقائياً إذا كان أول مرة
-                if (!state.paymentAlertsShown) {
-                    setTimeout(() => {
-                        showAlertModal(alerts);
-                        state.paymentAlertsShown = true;
-                    }, 1000);
-                }
-            } else {
-                alertBanner.classList.add('hidden');
-                alertBadge.classList.add('hidden');
-                if (paymentAlertsContainer) {
-                    paymentAlertsContainer.innerHTML = `
-                        <div class="bg-gradient-to-l from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 text-center">
-                            <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
-                            <p class="text-gray-700">جميع المواد محدثة، لا توجد دفعات مستحقة حالياً</p>
                         </div>
                     `;
-                }
+                });
+                
+                alertsHtml += `
+                        </div>
+                    </div>
+                `;
+                
+                paymentAlertsContainer.innerHTML = alertsHtml;
+            } else {
+                paymentAlertsContainer.innerHTML = `
+                    <div class="bg-gradient-to-l from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 text-center">
+                        <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                        <p class="text-gray-700">جميع المواد محدثة، لا توجد دفعات مستحقة حالياً</p>
+                    </div>
+                `;
             }
         }
+
+        function updateUpcomingSubjectsList() {
+            const state = window.appState;
+            const container = document.getElementById('upcoming-subjects-list');
+            
+            if (!container) return;
+            
+            if (state.upcomingSubjects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle text-green-400 text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-700 mb-2">لا توجد مواد قريبة على الدفع</h3>
+                        <p class="text-gray-600">جميع المواد لديها أقل من 6 حصص مسجلة</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // فرز المواد حسب عدد الحصص (الأكثر أولاً)
+            const sortedSubjects = [...state.upcomingSubjects].sort((a, b) => b.sessions - a.sessions);
+            
+            let html = '';
+            
+            sortedSubjects.forEach(item => {
+                const studentIcon = item.student.includes('مارسيلينو') ? '👦' : '👧';
+                const sessionClass = item.sessions === 6 ? 'session-count-6' : 
+                                   item.sessions === 7 ? 'session-count-7' : 
+                                   item.sessions === 8 ? 'session-count-8' : 
+                                   'session-count-over';
+                
+                const cardClass = item.sessions >= 8 ? 'urgent-subject' : 'near-subject';
+                
+                html += `
+                    <div class="card p-5 ${cardClass}">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl ${item.student.includes('مارسيلينو') ? 'student-icon-boy' : 'student-icon-girl'}">
+                                    ${studentIcon}
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">${item.subject}</h3>
+                                    <p class="text-sm text-gray-600">${item.student}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="${sessionClass} session-count-badge">
+                                    ${item.sessions} حصة
+                                </span>
+                                <span class="font-bold text-orange-700">${item.fee} ج.م</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="text-center p-3 bg-gray-50 rounded-xl">
+                                <div class="font-bold text-gray-800 text-lg">${item.paidPayments}/${item.requiredPayments}</div>
+                                <div class="text-sm text-gray-600">الدفعات</div>
+                            </div>
+                            <div class="text-center p-3 bg-blue-50 rounded-xl">
+                                <div class="font-bold text-blue-700 text-lg">${item.sessionsSincePayment}</div>
+                                <div class="text-sm text-gray-600">منذ آخر دفعة</div>
+                            </div>
+                            <div class="text-center p-3 ${item.sessionsToNextPayment <= 1 ? 'bg-red-50' : 'bg-green-50'} rounded-xl">
+                                <div class="font-bold ${item.sessionsToNextPayment <= 1 ? 'text-red-700' : 'text-green-700'} text-lg">${item.sessionsToNextPayment}</div>
+                                <div class="text-sm text-gray-600">حصص للدفعة التالية</div>
+                            </div>
+                        </div>
+                        
+                        ${item.pendingPayments > 0 ? `
+                            <div class="bg-gradient-to-l from-orange-50 to-red-50 p-3 rounded-xl border border-orange-200 mb-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-orange-700">مطلوب الدفع:</span>
+                                    <span class="font-bold text-orange-700">${item.pendingPayments} × ${item.fee} ج.م = ${item.totalDue} ج.م</span>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="bg-gradient-to-l from-green-50 to-emerald-50 p-3 rounded-xl border border-green-200 mb-3">
+                                <div class="text-center">
+                                    <span class="font-bold text-green-700">✓ جميع الدفعات الحالية مدفوعة</span>
+                                </div>
+                            </div>
+                        `}
+                        
+                        <div class="flex gap-2 pt-3 border-t border-gray-200">
+                            <button onclick="quickRegisterAttendance('${item.studentId}', '${item.subjectId}')" class="flex-1 btn-primary py-2 rounded-lg">
+                                <i class="fas fa-clipboard-check ml-2"></i>تسجيل حصة
+                            </button>
+                            <button onclick="quickRegisterPayment('${item.studentId}', '${item.subjectId}')" class="flex-1 btn-payment py-2 rounded-lg">
+                                <i class="fas fa-money-bill-wave ml-2"></i>تسجيل دفعة
+                            </button>
+                            <button onclick="showSessionDetails('${item.subjectId}')" class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
+                                <i class="fas fa-eye ml-2"></i>عرض الحصص
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        window.quickRegisterPayment = (studentId, subjectId) => {
+            const subject = window.appState.subjects.find(s => s.id === subjectId);
+            const student = window.appState.students.find(s => s.id === studentId);
+            
+            if (!subject || !student) return;
+            
+            // تعبئة بيانات الدفع
+            document.getElementById('payment-student').value = studentId;
+            updatePaymentSubjects();
+            
+            setTimeout(() => {
+                document.getElementById('payment-subject').value = subjectId;
+                document.getElementById('payment-amount').value = subject.fee;
+                
+                // فتح نافذة الدفع
+                openPaymentModal();
+                
+                switchTab('payment');
+            }, 100);
+        };
 
         window.showAlertModal = (alerts) => {
             if (!alerts) {
@@ -1039,7 +1542,7 @@
                         const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
                         const attendanceCount = subjectAttendance.length;
                         
-                        if (attendanceCount === 0) return;
+                        if (attendanceCount < 8) return;
                         
                         const requiredPayments = Math.floor(attendanceCount / 8);
                         const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
@@ -1140,7 +1643,6 @@
             } else {
                 let html = '';
                 
-                // حساب إجمالي المدفوعات لكل مادة
                 studentSubjects.forEach(subject => {
                     const subjectPayments = studentPayments.filter(p => p.subjectId === subject.id);
                     const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
@@ -1300,8 +1802,13 @@
                     studentId, subjectId, date, day, status, timestamp: Date.now()
                 });
                 showToast("تم تسجيل " + status + " بنجاح");
+                // إعادة تعيين الحقول
                 document.getElementById('dashboard-att-student').value = '';
                 document.getElementById('dashboard-att-subject').innerHTML = '<option value="">-- اختر المادة --</option>';
+                // العودة إلى تاريخ اليوم
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('dashboard-att-date').value = today;
+                updateDashboardDayName();
             } catch (e) { showToast("خطأ في التسجيل: " + e.code); }
             btn.disabled = false;
         };
@@ -1364,7 +1871,6 @@
             document.getElementById('edit-attendance-id').value = attendanceId;
             document.getElementById('edit-attendance-date').value = attendance.date;
             
-            // تعيين قيمة الراديو بناءً على الحالة
             const radioButtons = document.querySelectorAll('input[name="edit-status"]');
             radioButtons.forEach(radio => {
                 radio.checked = radio.value === attendance.status;
@@ -1382,7 +1888,6 @@
             
             if (!attendanceId || !date || !status) return showToast("يرجى إكمال كافة البيانات");
             
-            // الحصول على يوم الأسبوع من التاريخ
             const dateObj = new Date(date);
             const dayName = dateObj.toLocaleDateString('ar-EG', { weekday: 'long' });
             
@@ -1562,13 +2067,14 @@
                 showToast("تم تسجيل الدفعة بنجاح");
                 closePaymentModal();
                 
+                // إعادة تعيين الحقول
                 document.getElementById('payment-student').value = '';
                 document.getElementById('payment-subject').innerHTML = '<option value="">-- اختر المادة --</option>';
                 document.getElementById('payment-amount').value = '';
                 document.getElementById('payment-notes').value = '';
                 
-                // تحديث التنبيهات بعد التسجيل
-                setTimeout(checkPaymentAlerts, 500);
+                // التحقق من المواد القريبة بعد التسجيل
+                setTimeout(checkUpcomingPayments, 500);
                 
             } catch (e) { showToast("خطأ في التسجيل: " + e.code); }
         };
@@ -1579,7 +2085,7 @@
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', paymentId));
                     showToast("تم حذف الدفعة بنجاح");
-                    setTimeout(checkPaymentAlerts, 500);
+                    setTimeout(checkUpcomingPayments, 500);
                 } catch (e) { showToast("خطأ في الحذف"); }
             }
         };
@@ -1599,10 +2105,15 @@
                 event.target.classList.remove('bg-white', 'text-gray-700', 'border');
             }
             
-            if (tabName === 'payment') {
+            if (tabName === 'dashboard') {
+                updateDashboard();
+            } else if (tabName === 'payment') {
                 updatePaymentSummary();
                 updatePaymentHistory();
-                checkPaymentAlerts();
+            } else if (tabName === 'reports') {
+                updateReports();
+            } else if (tabName === 'upcoming') {
+                updateUpcomingSubjectsList();
             }
         };
 
@@ -1741,6 +2252,63 @@
             window.open(whatsappUrl, '_blank');
         };
 
+        window.exportReportData = () => {
+            const state = window.appState;
+            let csv = 'الابن,المادة,عدد الحصص,الحضور,الغياب,المبلغ الشهري,الدفعات المدفوعة\n';
+            
+            state.students.forEach(student => {
+                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
+                const studentAttendance = state.attendance.filter(a => a.studentId === student.id);
+                
+                studentSubjects.forEach(subject => {
+                    const subjectAttendance = studentAttendance.filter(a => a.subjectId === subject.id);
+                    const attendanceCount = subjectAttendance.length;
+                    const presenceCount = subjectAttendance.filter(a => a.status === 'حضور').length;
+                    const absenceCount = subjectAttendance.filter(a => a.status === 'غياب').length;
+                    const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
+                    const paidPayments = subjectPayments.length;
+                    
+                    csv += `${student.name},${subject.name},${attendanceCount},${presenceCount},${absenceCount},${subject.fee},${paidPayments}\n`;
+                });
+            });
+            
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `تقرير_الدروس_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("تم تصدير التقرير بنجاح");
+        };
+
+        window.exportAttendanceData = () => {
+            const state = window.appState;
+            let csv = 'التاريخ,الابن,المادة,اليوم,الحالة\n';
+            
+            state.attendance.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(record => {
+                const student = state.students.find(s => s.id === record.studentId);
+                const subject = state.subjects.find(s => s.id === record.subjectId);
+                
+                csv += `${record.date},${student ? student.name : 'غير معروف'},${subject ? subject.name : 'مادة محذوفة'},${record.day},${record.status}\n`;
+            });
+            
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `تسجيلات_الدروس_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast("تم تصدير البيانات بنجاح");
+        };
+
         function updatePaymentSummary() {
             const state = window.appState;
             const container = document.getElementById('student-payments-summary');
@@ -1854,7 +2422,7 @@
             });
             
             if (html === '') {
-                html = '<div class="text-center py-8 text-gray-500"><i class="fas fa-credit-card text-3xl mb-3"></i><p>لا توجد مواد مسجلة</p></div>';
+                html = '<div class="empty-state"><i class="fas fa-credit-card"></i><p>لا توجد مواد مسجلة</p></div>';
             }
             
             container.innerHTML = html;
@@ -1883,7 +2451,7 @@
             let html = '';
             
             if (filteredPayments.length === 0) {
-                html = '<div class="text-center py-8 text-gray-500"><i class="fas fa-receipt text-3xl mb-3"></i><p>لا توجد مدفوعات مسجلة</p></div>';
+                html = '<div class="empty-state"><i class="fas fa-receipt"></i><p>لا توجد مدفوعات مسجلة</p></div>';
             } else {
                 html = filteredPayments.map(payment => {
                     const student = state.students.find(s => s.id === payment.studentId);
@@ -1929,21 +2497,20 @@
             const dSt = document.getElementById('dashboard-att-student');
             const paySt = document.getElementById('payment-student');
             const filterSt = document.getElementById('filter-payment-student');
+            const reportSt = document.getElementById('report-student-filter');
             
-            if (pSt && dSt && paySt && filterSt) {
-                [pSt, dSt, paySt, filterSt].forEach(s => {
-                    const cur = s.value;
-                    s.innerHTML = '<option value="">-- اختر الابن --</option>';
-                    state.students.forEach(st => {
-                        const opt = document.createElement('option');
-                        opt.value = st.id; opt.textContent = st.name;
-                        s.appendChild(opt);
-                    });
-                    s.value = cur;
+            [pSt, dSt, paySt, filterSt, reportSt].forEach(s => {
+                if (!s) return;
+                const cur = s.value;
+                s.innerHTML = '<option value="">-- اختر الابن --</option>';
+                state.students.forEach(st => {
+                    const opt = document.createElement('option');
+                    opt.value = st.id; opt.textContent = st.name;
+                    s.appendChild(opt);
                 });
-            }
+                s.value = cur;
+            });
 
-            // تحديث قائمة الفلترة للمواد
             updateFilterSubjects();
 
             const sl = document.getElementById('students-list');
@@ -1956,12 +2523,196 @@
                 </div>
             `).join('');
 
+            updateDashboard();
             updateRecentLogs();
             updateExpenseReport();
             updateSchedule();
             updatePaymentSummary();
             updatePaymentHistory();
+            updateReportFilters();
+            checkUpcomingPayments();
         };
+
+        function updateDashboard() {
+            updateTodayOverview();
+            updateRecentAttendance();
+            updateRecentPayments();
+        }
+
+        function updateTodayOverview() {
+            const state = window.appState;
+            const container = document.getElementById('today-overview');
+            
+            if (!container) return;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayDay = new Date().toLocaleDateString('ar-EG', { weekday: 'long' });
+            
+            let html = '';
+            
+            state.students.forEach(student => {
+                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
+                const todaySubjects = studentSubjects.filter(s => s.days.includes(todayDay));
+                
+                if (todaySubjects.length === 0) return;
+                
+                html += `
+                    <div class="dashboard-card">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold">
+                                ${todaySubjects.length} مادة اليوم
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            ${todaySubjects.map(subject => {
+                                const todayAttendance = state.attendance.find(a => 
+                                    a.subjectId === subject.id && a.date === today
+                                );
+                                
+                                return `
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                                        <div>
+                                            <h4 class="font-bold text-gray-800">${subject.name}</h4>
+                                            <p class="text-sm text-gray-500">${subject.days.join('، ')}</p>
+                                        </div>
+                                        <div>
+                                            ${todayAttendance ? `
+                                                <span class="px-3 py-1 rounded-full text-sm font-bold ${todayAttendance.status === 'حضور' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                                    ${todayAttendance.status}
+                                                </span>
+                                            ` : `
+                                                <button onclick="quickRegisterAttendance('${student.id}', '${subject.id}')" class="btn-primary px-4 py-1.5 rounded-lg text-sm">
+                                                    تسجيل
+                                                </button>
+                                            `}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (html === '') {
+                html = `
+                    <div class="col-span-2">
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-check"></i>
+                            <p>لا توجد دروس مجدولة لهذا اليوم</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        window.quickRegisterAttendance = (studentId, subjectId) => {
+            const today = new Date().toISOString().split('T')[0];
+            const todayDay = new Date().toLocaleDateString('ar-EG', { weekday: 'long' });
+            
+            document.getElementById('dashboard-att-student').value = studentId;
+            updateDashboardAttSubjects();
+            setTimeout(() => {
+                document.getElementById('dashboard-att-subject').value = subjectId;
+                document.getElementById('dashboard-att-date').value = today;
+                updateDashboardDayName();
+                document.querySelector('input[name="dashboard-status"][value="حضور"]').checked = true;
+                
+                switchTab('quick');
+                
+                setTimeout(() => {
+                    document.getElementById('dashboard-save-btn').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }, 100);
+        };
+
+        function updateRecentAttendance() {
+            const state = window.appState;
+            const container = document.getElementById('recent-attendance');
+            
+            if (!container) return;
+            
+            const recentAttendance = [...state.attendance]
+                .sort((a, b) => b.timestamp - a.timestamp)
+                .slice(0, 10);
+            
+            let html = '';
+            
+            if (recentAttendance.length === 0) {
+                html = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد تسجيلات حديثة</p></div>';
+            } else {
+                html = recentAttendance.map(record => {
+                    const student = state.students.find(s => s.id === record.studentId);
+                    const subject = state.subjects.find(s => s.id === record.subjectId);
+                    
+                    return `
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center ${record.status === 'حضور' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                                    <i class="fas ${record.status === 'حضور' ? 'fa-check' : 'fa-times'}"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">${subject ? subject.name : 'مادة محذوفة'}</h4>
+                                    <p class="text-sm text-gray-500">${student ? student.name : 'غير معروف'}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-medium text-gray-800">${record.date}</div>
+                                <div class="text-sm text-gray-500">${record.day}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function updateRecentPayments() {
+            const state = window.appState;
+            const container = document.getElementById('recent-payments');
+            
+            if (!container) return;
+            
+            const recentPayments = [...state.payments]
+                .sort((a, b) => b.timestamp - a.timestamp)
+                .slice(0, 10);
+            
+            let html = '';
+            
+            if (recentPayments.length === 0) {
+                html = '<div class="empty-state"><i class="fas fa-receipt"></i><p>لا توجد مدفوعات حديثة</p></div>';
+            } else {
+                html = recentPayments.map(payment => {
+                    const student = state.students.find(s => s.id === payment.studentId);
+                    const subject = state.subjects.find(s => s.id === payment.subjectId);
+                    
+                    return `
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-500 rounded-lg flex items-center justify-center text-white">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">${subject ? subject.name : 'مادة محذوفة'}</h4>
+                                    <p class="text-sm text-gray-500">${student ? student.name : 'غير معروف'}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-bold text-green-700 text-lg">${payment.amount} ج.م</div>
+                                <div class="text-sm text-gray-500">${payment.date}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            container.innerHTML = html;
+        }
 
         function updateRecentLogs() {
             const state = window.appState;
@@ -2034,21 +2785,59 @@
             });
             
             if (html === '') {
-                html = '<div class="text-center py-8 text-gray-500"><i class="fas fa-clipboard-list text-4xl mb-4"></i><p>لا توجد تسجيلات حديثة</p></div>';
+                html = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد تسجيلات حديثة</p></div>';
             }
             
             container.innerHTML = html;
         }
 
-        function updateExpenseReport() {
+        function updateReportFilters() {
+            const monthSelect = document.getElementById('report-month-filter');
+            if (!monthSelect) return;
+            
+            let currentValue = monthSelect.value;
+            monthSelect.innerHTML = '<option value="">جميع الشهور</option>';
+            
+            const monthsSet = new Set();
+            window.appState.attendance.forEach(record => {
+                const date = new Date(record.date);
+                const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                const monthName = `${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+                monthsSet.add(`${monthYear}|${monthName}`);
+            });
+            
+            const sortedMonths = Array.from(monthsSet).sort((a, b) => {
+                const [aYear, aMonth] = a.split('|')[0].split('-').map(Number);
+                const [bYear, bMonth] = b.split('|')[0].split('-').map(Number);
+                return bYear - aYear || bMonth - aMonth;
+            });
+            
+            sortedMonths.forEach(month => {
+                const [value, text] = month.split('|');
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = text;
+                monthSelect.appendChild(option);
+            });
+            
+            monthSelect.value = currentValue;
+        }
+
+        window.updateReports = () => {
             const state = window.appState;
             const container = document.getElementById('expense-report-by-student');
             
             if (!container) return;
             
+            const filterStudent = document.getElementById('report-student-filter').value;
+            const filterMonth = document.getElementById('report-month-filter').value;
+            const filterSubject = document.getElementById('report-subject-filter').value;
+            
             let html = '';
             
             state.students.forEach(student => {
+                if (filterStudent && student.id !== filterStudent) return;
+                
                 const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
                 
                 if (studentSubjects.length === 0) return;
@@ -2058,6 +2847,13 @@
                 const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
                 
                 let totalSessions = 0;
+                let filteredSubjects = studentSubjects;
+                
+                if (filterSubject) {
+                    filteredSubjects = filteredSubjects.filter(s => s.id === filterSubject);
+                }
+                
+                if (filteredSubjects.length === 0) return;
                 
                 html += `
                     <div class="${studentClass} p-5 rounded-2xl shadow-sm">
@@ -2066,7 +2862,7 @@
                                 <span class="text-2xl">${studentIcon}</span>
                                 <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
                                 <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-bold">
-                                    ${studentSubjects.length} مادة
+                                    ${filteredSubjects.length} مادة
                                 </span>
                             </div>
                             <button class="text-emerald-600 hover:text-emerald-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
@@ -2076,8 +2872,17 @@
                         
                         <div class="expandable-content ${isExpanded ? 'expanded' : 'collapsed'}">
                             <div class="space-y-4">
-                                ${studentSubjects.map(subject => {
-                                    const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
+                                ${filteredSubjects.map(subject => {
+                                    let subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
+                                    
+                                    if (filterMonth) {
+                                        subjectAttendance = subjectAttendance.filter(a => {
+                                            const date = new Date(a.date);
+                                            const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                                            return monthYear === filterMonth;
+                                        });
+                                    }
+                                    
                                     const presenceCount = subjectAttendance.filter(a => a.status === 'حضور').length;
                                     const absenceCount = subjectAttendance.filter(a => a.status === 'غياب').length;
                                     totalSessions += subjectAttendance.length;
@@ -2131,10 +2936,14 @@
             });
             
             if (html === '') {
-                html = '<div class="text-center py-8 text-gray-500"><i class="fas fa-receipt text-4xl mb-4"></i><p>لا توجد مواد مسجلة</p></div>';
+                html = '<div class="empty-state"><i class="fas fa-receipt"></i><p>لا توجد مواد مسجلة</p></div>';
             }
             
             container.innerHTML = html;
+        }
+
+        function updateExpenseReport() {
+            updateReports();
         }
 
         function updateSchedule() {
@@ -2180,6 +2989,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
+                                                    <p class="text-sm text-gray-500">${subject.fee} ج.م شهرياً</p>
                                                 </div>
                                             </div>
                                             <div class="edit-btn">
@@ -2219,11 +3029,48 @@
             });
             
             if (html === '') {
-                html = '<div class="text-center py-8 text-gray-500"><i class="fas fa-calendar-times text-4xl mb-4"></i><p>لا توجد مواد مسجلة</p></div>';
+                html = '<div class="empty-state"><i class="fas fa-calendar-times"></i><p>لا توجد مواد مسجلة</p></div>';
             }
             
             container.innerHTML = html;
         }
+
+        window.openQuickAddModal = () => {
+            document.getElementById('quick-add-modal').classList.remove('hidden');
+        };
+
+        window.closeQuickAddModal = () => {
+            document.getElementById('quick-add-modal').classList.add('hidden');
+        };
+
+        window.openQuickAddStudent = () => {
+            closeQuickAddModal();
+            switchTab('students');
+            setTimeout(() => {
+                document.getElementById('student-name').focus();
+            }, 100);
+        };
+
+        window.openQuickAddSubject = () => {
+            closeQuickAddModal();
+            switchTab('students');
+            setTimeout(() => {
+                document.getElementById('subject-name').focus();
+            }, 100);
+        };
+
+        window.openQuickAttendance = () => {
+            closeQuickAddModal();
+            switchTab('quick');
+            setTimeout(() => {
+                document.getElementById('dashboard-att-student').focus();
+            }, 100);
+        };
+
+        window.openQuickPayment = () => {
+            closeQuickAddModal();
+            openPaymentModal();
+        };
 
         window.onload = init;
     </script>
