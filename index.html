@@ -104,7 +104,7 @@
             color: white;
             transition: all 0.3s ease;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .btn-primary:hover {
@@ -118,7 +118,7 @@
             color: white;
             transition: all 0.3s ease;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .btn-secondary:hover {
@@ -132,7 +132,7 @@
             color: white;
             transition: all 0.3s ease;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .btn-accent:hover {
@@ -146,7 +146,7 @@
             color: white;
             transition: all 0.3s ease;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .btn-payment:hover {
@@ -160,7 +160,7 @@
             color: white;
             transition: all 0.3s ease;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .btn-warning:hover {
@@ -174,7 +174,7 @@
             color: white;
             transition: all 0.3s ease;
             border: none;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .btn-danger:hover {
@@ -266,13 +266,13 @@
         .status-presence {
             background-color: #d1fae5;
             color: #065f46;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .status-absence {
             background-color: #fee2e2;
             color: #991b1b;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .custom-radio {
@@ -412,7 +412,7 @@
             background-color: #f8fafc;
             padding: 1rem;
             text-align: right;
-            font-weight: 600;
+            font-weight: 700;
             color: #4b5563;
             border-bottom: 2px solid #e5e7eb;
         }
@@ -490,16 +490,31 @@
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
             border-radius: 9999px;
-            font-weight: bold;
+            font-weight: 700;
         }
         
-        .session-count-6 { background-color: #d1fae5; color: #065f46; }
-        .session-count-7 { background-color: #fef3c7; color: #92400e; }
-        .session-count-8 { background-color: #fee2e2; color: #991b1b; }
-        .session-count-over { background-color: #dc2626; color: white; }
+        .session-count-7 { background-color: #fee2e2; color: #991b1b; font-weight: 700; }
+        
+        /* نمط الأرقام العربية */
+        .arabic-numbers {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700 !important;
+            direction: ltr;
+            display: inline-block;
+        }
+        
+        /* تحسين تحميل التطبيق */
+        .fast-load {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
-<body class="p-2 md:p-6">
+<body class="p-2 md:p-6 fast-load">
 
     <!-- Alert Modal -->
     <div id="alert-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[200] flex items-center justify-center p-4">
@@ -510,7 +525,7 @@
                     <i class="fas fa-bell text-white text-2xl"></i>
                 </div>
                 <h3 id="alert-title" class="text-2xl font-bold text-gray-800 mb-2">تنبيه: مواد تحتاج للدفع</h3>
-                <p id="alert-message" class="text-gray-600">يوجد مواد وصلت إلى 8 حصص وتحتاج للدفع</p>
+                <p id="alert-message" class="text-gray-600">يوجد مواد وصلت إلى <span class="arabic-numbers">٧</span> حصص وتحتاج للدفع</p>
             </div>
             <div id="alert-content" class="max-h-60 overflow-y-auto mb-6 space-y-3">
                 <!-- سيتم ملؤها بالجافاسكريبت -->
@@ -537,7 +552,7 @@
         <div class="flex flex-col items-center">
             <div class="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-6 pulse"></div>
             <div class="text-2xl font-bold gradient-text mb-2">نظام متابعة الدروس</div>
-            <div id="loading-text" class="text-gray-600 font-medium">جاري تحميل البيانات...</div>
+            <div id="loading-text" class="text-gray-600 font-bold">جاري تحميل البيانات...</div>
             <div class="mt-4 text-sm text-gray-500">إشراف وتصميم: المهندس بولس سمير</div>
         </div>
     </div>
@@ -577,6 +592,10 @@
                 <div>
                     <label class="text-sm font-bold text-gray-600 block text-right mb-1">المبلغ الشهري</label>
                     <input id="edit-subject-fee" type="number" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">الساعة (مثال: 1:00 م)</label>
+                    <input id="edit-subject-time" type="text" placeholder="مثال: 1:00 م" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
                 </div>
                 <div>
                     <label class="text-sm font-bold text-gray-600 block text-right mb-2">أيام الدرس:</label>
@@ -664,39 +683,6 @@
         </div>
     </div>
 
-    <!-- Quick Add Modal -->
-    <div id="quick-add-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closeQuickAddModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h3 class="text-xl font-bold mb-4 text-indigo-700 text-center border-b pb-2">إضافة سريعة</h3>
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="openQuickAddStudent()" class="quick-action-btn">
-                        <i class="fas fa-user-plus text-3xl text-indigo-600 mb-2"></i>
-                        <div class="font-bold text-gray-800">إضافة ابن</div>
-                        <div class="text-sm text-gray-500">إضافة ابن جديد للنظام</div>
-                    </button>
-                    <button onclick="openQuickAddSubject()" class="quick-action-btn">
-                        <i class="fas fa-book-medical text-3xl text-green-600 mb-2"></i>
-                        <div class="font-bold text-gray-800">إضافة مادة</div>
-                        <div class="text-sm text-gray-500">إضافة مادة جديدة</div>
-                    </button>
-                    <button onclick="openQuickAttendance()" class="quick-action-btn">
-                        <i class="fas fa-clipboard-check text-3xl text-blue-600 mb-2"></i>
-                        <div class="font-bold text-gray-800">تسجيل حضور</div>
-                        <div class="text-sm text-gray-500">تسجيل حضور أو غياب</div>
-                    </button>
-                    <button onclick="openQuickPayment()" class="quick-action-btn">
-                        <i class="fas fa-money-bill-wave text-3xl text-purple-600 mb-2"></i>
-                        <div class="font-bold text-gray-800">تسجيل دفعة</div>
-                        <div class="text-sm text-gray-500">تسجيل دفعة جديدة</div>
-                    </button>
-                </div>
-                <button onclick="closeQuickAddModal()" class="w-full mt-4 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <header class="gradient-header text-white rounded-2xl p-6 mb-8 shadow-2xl text-center relative overflow-hidden floating">
@@ -705,7 +691,7 @@
             
             <div class="relative z-10">
                 <h1 class="text-4xl font-bold mb-2">نظام متابعة دروس الأبناء</h1>
-                <p class="text-lg text-indigo-100 opacity-90 font-medium">إشراف وتصميم: المهندس بولس سمير</p>
+                <p class="text-lg text-indigo-100 opacity-90 font-bold">إشراف وتصميم: المهندس بولس سمير</p>
                 <div id="auth-status" class="mt-4 glass-effect inline-block px-4 py-2 rounded-full text-sm">
                     <i class="fas fa-cloud mr-2"></i>جاري التحقق من الاتصال...
                 </div>
@@ -728,14 +714,11 @@
                 <span id="payment-alert-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden notification-badge"></span>
             </button>
             <button onclick="switchTab('upcoming')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md relative">
-                <i class="fas fa-clock ml-2"></i>قربت علي الدفع
+                <i class="fas fa-clock ml-2"></i>قربت على الدفع
                 <span id="upcoming-alert-badge" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden notification-badge"></span>
             </button>
             <button onclick="switchTab('students')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
                 <i class="fas fa-cog ml-2"></i>الإعدادات
-            </button>
-            <button onclick="openQuickAddModal()" class="tab-btn px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
-                <i class="fas fa-plus ml-2"></i>إضافة سريعة
             </button>
         </div>
 
@@ -749,7 +732,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-gray-800 text-lg">تنبيه: مواد تحتاج للدفع</h3>
-                            <p class="text-sm text-gray-600">يوجد مواد وصلت إلى 8 حصص أو أكثر</p>
+                            <p class="text-sm text-gray-600">يوجد مواد وصلت إلى <span class="arabic-numbers">٧</span> حصص أو أكثر</p>
                         </div>
                     </div>
                     <button onclick="showAlertModal()" class="btn-warning px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
@@ -764,43 +747,34 @@
         <div id="dashboard-tab" class="tab-content">
             <!-- Today's Overview -->
             <div class="card p-6 mb-8">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center gap-3">
-                    <i class="fas fa-calendar-day text-indigo-600"></i>
-                    <span>نظرة على اليوم</span>
-                </h2>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-calendar-day text-indigo-600"></i>
+                        <span>دروس اليوم</span>
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <div class="text-lg font-bold text-gray-700" id="today-date"></div>
+                        <div class="text-lg font-bold text-indigo-600" id="today-day"></div>
+                    </div>
+                </div>
                 <div id="today-overview" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- سيتم ملؤها بالجافاسكريبت -->
                 </div>
             </div>
 
             <!-- Recent Activity -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 gap-8">
                 <div class="card p-6">
                     <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-history text-blue-600"></i>
-                            <span>آخر التسجيلات</span>
+                            <span>التسجيلات</span>
                         </div>
                         <button onclick="switchTab('quick')" class="text-sm btn-primary px-4 py-2 rounded-lg">
                             تسجيل جديد
                         </button>
                     </h2>
-                    <div id="recent-attendance" class="max-h-96 overflow-y-auto space-y-3">
-                        <!-- سيتم ملؤها بالجافاسكريبت -->
-                    </div>
-                </div>
-
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-receipt text-purple-600"></i>
-                            <span>آخر المدفوعات</span>
-                        </div>
-                        <button onclick="openPaymentModal()" class="text-sm btn-payment px-4 py-2 rounded-lg">
-                            دفعة جديدة
-                        </button>
-                    </h2>
-                    <div id="recent-payments" class="max-h-96 overflow-y-auto space-y-3">
+                    <div id="recent-attendance" class="max-h-[500px] overflow-y-auto space-y-6">
                         <!-- سيتم ملؤها بالجافاسكريبت -->
                     </div>
                 </div>
@@ -852,24 +826,6 @@
                     <button id="dashboard-save-btn" onclick="saveDashboardAttendance()" class="w-full btn-primary py-4 rounded-2xl font-bold shadow-xl disabled:opacity-50 hover:shadow-2xl transition-all transform active:scale-95 text-lg">
                         <i class="fas fa-save ml-2"></i>تأكيد التسجيل
                     </button>
-                </div>
-            </div>
-            
-            <!-- Recent Registrations by Student -->
-            <div class="card p-6">
-                <h2 class="text-2xl font-bold mb-6 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-2 h-8 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full"></div>
-                        <span class="gradient-text">آخر عمليات التسجيل</span>
-                    </div>
-                    <button onclick="exportAttendanceData()" class="btn-secondary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                        <i class="fas fa-download ml-1"></i>
-                        تصدير البيانات
-                    </button>
-                </h2>
-                
-                <div id="recent-logs-by-student" class="space-y-6">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -926,58 +882,20 @@
 
         <!-- Payment Tab -->
         <div id="payment-tab" class="tab-content hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold mb-6 text-purple-700 border-b pb-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-money-bill-wave"></i>
-                            <span>إجمالي المدفوعات</span>
-                        </div>
-                        <button onclick="openPaymentModal()" class="btn-payment px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                            <i class="fas fa-plus ml-1"></i>
-                            دفعة جديدة
-                        </button>
-                    </h2>
-                    
-                    <!-- Payment Alerts Section -->
-                    <div id="payment-alerts" class="mb-6">
-                        <!-- سيتم ملؤها بالجافاسكريبت -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-6 text-purple-700 border-b pb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>الدفع الشهري</span>
                     </div>
-                    
-                    <!-- Total Payments by Student -->
-                    <div id="student-payments-summary" class="space-y-6">
-                        <!-- سيتم ملؤها بالجافاسكريبت -->
-                    </div>
-                </div>
-
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold mb-6 text-purple-700 border-b pb-3 flex items-center gap-3">
-                        <i class="fas fa-history"></i>
-                        <span>سجل المدفوعات</span>
-                    </h2>
-                    
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-3 mb-4">
-                            <select id="filter-payment-student" onchange="updateFilterSubjects()" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right">
-                                <option value="">جميع الأبناء</option>
-                            </select>
-                            <select id="filter-payment-subject" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right">
-                                <option value="">جميع المواد</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-2 mb-4">
-                            <button onclick="updatePaymentHistory()" class="flex-1 btn-payment py-2.5 rounded-xl font-bold">
-                                <i class="fas fa-search ml-2"></i>بحث
-                            </button>
-                            <button onclick="resetPaymentFilters()" class="px-4 py-2.5 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300">
-                                <i class="fas fa-redo"></i>
-                            </button>
-                        </div>
-                        
-                        <div id="payment-history" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
-                            <!-- سيتم ملؤها بالجافاسكريبت -->
-                        </div>
-                    </div>
+                    <button onclick="openPaymentModal()" class="btn-payment px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                        <i class="fas fa-plus ml-1"></i>
+                        دفعة جديدة
+                    </button>
+                </h2>
+                
+                <div id="student-payments-summary" class="space-y-6">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -991,33 +909,19 @@
                         <span>المواد القريبة على الدفع</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-600">مواد قاربت على 8 حصص</span>
-                        <span id="upcoming-count" class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold">0</span>
+                        <span class="text-sm text-gray-600">مواد قاربت على <span class="arabic-numbers">٧</span> حصص</span>
+                        <span id="upcoming-count" class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">٠</span>
                     </div>
                 </h2>
                 
                 <div class="mb-6">
-                    <div class="grid grid-cols-4 gap-4 text-center mb-4">
-                        <div class="p-3 bg-blue-50 rounded-xl">
-                            <div class="text-2xl font-bold text-blue-700" id="count-6">0</div>
-                            <div class="text-sm text-gray-600">6 حصص</div>
-                        </div>
-                        <div class="p-3 bg-amber-50 rounded-xl">
-                            <div class="text-2xl font-bold text-amber-700" id="count-7">0</div>
-                            <div class="text-sm text-gray-600">7 حصص</div>
-                        </div>
-                        <div class="p-3 bg-red-50 rounded-xl">
-                            <div class="text-2xl font-bold text-red-700" id="count-8">0</div>
-                            <div class="text-sm text-gray-600">8 حصص</div>
-                        </div>
-                        <div class="p-3 bg-red-100 rounded-xl">
-                            <div class="text-2xl font-bold text-red-800" id="count-over">0</div>
-                            <div class="text-sm text-gray-600">أكثر من 8</div>
-                        </div>
+                    <div class="p-3 bg-red-50 rounded-xl text-center mb-4">
+                        <div class="text-2xl font-bold text-red-700 arabic-numbers" id="count-7">٠</div>
+                        <div class="text-sm text-gray-600"><span class="arabic-numbers">٧</span> حصص</div>
                     </div>
                     <p class="text-sm text-gray-600 text-center">
                         <i class="fas fa-info-circle mr-2"></i>
-                        المواد التي وصلت إلى 6 حصص أو أكثر تظهر هنا. عند تسجيل دفعة في تبويب الدفع، ستختفي تلقائياً من هذه القائمة.
+                        المواد التي وصلت إلى <span class="arabic-numbers">٧</span> حصص تظهر هنا. عند تسجيل دفعة في تبويب الدفع، ستختفي تلقائياً من هذه القائمة.
                     </p>
                 </div>
                 
@@ -1042,7 +946,7 @@
                         </button>
                     </div>
                     <div class="mt-8">
-                        <h3 class="font-semibold text-gray-600 mb-4 text-lg flex items-center gap-2">
+                        <h3 class="font-bold text-gray-600 mb-4 text-lg flex items-center gap-2">
                             <i class="fas fa-users text-gray-400"></i>
                             قائمة الأبناء:
                         </h3>
@@ -1060,6 +964,9 @@
                         <div class="grid grid-cols-2 gap-4">
                             <input id="subject-name" type="text" placeholder="اسم المادة" class="p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg">
                             <input id="subject-fee" type="number" placeholder="المبلغ الشهري" class="p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input id="subject-time" type="text" placeholder="الساعة (مثال: 1:00 م)" class="p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg text-right">
                         </div>
                         <div>
                             <p class="text-sm font-bold text-gray-600 mb-3 text-right">أيام الدرس:</p>
@@ -1134,6 +1041,35 @@
             "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
         ];
 
+        // دالة لتحويل الأرقام إلى عربية
+        function toArabicNumbers(num) {
+            const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+            return num.toString().replace(/\d/g, digit => arabicNumbers[digit]);
+        }
+
+        // دالة لتحويل الوقت من 24 ساعة إلى 12 ساعة
+        function convertTo12Hour(time) {
+            if (!time) return '';
+            
+            // إذا كان الوقت بالفعل بصيغة 12 ساعة (يحتوي على ص أو م)
+            if (time.includes('ص') || time.includes('م')) {
+                return time;
+            }
+            
+            // إذا كان الوقت بصيغة 24 ساعة (HH:MM)
+            const match = time.match(/^(\d{1,2}):(\d{2})$/);
+            if (!match) return time;
+            
+            let hours = parseInt(match[1]);
+            const minutes = match[2];
+            const period = hours >= 12 ? 'م' : 'ص';
+            
+            if (hours > 12) hours -= 12;
+            if (hours === 0) hours = 12;
+            
+            return `${hours}:${minutes} ${period}`;
+        }
+
         async function init() {
             renderDaySelectors();
             const authStatus = document.getElementById('auth-status');
@@ -1145,31 +1081,18 @@
             updateDashboardDayName();
             updatePaymentDayName();
             
-            // التحميل السريع مع التخزين المؤقت
-            const cachedData = localStorage.getItem('appCache');
-            if (cachedData) {
-                try {
-                    const parsed = JSON.parse(cachedData);
-                    if (parsed.timestamp && Date.now() - parsed.timestamp < 300000) { // 5 دقائق
-                        window.appState.students = parsed.students || [];
-                        window.appState.subjects = parsed.subjects || [];
-                        window.appState.attendance = parsed.attendance || [];
-                        window.appState.payments = parsed.payments || [];
-                        updateUI();
-                        document.getElementById('loading').style.display = 'none';
-                    }
-                } catch (e) {
-                    console.log('No valid cache found');
-                }
-            }
-
+            // تحديث تاريخ اليوم في الشاشة الرئيسية
+            updateTodayDate();
+            
+            // تحميل سريع بدون تأخير
+            document.getElementById('loading').style.display = 'none';
+            
             try {
                 await signInAnonymously(auth);
             } catch (error) {
                 console.error("Auth System Error:", error);
                 authStatus.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>خطأ في الاتصال بالسحابة`;
                 authStatus.className = "mt-4 bg-red-500/20 text-red-100 inline-block px-4 py-2 rounded-full text-sm";
-                document.getElementById('loading').style.display = 'none';
             }
 
             onAuthStateChanged(auth, (user) => {
@@ -1193,55 +1116,46 @@
             }, 1000);
         }
 
+        function updateTodayDate() {
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = today.toLocaleDateString('ar-EG', options);
+            const dayStr = today.toLocaleDateString('ar-EG', { weekday: 'long' });
+            
+            document.getElementById('today-date').textContent = dateStr;
+            document.getElementById('today-day').textContent = dayStr;
+        }
+
         function setupListeners() {
             if (!window.appState.user) return;
             const path = (col) => collection(db, 'artifacts', appId, 'public', 'data', col);
 
             onSnapshot(path('students'), (snap) => {
                 window.appState.students = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                cacheData();
                 updateUI();
                 checkUpcomingPayments();
-                if(window.appState.isInitializing) {
-                    document.getElementById('loading').style.display = 'none';
-                    window.appState.isInitializing = false;
-                }
             });
 
             onSnapshot(path('subjects'), (snap) => {
                 window.appState.subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                cacheData();
                 updateUI();
                 checkUpcomingPayments();
             });
 
             onSnapshot(path('attendance'), (snap) => {
                 window.appState.attendance = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                cacheData();
                 updateUI();
                 checkUpcomingPayments();
             });
 
             onSnapshot(path('payments'), (snap) => {
                 window.appState.payments = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                cacheData();
                 updateUI();
                 checkUpcomingPayments();
             });
         }
 
-        function cacheData() {
-            const cache = {
-                students: window.appState.students,
-                subjects: window.appState.subjects,
-                attendance: window.appState.attendance,
-                payments: window.appState.payments,
-                timestamp: Date.now()
-            };
-            localStorage.setItem('appCache', JSON.stringify(cache));
-        }
-
-        // وظيفة للتحقق من المواد القريبة على الدفع (6 حصص أو أكثر)
+        // وظيفة للتحقق من المواد القريبة على الدفع (7 حصص فقط)
         function checkUpcomingPayments() {
             const state = window.appState;
             const upcomingBadge = document.getElementById('upcoming-alert-badge');
@@ -1254,10 +1168,7 @@
             let paymentAlertCount = 0;
             
             // إحصائيات حسب عدد الحصص
-            let count6 = 0;
             let count7 = 0;
-            let count8 = 0;
-            let countOver = 0;
             
             state.students.forEach(student => {
                 const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
@@ -1266,7 +1177,7 @@
                     const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
                     const attendanceCount = subjectAttendance.length;
                     
-                    if (attendanceCount >= 6) { // بدءاً من 6 حصص
+                    if (attendanceCount === 7) { // 7 حصص فقط
                         const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
                         const paidPayments = subjectPayments.length;
                         const requiredPayments = Math.floor(attendanceCount / 8);
@@ -1292,13 +1203,10 @@
                         upcomingCount++;
                         
                         // تحديث الإحصائيات
-                        if (attendanceCount === 6) count6++;
-                        else if (attendanceCount === 7) count7++;
-                        else if (attendanceCount === 8) count8++;
-                        else if (attendanceCount > 8) countOver++;
+                        if (attendanceCount === 7) count7++;
                         
-                        // إذا كانت تحتاج للدفع (8 حصص أو أكثر)
-                        if (attendanceCount >= 8 && pendingPayments > 0) {
+                        // إذا كانت تحتاج للدفع (7 حصص)
+                        if (attendanceCount === 7 && pendingPayments > 0) {
                             paymentAlertSubjects.push({
                                 studentId: student.id,
                                 student: student.name,
@@ -1320,17 +1228,14 @@
             // تحديث حالة المواد القريبة
             window.appState.upcomingSubjects = upcomingSubjects;
             
-            // تحديث الإحصائيات
-            document.getElementById('count-6').textContent = count6;
-            document.getElementById('count-7').textContent = count7;
-            document.getElementById('count-8').textContent = count8;
-            document.getElementById('count-over').textContent = countOver;
-            document.getElementById('upcoming-count').textContent = upcomingCount;
+            // تحديث الإحصائيات بالأرقام العربية
+            document.getElementById('count-7').textContent = toArabicNumbers(count7);
+            document.getElementById('upcoming-count').textContent = toArabicNumbers(upcomingCount);
             
             // تحديث شارة التنبيه
             if (upcomingCount > 0) {
                 upcomingBadge.classList.remove('hidden');
-                upcomingBadge.textContent = upcomingCount;
+                upcomingBadge.textContent = toArabicNumbers(upcomingCount);
                 upcomingBadge.classList.add('shake');
             } else {
                 upcomingBadge.classList.add('hidden');
@@ -1339,7 +1244,7 @@
             // تحديث شارة الدفع
             if (paymentAlertCount > 0) {
                 paymentBadge.classList.remove('hidden');
-                paymentBadge.textContent = paymentAlertCount;
+                paymentBadge.textContent = toArabicNumbers(paymentAlertCount);
                 paymentBadge.classList.add('shake');
                 alertBanner.classList.remove('hidden');
             } else {
@@ -1350,63 +1255,6 @@
             // تحديث قائمة المواد القريبة إذا كان التبويب مفتوحاً
             if (document.getElementById('upcoming-tab') && !document.getElementById('upcoming-tab').classList.contains('hidden')) {
                 updateUpcomingSubjectsList();
-            }
-            
-            // تحديث تنبيهات الدفع
-            updatePaymentAlerts(paymentAlertSubjects);
-        }
-
-        function updatePaymentAlerts(paymentAlertSubjects) {
-            const paymentAlertsContainer = document.getElementById('payment-alerts');
-            
-            if (!paymentAlertsContainer) return;
-            
-            if (paymentAlertSubjects.length > 0) {
-                let alertsHtml = `
-                    <div class="bg-gradient-to-l from-orange-50 to-amber-50 p-4 rounded-xl border border-orange-200 mb-4">
-                        <h4 class="font-bold text-gray-800 mb-3 text-lg flex items-center gap-2">
-                            <i class="fas fa-exclamation-triangle text-orange-500"></i>
-                            مواد تحتاج للدفع (${paymentAlertSubjects.length})
-                        </h4>
-                        <div class="space-y-3">
-                `;
-                
-                paymentAlertSubjects.forEach(payment => {
-                    alertsHtml += `
-                        <div class="bg-white p-3 rounded-lg border border-orange-100">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-gray-800">${payment.subject}</span>
-                                <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">
-                                    ${payment.pendingPayments} دفعة
-                                </span>
-                            </div>
-                            <div class="text-sm text-gray-600">
-                                <div class="flex justify-between">
-                                    <span>${payment.student}</span>
-                                    <span class="font-bold text-green-700">${payment.totalDue} ج.م</span>
-                                </div>
-                                <div class="flex justify-between mt-1">
-                                    <span>${payment.sessions} حصة</span>
-                                    <span>${payment.paidPayments}/${payment.requiredPayments} مدفوعة</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                alertsHtml += `
-                        </div>
-                    </div>
-                `;
-                
-                paymentAlertsContainer.innerHTML = alertsHtml;
-            } else {
-                paymentAlertsContainer.innerHTML = `
-                    <div class="bg-gradient-to-l from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 text-center">
-                        <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
-                        <p class="text-gray-700">جميع المواد محدثة، لا توجد دفعات مستحقة حالياً</p>
-                    </div>
-                `;
             }
         }
 
@@ -1421,7 +1269,7 @@
                     <div class="empty-state">
                         <i class="fas fa-check-circle text-green-400 text-4xl mb-4"></i>
                         <h3 class="text-xl font-bold text-gray-700 mb-2">لا توجد مواد قريبة على الدفع</h3>
-                        <p class="text-gray-600">جميع المواد لديها أقل من 6 حصص مسجلة</p>
+                        <p class="text-gray-600">جميع المواد لديها أقل من <span class="arabic-numbers">٧</span> حصص مسجلة</p>
                     </div>
                 `;
                 return;
@@ -1434,12 +1282,8 @@
             
             sortedSubjects.forEach(item => {
                 const studentIcon = item.student.includes('مارسيلينو') ? '👦' : '👧';
-                const sessionClass = item.sessions === 6 ? 'session-count-6' : 
-                                   item.sessions === 7 ? 'session-count-7' : 
-                                   item.sessions === 8 ? 'session-count-8' : 
-                                   'session-count-over';
-                
-                const cardClass = item.sessions >= 8 ? 'urgent-subject' : 'near-subject';
+                const sessionClass = 'session-count-7';
+                const cardClass = 'urgent-subject';
                 
                 html += `
                     <div class="card p-5 ${cardClass}">
@@ -1454,24 +1298,24 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
-                                <span class="${sessionClass} session-count-badge">
-                                    ${item.sessions} حصة
+                                <span class="${sessionClass} session-count-badge arabic-numbers">
+                                    ${toArabicNumbers(item.sessions)} حصة
                                 </span>
-                                <span class="font-bold text-orange-700">${item.fee} ج.م</span>
+                                <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(item.fee)} ج.م</span>
                             </div>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div class="text-center p-3 bg-gray-50 rounded-xl">
-                                <div class="font-bold text-gray-800 text-lg">${item.paidPayments}/${item.requiredPayments}</div>
+                                <div class="font-bold text-gray-800 text-lg arabic-numbers">${toArabicNumbers(item.paidPayments)}/${toArabicNumbers(item.requiredPayments)}</div>
                                 <div class="text-sm text-gray-600">الدفعات</div>
                             </div>
                             <div class="text-center p-3 bg-blue-50 rounded-xl">
-                                <div class="font-bold text-blue-700 text-lg">${item.sessionsSincePayment}</div>
+                                <div class="font-bold text-blue-700 text-lg arabic-numbers">${toArabicNumbers(item.sessionsSincePayment)}</div>
                                 <div class="text-sm text-gray-600">منذ آخر دفعة</div>
                             </div>
                             <div class="text-center p-3 ${item.sessionsToNextPayment <= 1 ? 'bg-red-50' : 'bg-green-50'} rounded-xl">
-                                <div class="font-bold ${item.sessionsToNextPayment <= 1 ? 'text-red-700' : 'text-green-700'} text-lg">${item.sessionsToNextPayment}</div>
+                                <div class="font-bold ${item.sessionsToNextPayment <= 1 ? 'text-red-700' : 'text-green-700'} text-lg arabic-numbers">${toArabicNumbers(item.sessionsToNextPayment)}</div>
                                 <div class="text-sm text-gray-600">حصص للدفعة التالية</div>
                             </div>
                         </div>
@@ -1480,7 +1324,7 @@
                             <div class="bg-gradient-to-l from-orange-50 to-red-50 p-3 rounded-xl border border-orange-200 mb-3">
                                 <div class="flex justify-between items-center">
                                     <span class="font-bold text-orange-700">مطلوب الدفع:</span>
-                                    <span class="font-bold text-orange-700">${item.pendingPayments} × ${item.fee} ج.م = ${item.totalDue} ج.م</span>
+                                    <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(item.pendingPayments)} × ${toArabicNumbers(item.fee)} ج.م = ${toArabicNumbers(item.totalDue)} ج.م</span>
                                 </div>
                             </div>
                         ` : `
@@ -1542,7 +1386,7 @@
                         const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
                         const attendanceCount = subjectAttendance.length;
                         
-                        if (attendanceCount < 8) return;
+                        if (attendanceCount < 7) return;
                         
                         const requiredPayments = Math.floor(attendanceCount / 8);
                         const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
@@ -1571,8 +1415,8 @@
                 return;
             }
             
-            document.getElementById('alert-title').textContent = `تنبيه: ${alerts.length} مواد تحتاج للدفع`;
-            document.getElementById('alert-message').textContent = `يوجد ${alerts.length} مادة وصلت إلى 8 حصص أو أكثر`;
+            document.getElementById('alert-title').textContent = `تنبيه: ${toArabicNumbers(alerts.length)} مواد تحتاج للدفع`;
+            document.getElementById('alert-message').textContent = `يوجد ${toArabicNumbers(alerts.length)} مادة وصلت إلى <span class="arabic-numbers">٧</span> حصص أو أكثر`;
             
             const alertContent = document.getElementById('alert-content');
             alertContent.innerHTML = alerts.map(alert => {
@@ -1588,25 +1432,25 @@
                                     <p class="text-sm text-gray-600">${alert.student}</p>
                                 </div>
                             </div>
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold">
-                                ${alert.pendingPayments} دفعة
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
+                                ${toArabicNumbers(alert.pendingPayments)} دفعة
                             </span>
                         </div>
                         <div class="text-sm text-gray-600 space-y-1">
                             <div class="flex justify-between">
                                 <span>إجمالي الحصص:</span>
-                                <span class="font-bold">${alert.sessions}</span>
+                                <span class="font-bold arabic-numbers">${toArabicNumbers(alert.sessions)}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>الدفعات:</span>
-                                <span class="font-bold">${alert.paidPayments}/${alert.requiredPayments} مدفوعة</span>
+                                <span class="font-bold arabic-numbers">${toArabicNumbers(alert.paidPayments)}/${toArabicNumbers(alert.requiredPayments)} مدفوعة</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>المبلغ المستحق:</span>
-                                <span class="font-bold text-green-700">${alert.totalDue} ج.م</span>
+                                <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(alert.totalDue)} ج.م</span>
                             </div>
                             <div class="mt-2 p-2 bg-orange-50 rounded-lg">
-                                <span class="font-bold text-orange-600">مطلوب الدفع: ${alert.pendingPayments} × ${alert.fee} ج.م = ${alert.totalDue} ج.م</span>
+                                <span class="font-bold text-orange-600 arabic-numbers">مطلوب الدفع: ${toArabicNumbers(alert.pendingPayments)} × ${toArabicNumbers(alert.fee)} ج.م = ${toArabicNumbers(alert.totalDue)} ج.م</span>
                             </div>
                         </div>
                     </div>
@@ -1657,25 +1501,25 @@
                             <div class="flex justify-between items-center mb-2">
                                 <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-sm ${pendingPayments > 0 ? 'text-orange-600' : 'text-green-600'} font-bold">
-                                        ${paidPayments}/${requiredPayments} دفعة
+                                    <span class="text-sm ${pendingPayments > 0 ? 'text-orange-600' : 'text-green-600'} font-bold arabic-numbers">
+                                        ${toArabicNumbers(paidPayments)}/${toArabicNumbers(requiredPayments)} دفعة
                                     </span>
-                                    <span class="font-bold text-green-700">${totalPaid} ج.م</span>
+                                    <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(totalPaid)} ج.م</span>
                                 </div>
                             </div>
                             
                             <div class="text-sm text-gray-600 mb-2">
                                 <div class="flex justify-between">
                                     <span>إجمالي الحصص:</span>
-                                    <span class="font-bold">${attendanceCount}</span>
+                                    <span class="font-bold arabic-numbers">${toArabicNumbers(attendanceCount)}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span>المبلغ الشهري:</span>
-                                    <span>${subject.fee} ج.م</span>
+                                    <span class="arabic-numbers">${toArabicNumbers(subject.fee)} ج.م</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span>الحصص للدفعة:</span>
-                                    <span>8 حصص</span>
+                                    <span class="arabic-numbers">٨</span> حصص
                                 </div>
                             </div>
                             
@@ -1683,34 +1527,34 @@
                                 <div class="bg-orange-50 p-2 rounded-lg mb-2">
                                     <div class="flex justify-between items-center">
                                         <span class="font-bold text-orange-700">مطلوب الدفع:</span>
-                                        <span class="font-bold text-orange-700">${pendingPayments} × ${subject.fee} ج.م = ${pendingPayments * subject.fee} ج.م</span>
+                                        <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(pendingPayments)} × ${toArabicNumbers(subject.fee)} ج.م = ${toArabicNumbers(pendingPayments * subject.fee)} ج.م</span>
                                     </div>
                                 </div>
                             ` : ''}
                             
                             ${subjectPayments.length > 0 ? `
                                 <div class="mt-2">
-                                    <h5 class="font-medium text-gray-700 mb-1">سجل الدفعات:</h5>
+                                    <h5 class="font-bold text-gray-700 mb-1">سجل الدفعات:</h5>
                                     <div class="space-y-2">
                                         ${subjectPayments.sort((a, b) => new Date(b.date) - new Date(a.date)).map((payment, index) => `
                                             <div class="payment-details-item bg-gray-50 p-3 rounded-lg">
                                                 <div class="flex justify-between items-center mb-1">
-                                                    <span class="font-medium text-gray-700">الدفعة ${index + 1}</span>
-                                                    <span class="font-bold text-green-700">${payment.amount} ج.م</span>
+                                                    <span class="font-bold text-gray-700">الدفعة ${toArabicNumbers(index + 1)}</span>
+                                                    <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(payment.amount)} ج.م</span>
                                                 </div>
                                                 <div class="text-sm text-gray-600 grid grid-cols-2 gap-2">
                                                     <div>
-                                                        <span class="font-medium">التاريخ:</span>
+                                                        <span class="font-bold">التاريخ:</span>
                                                         <span> ${payment.date}</span>
                                                     </div>
                                                     <div>
-                                                        <span class="font-medium">اليوم:</span>
+                                                        <span class="font-bold">اليوم:</span>
                                                         <span> ${payment.day}</span>
                                                     </div>
                                                 </div>
                                                 ${payment.notes ? `
                                                     <div class="mt-1 text-sm text-gray-500">
-                                                        <span class="font-medium">ملاحظات:</span>
+                                                        <span class="font-bold">ملاحظات:</span>
                                                         <span> ${payment.notes}</span>
                                                     </div>
                                                 ` : ''}
@@ -1760,14 +1604,19 @@
             const studentId = document.getElementById('parent-student').value;
             const name = document.getElementById('subject-name').value.trim();
             const fee = document.getElementById('subject-fee').value;
+            const time = document.getElementById('subject-time').value.trim();
             const selectedDays = Array.from(document.querySelectorAll('.day-checkbox:checked')).map(cb => cb.value);
             if (!studentId || !name || !fee || selectedDays.length === 0) return showToast("يرجى إكمال كافة البيانات");
+            
+            const formattedTime = convertTo12Hour(time);
+            
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'subjects'), {
-                    studentId, name, fee: parseFloat(fee), days: selectedDays
+                    studentId, name, fee: parseFloat(fee), days: selectedDays, time: formattedTime
                 });
                 document.getElementById('subject-name').value = '';
                 document.getElementById('subject-fee').value = '';
+                document.getElementById('subject-time').value = '';
                 document.querySelectorAll('.day-checkbox').forEach(cb => cb.checked = false);
                 showToast("تم حفظ المادة بنجاح");
             } catch (e) { showToast("خطأ في الحفظ: " + e.code); }
@@ -1928,6 +1777,7 @@
             window.appState.editingSubjectId = subjectId;
             document.getElementById('edit-subject-name').value = subject.name;
             document.getElementById('edit-subject-fee').value = subject.fee;
+            document.getElementById('edit-subject-time').value = subject.time || '';
             
             const container = document.getElementById('edit-days-selector');
             container.innerHTML = '';
@@ -1952,13 +1802,16 @@
             const subjectId = window.appState.editingSubjectId;
             const name = document.getElementById('edit-subject-name').value.trim();
             const fee = document.getElementById('edit-subject-fee').value;
+            const time = document.getElementById('edit-subject-time').value.trim();
             const selectedDays = Array.from(document.querySelectorAll('#edit-days-selector .day-checkbox:checked')).map(cb => cb.value);
             
             if (!name || !fee || selectedDays.length === 0) return showToast("يرجى إكمال كافة البيانات");
             
+            const formattedTime = convertTo12Hour(time);
+            
             try {
                 await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'subjects', subjectId), {
-                    name, fee: parseFloat(fee), days: selectedDays
+                    name, fee: parseFloat(fee), days: selectedDays, time: formattedTime
                 });
                 showToast("تم تحديث المادة بنجاح");
                 closeEditModal();
@@ -1995,7 +1848,7 @@
             window.appState.subjects.filter(s => s.studentId === studentId).forEach(s => {
                 const opt = document.createElement('option');
                 opt.value = s.id;
-                opt.textContent = `${s.name} (${s.fee} ج.م)`;
+                opt.textContent = `${s.name} (${toArabicNumbers(s.fee)} ج.م)`;
                 select.appendChild(opt);
             });
         };
@@ -2008,37 +1861,6 @@
             if (subject) {
                 document.getElementById('payment-amount').value = subject.fee;
             }
-        };
-
-        window.updateFilterSubjects = () => {
-            const studentId = document.getElementById('filter-payment-student').value;
-            const select = document.getElementById('filter-payment-subject');
-            select.innerHTML = '<option value="">جميع المواد</option>';
-            
-            if (studentId) {
-                window.appState.subjects
-                    .filter(s => s.studentId === studentId)
-                    .forEach(s => {
-                        const opt = document.createElement('option');
-                        opt.value = s.id;
-                        opt.textContent = s.name;
-                        select.appendChild(opt);
-                    });
-            } else {
-                window.appState.subjects.forEach(s => {
-                    const student = window.appState.students.find(st => st.id === s.studentId);
-                    const opt = document.createElement('option');
-                    opt.value = s.id;
-                    opt.textContent = `${s.name} (${student ? student.name : 'غير معروف'})`;
-                    select.appendChild(opt);
-                });
-            }
-        };
-
-        window.resetPaymentFilters = () => {
-            document.getElementById('filter-payment-student').value = '';
-            document.getElementById('filter-payment-subject').value = '';
-            updatePaymentHistory();
         };
 
         window.savePayment = async () => {
@@ -2109,7 +1931,6 @@
                 updateDashboard();
             } else if (tabName === 'payment') {
                 updatePaymentSummary();
-                updatePaymentHistory();
             } else if (tabName === 'reports') {
                 updateReports();
             } else if (tabName === 'upcoming') {
@@ -2145,7 +1966,7 @@
                 container.innerHTML += `
                     <div class="relative">
                         <input type="checkbox" id="day-${day}" value="${day}" class="hidden day-checkbox">
-                        <label for="day-${day}" class="px-4 py-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-all block font-medium">
+                        <label for="day-${day}" class="px-4 py-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-all block font-bold">
                             ${day}
                         </label>
                     </div>
@@ -2188,8 +2009,8 @@
             
             body.innerHTML = sessions.map((s, index) => `
                 <tr class="border-b text-sm hover:bg-indigo-50 transition">
-                    <td class="py-3 text-right font-medium">${s.date}</td>
-                    <td class="py-3 text-center font-bold ${s.status === 'حضور' ? 'text-green-700' : 'text-red-700'}">${index + 1}</td>
+                    <td class="py-3 text-right font-bold">${s.date}</td>
+                    <td class="py-3 text-center font-bold ${s.status === 'حضور' ? 'text-green-700' : 'text-red-700'} arabic-numbers">${toArabicNumbers(index + 1)}</td>
                     <td class="py-3 text-center text-gray-600">${s.day}</td>
                     <td class="py-3 text-center">
                         <span class="px-2 py-1 rounded-full text-xs font-bold ${s.status === 'حضور' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
@@ -2233,16 +2054,16 @@
                         totalSessions += attendanceCount;
                         totalAllSessions += attendanceCount;
                         
-                        report += `  - ${subject.name}: ${attendanceCount} حصة (${presenceCount} حضور، ${absenceCount} غياب)\n`;
+                        report += `  - ${subject.name}: ${toArabicNumbers(attendanceCount)} حصة (${toArabicNumbers(presenceCount)} حضور، ${toArabicNumbers(absenceCount)} غياب)\n`;
                     });
                     
-                    report += `  *الإجمالي:* ${totalSessions} حصة\n\n`;
+                    report += `  *الإجمالي:* ${toArabicNumbers(totalSessions)} حصة\n\n`;
                 }
             });
             
             report += `────────────────\n`;
             report += `*المجموع الكلي:*\n`;
-            report += `• إجمالي الحصص: ${totalAllSessions}\n\n`;
+            report += `• إجمالي الحصص: ${toArabicNumbers(totalAllSessions)}\n\n`;
             report += `────────────────\n`;
             report += `نظام متابعة الدروس\n`;
             report += `تصميم: المهندس بولس سمير`;
@@ -2326,96 +2147,108 @@
                 let studentTotal = studentPayments.reduce((sum, p) => sum + p.amount, 0);
                 const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
                 const studentColor = student.name.includes('مارسيلينو') ? 'student-icon-boy' : 'student-icon-girl';
+                const isExpanded = state.expandedSections[`payment_${student.id}`] || false;
                 
                 html += `
-                    <div class="card p-5 border-r-4 ${student.name.includes('مارسيلينو') ? 'border-blue-500' : 'border-purple-500'}">
-                        <div class="flex items-center justify-between mb-4">
+                    <div class="card p-5 border-r-4 ${student.name.includes('مارسيلينو') ? 'border-blue-500' : 'border-purple-500'} mb-6">
+                        <div class="flex items-center justify-between mb-6 cursor-pointer" onclick="toggleExpand('payment_${student.id}')">
                             <div class="flex items-center gap-3">
                                 <div class="w-12 h-12 ${studentColor} rounded-full flex items-center justify-center text-white text-2xl">
                                     ${studentIcon}
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                    <p class="text-sm text-gray-600">${studentSubjects.length} مادة</p>
+                                    <p class="text-sm text-gray-600">${toArabicNumbers(studentSubjects.length)} مادة</p>
                                 </div>
                             </div>
-                            <button onclick="showPaymentDetails('${student.id}')" class="flex items-center gap-2 text-2xl font-bold text-purple-700 hover:text-purple-900 transition-colors">
-                                <span>${studentTotal} ج.م</span>
-                                <i class="fas fa-chevron-down text-lg"></i>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl font-bold text-purple-700 arabic-numbers">${toArabicNumbers(studentTotal)}</span>
+                                <span class="text-lg font-bold text-purple-700">ج.م</span>
+                                <button class="expand-btn text-purple-600 hover:text-purple-800 text-xl transition-transform ${isExpanded ? 'expanded' : ''}">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
                         </div>
                         
-                        <div class="space-y-3">
-                            ${studentSubjects.map(subject => {
-                                const subjectPayments = studentPayments.filter(p => p.subjectId === subject.id);
-                                const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
-                                const attendanceCount = subjectAttendance.length;
-                                const requiredPayments = Math.floor(attendanceCount / 8);
-                                const paidPayments = subjectPayments.length;
-                                const pendingPayments = Math.max(0, requiredPayments - paidPayments);
-                                const subjectTotal = subjectPayments.reduce((sum, p) => sum + p.amount, 0);
-                                const isExpanded = state.expandedSubjects[subject.id] || false;
-                                
-                                return `
-                                    <div class="border border-gray-200 rounded-xl overflow-hidden">
-                                        <div class="flex items-center justify-between p-3 bg-gray-50">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                                                    ${subject.name.charAt(0)}
-                                                </div>
-                                                <div>
-                                                    <h4 class="font-bold text-gray-800">${subject.name}</h4>
-                                                    <p class="text-xs text-gray-500">${attendanceCount} حصة</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center gap-3">
-                                                ${pendingPayments > 0 ? `
-                                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">
-                                                        ${pendingPayments} دفعة
-                                                    </span>
-                                                ` : ''}
-                                                <span class="font-bold text-green-700">${subjectTotal} ج.م</span>
-                                                <button onclick="toggleSubjectDetails('${subject.id}')" class="expand-btn text-gray-500 ${isExpanded ? 'expanded' : ''}">
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="subject-details ${isExpanded ? 'expanded' : ''}">
-                                            <div class="p-3 bg-white border-t border-gray-100">
-                                                <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
-                                                    <div class="text-center p-2 bg-blue-50 rounded-lg">
-                                                        <div class="font-bold text-blue-700">${attendanceCount}</div>
-                                                        <div class="text-xs text-gray-600">إجمالي الحصص</div>
+                        <div class="expandable-content ${isExpanded ? 'expanded' : 'collapsed'}">
+                            <div class="space-y-4">
+                                ${studentSubjects.map(subject => {
+                                    const subjectPayments = studentPayments.filter(p => p.subjectId === subject.id);
+                                    const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
+                                    const attendanceCount = subjectAttendance.length;
+                                    const requiredPayments = Math.floor(attendanceCount / 8);
+                                    const paidPayments = subjectPayments.length;
+                                    const pendingPayments = Math.max(0, requiredPayments - paidPayments);
+                                    const subjectTotal = subjectPayments.reduce((sum, p) => sum + p.amount, 0);
+                                    const isSubjectExpanded = state.expandedSubjects[subject.id] || false;
+                                    
+                                    return `
+                                        <div class="border border-gray-200 rounded-xl overflow-hidden">
+                                            <div class="flex items-center justify-between p-4 bg-gray-50">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
+                                                        ${subject.name.charAt(0)}
                                                     </div>
-                                                    <div class="text-center p-2 ${pendingPayments > 0 ? 'bg-red-50' : 'bg-green-50'} rounded-lg">
-                                                        <div class="font-bold ${pendingPayments > 0 ? 'text-red-700' : 'text-green-700'}">${paidPayments}/${requiredPayments}</div>
-                                                        <div class="text-xs text-gray-600">الدفعات</div>
+                                                    <div>
+                                                        <h4 class="font-bold text-gray-800">${subject.name}</h4>
+                                                        <p class="text-xs text-gray-500">${toArabicNumbers(attendanceCount)} حصة</p>
                                                     </div>
                                                 </div>
-                                                
-                                                ${pendingPayments > 0 ? `
-                                                    <div class="bg-orange-50 p-2 rounded-lg mb-2">
-                                                        <div class="flex justify-between items-center">
-                                                            <span class="font-bold text-orange-700">مطلوب الدفع:</span>
-                                                            <span class="font-bold text-orange-700">${pendingPayments} × ${subject.fee} ج.م = ${pendingPayments * subject.fee} ج.م</span>
+                                                <div class="flex items-center gap-3">
+                                                    ${pendingPayments > 0 ? `
+                                                        <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold arabic-numbers">
+                                                            ${toArabicNumbers(pendingPayments)} دفعة
+                                                        </span>
+                                                    ` : ''}
+                                                    <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(subjectTotal)} ج.م</span>
+                                                    <button onclick="toggleSubjectDetails('${subject.id}')" class="expand-btn text-gray-500 ${isSubjectExpanded ? 'expanded' : ''}">
+                                                        <i class="fas fa-chevron-down"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="subject-details ${isSubjectExpanded ? 'expanded' : ''}">
+                                                <div class="p-4 bg-white border-t border-gray-100">
+                                                    <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
+                                                        <div class="text-center p-2 bg-blue-50 rounded-lg">
+                                                            <div class="font-bold text-blue-700 arabic-numbers">${toArabicNumbers(attendanceCount)}</div>
+                                                            <div class="text-xs text-gray-600">إجمالي الحصص</div>
+                                                        </div>
+                                                        <div class="text-center p-2 ${pendingPayments > 0 ? 'bg-red-50' : 'bg-green-50'} rounded-lg">
+                                                            <div class="font-bold ${pendingPayments > 0 ? 'text-red-700' : 'text-green-700'} arabic-numbers">${toArabicNumbers(paidPayments)}/${toArabicNumbers(requiredPayments)}</div>
+                                                            <div class="text-xs text-gray-600">الدفعات</div>
                                                         </div>
                                                     </div>
-                                                ` : `
-                                                    <div class="bg-green-50 p-2 rounded-lg mb-2 text-center">
-                                                        <span class="font-bold text-green-700">✓ جميع الدفعات مدفوعة</span>
+                                                    
+                                                    ${pendingPayments > 0 ? `
+                                                        <div class="bg-orange-50 p-3 rounded-lg mb-3">
+                                                            <div class="flex justify-between items-center">
+                                                                <span class="font-bold text-orange-700">مطلوب الدفع:</span>
+                                                                <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(pendingPayments)} × ${toArabicNumbers(subject.fee)} ج.م = ${toArabicNumbers(pendingPayments * subject.fee)} ج.م</span>
+                                                            </div>
+                                                        </div>
+                                                    ` : `
+                                                        <div class="bg-green-50 p-3 rounded-lg mb-3 text-center">
+                                                            <span class="font-bold text-green-700">✓ جميع الدفعات مدفوعة</span>
+                                                        </div>
+                                                    `}
+                                                    
+                                                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                                        <div>
+                                                            <span class="font-bold">المبلغ الشهري:</span>
+                                                            <span class="arabic-numbers"> ${toArabicNumbers(subject.fee)} ج.م</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-bold">أيام الدراسة:</span>
+                                                            <span> ${subject.days.join('، ')}</span>
+                                                        </div>
                                                     </div>
-                                                `}
-                                                
-                                                <div class="flex justify-between text-sm text-gray-600">
-                                                    <span>المبلغ الشهري:</span>
-                                                    <span class="font-bold">${subject.fee} ج.م</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                `;
-                            }).join('')}
+                                    `;
+                                }).join('')}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2428,78 +2261,15 @@
             container.innerHTML = html;
         }
 
-        window.updatePaymentHistory = () => {
-            const state = window.appState;
-            const container = document.getElementById('payment-history');
-            const filterStudent = document.getElementById('filter-payment-student').value;
-            const filterSubject = document.getElementById('filter-payment-subject').value;
-            
-            if (!container) return;
-            
-            let filteredPayments = [...state.payments];
-            
-            if (filterStudent) {
-                filteredPayments = filteredPayments.filter(p => p.studentId === filterStudent);
-            }
-            
-            if (filterSubject) {
-                filteredPayments = filteredPayments.filter(p => p.subjectId === filterSubject);
-            }
-            
-            filteredPayments.sort((a, b) => b.timestamp - a.timestamp);
-            
-            let html = '';
-            
-            if (filteredPayments.length === 0) {
-                html = '<div class="empty-state"><i class="fas fa-receipt"></i><p>لا توجد مدفوعات مسجلة</p></div>';
-            } else {
-                html = filteredPayments.map(payment => {
-                    const student = state.students.find(s => s.id === payment.studentId);
-                    const subject = state.subjects.find(s => s.id === payment.subjectId);
-                    
-                    return `
-                        <div class="payment-history-item p-4 rounded-xl">
-                            <div class="flex items-center justify-between mb-2">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-500 rounded-lg flex items-center justify-center text-white font-bold">
-                                        <i class="fas fa-money-bill-wave"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-gray-800">${subject ? subject.name : 'مادة محذوفة'}</h4>
-                                        <p class="text-sm text-gray-500">${student ? student.name : 'غير معروف'}</p>
-                                    </div>
-                                </div>
-                                <span class="font-bold text-green-700 text-lg">${payment.amount} ج.م</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-600">
-                                <div>
-                                    <span>${payment.date}</span>
-                                    <span class="mx-2">•</span>
-                                    <span>${payment.day}</span>
-                                </div>
-                                <button onclick="deletePayment('${payment.id}')" class="text-red-400 hover:text-red-600 font-medium">
-                                    <i class="fas fa-trash ml-1"></i>حذف
-                                </button>
-                            </div>
-                            ${payment.notes ? `<div class="mt-2 text-sm text-gray-700 bg-gray-50 p-2 rounded-lg">${payment.notes}</div>` : ''}
-                        </div>
-                    `;
-                }).join('');
-            }
-            
-            container.innerHTML = html;
-        }
-
         window.updateUI = () => {
             const state = window.appState;
 
             const pSt = document.getElementById('parent-student');
             const dSt = document.getElementById('dashboard-att-student');
             const paySt = document.getElementById('payment-student');
-            const filterSt = document.getElementById('filter-payment-student');
             const reportSt = document.getElementById('report-student-filter');
             
-            [pSt, dSt, paySt, filterSt, reportSt].forEach(s => {
+            [pSt, dSt, paySt, reportSt].forEach(s => {
                 if (!s) return;
                 const cur = s.value;
                 s.innerHTML = '<option value="">-- اختر الابن --</option>';
@@ -2510,8 +2280,6 @@
                 });
                 s.value = cur;
             });
-
-            updateFilterSubjects();
 
             const sl = document.getElementById('students-list');
             if (sl) sl.innerHTML = state.students.map(s => `
@@ -2524,11 +2292,10 @@
             `).join('');
 
             updateDashboard();
-            updateRecentLogs();
+            updateRecentAttendance();
             updateExpenseReport();
             updateSchedule();
             updatePaymentSummary();
-            updatePaymentHistory();
             updateReportFilters();
             checkUpcomingPayments();
         };
@@ -2536,7 +2303,6 @@
         function updateDashboard() {
             updateTodayOverview();
             updateRecentAttendance();
-            updateRecentPayments();
         }
 
         function updateTodayOverview() {
@@ -2560,8 +2326,8 @@
                     <div class="dashboard-card">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold">
-                                ${todaySubjects.length} مادة اليوم
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
+                                ${toArabicNumbers(todaySubjects.length)} مادة اليوم
                             </span>
                         </div>
                         
@@ -2571,10 +2337,12 @@
                                     a.subjectId === subject.id && a.date === today
                                 );
                                 
+                                const timeDisplay = subject.time ? ` <span class="text-sm text-gray-500">(${subject.time})</span>` : '';
+                                
                                 return `
                                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                                         <div>
-                                            <h4 class="font-bold text-gray-800">${subject.name}</h4>
+                                            <h4 class="font-bold text-gray-800">${subject.name}${timeDisplay}</h4>
                                             <p class="text-sm text-gray-500">${subject.days.join('، ')}</p>
                                         </div>
                                         <div>
@@ -2636,112 +2404,27 @@
             
             if (!container) return;
             
-            const recentAttendance = [...state.attendance]
-                .sort((a, b) => b.timestamp - a.timestamp)
-                .slice(0, 10);
-            
-            let html = '';
-            
-            if (recentAttendance.length === 0) {
-                html = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد تسجيلات حديثة</p></div>';
-            } else {
-                html = recentAttendance.map(record => {
-                    const student = state.students.find(s => s.id === record.studentId);
-                    const subject = state.subjects.find(s => s.id === record.subjectId);
-                    
-                    return `
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full flex items-center justify-center ${record.status === 'حضور' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
-                                    <i class="fas ${record.status === 'حضور' ? 'fa-check' : 'fa-times'}"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">${subject ? subject.name : 'مادة محذوفة'}</h4>
-                                    <p class="text-sm text-gray-500">${student ? student.name : 'غير معروف'}</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-medium text-gray-800">${record.date}</div>
-                                <div class="text-sm text-gray-500">${record.day}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-            
-            container.innerHTML = html;
-        }
-
-        function updateRecentPayments() {
-            const state = window.appState;
-            const container = document.getElementById('recent-payments');
-            
-            if (!container) return;
-            
-            const recentPayments = [...state.payments]
-                .sort((a, b) => b.timestamp - a.timestamp)
-                .slice(0, 10);
-            
-            let html = '';
-            
-            if (recentPayments.length === 0) {
-                html = '<div class="empty-state"><i class="fas fa-receipt"></i><p>لا توجد مدفوعات حديثة</p></div>';
-            } else {
-                html = recentPayments.map(payment => {
-                    const student = state.students.find(s => s.id === payment.studentId);
-                    const subject = state.subjects.find(s => s.id === payment.subjectId);
-                    
-                    return `
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-500 rounded-lg flex items-center justify-center text-white">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">${subject ? subject.name : 'مادة محذوفة'}</h4>
-                                    <p class="text-sm text-gray-500">${student ? student.name : 'غير معروف'}</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div class="font-bold text-green-700 text-lg">${payment.amount} ج.م</div>
-                                <div class="text-sm text-gray-500">${payment.date}</div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-            
-            container.innerHTML = html;
-        }
-
-        function updateRecentLogs() {
-            const state = window.appState;
-            const container = document.getElementById('recent-logs-by-student');
-            
-            if (!container) return;
-            
             let html = '';
             
             state.students.forEach(student => {
                 const studentLogs = [...state.attendance]
                     .filter(a => a.studentId === student.id)
-                    .sort((a, b) => b.timestamp - a.timestamp)
-                    .slice(0, 10);
+                    .sort((a, b) => b.timestamp - a.timestamp);
                 
                 if (studentLogs.length === 0) return;
                 
-                const isExpanded = state.expandedSections[`logs_${student.id}`] || false;
+                const isExpanded = state.expandedSections[`attendance_${student.id}`] || false;
                 const studentClass = student.name.includes('مارسيلينو') ? 'student-card-marcelino' : 'student-card-maroseka';
                 const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
                 
                 html += `
                     <div class="${studentClass} p-5 rounded-2xl shadow-sm">
-                        <div class="flex items-center justify-between mb-4 cursor-pointer" onclick="toggleExpand('logs_${student.id}')">
+                        <div class="flex items-center justify-between mb-4 cursor-pointer" onclick="toggleExpand('attendance_${student.id}')">
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl">${studentIcon}</span>
                                 <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-bold">
-                                    ${studentLogs.length} تسجيل
+                                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
+                                    ${toArabicNumbers(studentLogs.length)} تسجيل
                                 </span>
                             </div>
                             <button class="text-indigo-600 hover:text-indigo-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
@@ -2768,10 +2451,10 @@
                                                 </div>
                                             </div>
                                             <div class="flex gap-2">
-                                                <button onclick="editAttendance('${log.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                                                <button onclick="editAttendance('${log.id}')" class="text-indigo-600 hover:text-indigo-800 font-bold text-sm">
                                                     <i class="fas fa-edit ml-1"></i>تعديل
                                                 </button>
-                                                <button onclick="deleteAttendance('${log.id}')" class="text-red-500 hover:text-red-700 font-medium text-sm">
+                                                <button onclick="deleteAttendance('${log.id}')" class="text-red-500 hover:text-red-700 font-bold text-sm">
                                                     <i class="fas fa-trash ml-1"></i>حذف
                                                 </button>
                                             </div>
@@ -2785,7 +2468,7 @@
             });
             
             if (html === '') {
-                html = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد تسجيلات حديثة</p></div>';
+                html = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد تسجيلات</p></div>';
             }
             
             container.innerHTML = html;
@@ -2861,8 +2544,8 @@
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl">${studentIcon}</span>
                                 <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-bold">
-                                    ${filteredSubjects.length} مادة
+                                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
+                                    ${toArabicNumbers(filteredSubjects.length)} مادة
                                 </span>
                             </div>
                             <button class="text-emerald-600 hover:text-emerald-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
@@ -2895,24 +2578,24 @@
                                                     <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
                                                 </div>
                                                 <div class="flex items-center gap-4">
-                                                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold">
-                                                        ${subjectAttendance.length} حصة
+                                                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
+                                                        ${toArabicNumbers(subjectAttendance.length)} حصة
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="mb-2">
                                                 <div class="flex gap-4 text-sm text-gray-600">
-                                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded">${presenceCount} حضور</span>
-                                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded">${absenceCount} غياب</span>
+                                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded arabic-numbers">${toArabicNumbers(presenceCount)} حضور</span>
+                                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded arabic-numbers">${toArabicNumbers(absenceCount)} غياب</span>
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-between text-sm text-gray-600">
                                                 <span>أيام الدراسة: ${subject.days.join('، ')}</span>
                                                 <div class="flex gap-2">
-                                                    <button onclick="showSessionDetails('${subject.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                                                    <button onclick="showSessionDetails('${subject.id}')" class="text-indigo-600 hover:text-indigo-800 font-bold">
                                                         <i class="fas fa-eye ml-1"></i>عرض الحصص
                                                     </button>
-                                                    <button onclick="resetSubject('${subject.id}')" class="text-orange-600 hover:text-orange-800 font-medium">
+                                                    <button onclick="resetSubject('${subject.id}')" class="text-orange-600 hover:text-orange-800 font-bold">
                                                         <i class="fas fa-redo ml-1"></i>تصفير
                                                     </button>
                                                 </div>
@@ -2924,8 +2607,8 @@
                                 <div class="bg-gradient-to-l from-emerald-50 to-green-50 p-4 rounded-xl border border-emerald-200 flex items-center justify-between mt-4">
                                     <div class="font-bold text-gray-800 text-lg">الإجمالي</div>
                                     <div class="flex items-center gap-6">
-                                        <span class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold">
-                                            ${totalSessions} حصة
+                                        <span class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold arabic-numbers">
+                                            ${toArabicNumbers(totalSessions)} حصة
                                         </span>
                                     </div>
                                 </div>
@@ -2969,8 +2652,8 @@
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl">${studentIcon}</span>
                                 <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-bold">
-                                    ${studentSubjects.length} مادة
+                                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
+                                    ${toArabicNumbers(studentSubjects.length)} مادة
                                 </span>
                             </div>
                             <button class="text-amber-600 hover:text-amber-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
@@ -2989,7 +2672,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
-                                                    <p class="text-sm text-gray-500">${subject.fee} ج.م شهرياً</p>
+                                                    <p class="text-sm text-gray-500">${toArabicNumbers(subject.fee)} ج.م شهرياً ${subject.time ? `- ${subject.time}` : ''}</p>
                                                 </div>
                                             </div>
                                             <div class="edit-btn">
@@ -3003,7 +2686,7 @@
                                             <label class="text-sm font-bold text-gray-600 block text-right mb-2">أيام الدراسة:</label>
                                             <div class="flex flex-wrap gap-2">
                                                 ${WEEKDAYS.map(day => `
-                                                    <span class="px-3 py-1.5 rounded-lg text-sm font-medium ${subject.days.includes(day) ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-gray-100 text-gray-500'}">
+                                                    <span class="px-3 py-1.5 rounded-lg text-sm font-bold ${subject.days.includes(day) ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-gray-100 text-gray-500'}">
                                                         ${day}
                                                     </span>
                                                 `).join('')}
@@ -3015,7 +2698,7 @@
                                                 آخر تحديث: ${new Date().toLocaleDateString('ar-EG')}
                                             </span>
                                             <div class="flex gap-2">
-                                                <button onclick="deleteSubject('${subject.id}')" class="text-red-500 hover:text-red-700 font-medium text-sm">
+                                                <button onclick="deleteSubject('${subject.id}')" class="text-red-500 hover:text-red-700 font-bold text-sm">
                                                     <i class="fas fa-trash ml-1"></i>حذف
                                                 </button>
                                             </div>
@@ -3034,43 +2717,6 @@
             
             container.innerHTML = html;
         }
-
-        window.openQuickAddModal = () => {
-            document.getElementById('quick-add-modal').classList.remove('hidden');
-        };
-
-        window.closeQuickAddModal = () => {
-            document.getElementById('quick-add-modal').classList.add('hidden');
-        };
-
-        window.openQuickAddStudent = () => {
-            closeQuickAddModal();
-            switchTab('students');
-            setTimeout(() => {
-                document.getElementById('student-name').focus();
-            }, 100);
-        };
-
-        window.openQuickAddSubject = () => {
-            closeQuickAddModal();
-            switchTab('students');
-            setTimeout(() => {
-                document.getElementById('subject-name').focus();
-            }, 100);
-        };
-
-        window.openQuickAttendance = () => {
-            closeQuickAddModal();
-            switchTab('quick');
-            setTimeout(() => {
-                document.getElementById('dashboard-att-student').focus();
-            }, 100);
-        };
-
-        window.openQuickPayment = () => {
-            closeQuickAddModal();
-            openPaymentModal();
-        };
 
         window.onload = init;
     </script>
