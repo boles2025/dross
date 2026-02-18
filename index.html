@@ -3,2722 +3,1436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام متابعة الدروس | م. بولس سمير</title>
+    <title>متابعة الدروس</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
-            --primary-dark: #3730a3;
-            --secondary: #10b981;
-            --secondary-light: #34d399;
-            --accent: #f59e0b;
-            --accent-light: #fbbf24;
-            --payment: #8b5cf6;
-            --payment-light: #a78bfa;
-            --warning: #f97316;
-            --warning-light: #fb923c;
-            --success: #059669;
-            --danger: #dc2626;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #f0f2f5 0%, #e5e7eb 100%);
-            min-height: 100vh;
+            background: #f1f5f9;
+            padding: 16px;
         }
-        
-        .card {
+
+        /* قسم حصص اليوم */
+        .today-section {
             background: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
-        
-        .card:hover {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-            transform: translateY(-3px);
-        }
-        
-        .gradient-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .gradient-header::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        .day-checkbox:checked + label {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: scale(1.05);
-            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.2);
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.95);
+
+        .today-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            gap: 8px;
         }
-        
-        .expandable-content {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+
+        .today-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
         }
-        
-        .collapsed {
-            max-height: 0;
-            opacity: 0;
+
+        .today-item:last-child {
+            margin-bottom: 0;
         }
-        
-        .expanded {
-            max-height: 1000px;
-            opacity: 1;
+
+        .today-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+
+        .today-status {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-done {
+            background: #22c55e;
             color: white;
-            transition: all 0.3s ease;
+        }
+
+        .btn-register {
+            background: #3b82f6;
+            color: white;
             border: none;
-            font-weight: 700;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
-            color: white;
-            transition: all 0.3s ease;
-            border: none;
-            font-weight: 700;
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #0d966c 0%, var(--secondary) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-accent {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            color: white;
-            transition: all 0.3s ease;
-            border: none;
-            font-weight: 700;
-        }
-        
-        .btn-accent:hover {
-            background: linear-gradient(135deg, #d97706 0%, var(--accent) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
-        }
-        
-        .btn-payment {
-            background: linear-gradient(135deg, var(--payment) 0%, var(--payment-light) 100%);
-            color: white;
-            transition: all 0.3s ease;
-            border: none;
-            font-weight: 700;
-        }
-        
-        .btn-payment:hover {
-            background: linear-gradient(135deg, #7c3aed 0%, var(--payment) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
-        }
-        
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning) 0%, var(--warning-light) 100%);
-            color: white;
-            transition: all 0.3s ease;
-            border: none;
-            font-weight: 700;
-        }
-        
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #ea580c 0%, var(--warning) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #ef4444 100%);
-            color: white;
-            transition: all 0.3s ease;
-            border: none;
-            font-weight: 700;
-        }
-        
-        .btn-danger:hover {
-            background: linear-gradient(135deg, #b91c1c 0%, var(--danger) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
-        }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .tab-active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
-        }
-        
-        .student-card-marcelino {
-            border-right: 6px solid #3b82f6;
-            background: linear-gradient(to left, #eff6ff, white);
-        }
-        
-        .student-card-maroseka {
-            border-right: 6px solid #8b5cf6;
-            background: linear-gradient(to left, #f5f3ff, white);
-        }
-        
-        .subject-item {
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-        }
-        
-        .subject-item:hover {
-            border-left-color: var(--primary);
-            background-color: #f8fafc;
-            transform: translateX(-3px);
-        }
-        
-        .edit-btn {
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        
-        .subject-item:hover .edit-btn {
-            opacity: 1;
-        }
-        
-        .payment-item {
-            border-right: 4px solid var(--payment);
-            background: linear-gradient(to left, #f5f3ff, white);
-        }
-        
-        .payment-history-item {
-            background: linear-gradient(to left, #faf5ff, white);
-            border-right: 3px solid #c4b5fd;
-        }
-        
-        .status-presence {
-            background-color: #d1fae5;
-            color: #065f46;
-            font-weight: 700;
-        }
-        
-        .status-absence {
-            background-color: #fee2e2;
-            color: #991b1b;
-            font-weight: 700;
-        }
-        
-        .custom-radio {
-            position: relative;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
         }
-        
-        .custom-radio input {
-            position: absolute;
-            opacity: 0;
+
+        .btn-register:hover {
+            background: #2563eb;
         }
-        
-        .custom-radio .checkmark {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #d1d5db;
-            border-radius: 50%;
+
+        /* قسم التنبيهات */
+        .alerts-section {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-right: 8px solid #ef4444;
+        }
+
+        .alert-item {
+            background: #fef2f2;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #fee2e2;
+        }
+
+        .alert-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .alert-badge {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .alert-details {
+            font-size: 14px;
+            color: #7f1d1d;
+        }
+
+        /* البطاقة الرئيسية */
+        .student-card {
+            background: white;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        /* رأس البطاقة - ولد */
+        .header-boy {
+            background: #1e3a8a;
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* رأس البطاقة - بنت */
+        .header-girl {
+            background: #831843;
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .student-name {
+            font-size: 20px;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
+            gap: 10px;
         }
-        
-        .custom-radio input:checked + .checkmark {
-            border-color: var(--primary);
+
+        .expand-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
         }
-        
-        .custom-radio input:checked + .checkmark::after {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background-color: var(--primary);
-            border-radius: 50%;
+
+        .expand-icon.rotated {
+            transform: rotate(45deg);
         }
-        
-        .custom-radio.presence input:checked + .checkmark {
-            border-color: #10b981;
-        }
-        
-        .custom-radio.presence input:checked + .checkmark::after {
-            background-color: #10b981;
-        }
-        
-        .custom-radio.absence input:checked + .checkmark {
-            border-color: #ef4444;
-        }
-        
-        .custom-radio.absence input:checked + .checkmark::after {
-            background-color: #ef4444;
-        }
-        
-        .notification-badge {
-            animation: bounce 1s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-        
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-3px); }
-            75% { transform: translateX(3px); }
-        }
-        
-        .student-icon-boy {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        }
-        
-        .student-icon-girl {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-        }
-        
-        .payment-details-item {
-            transition: all 0.3s ease;
-        }
-        
-        .payment-details-item:hover {
-            background-color: #f8fafc;
-            transform: translateX(-3px);
-        }
-        
-        .expand-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .expand-btn.expanded {
-            transform: rotate(180deg);
-        }
-        
-        .subject-details {
+
+        /* المحتوى القابل للتمديد */
+        .card-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
-        }
-        
-        .subject-details.expanded {
-            max-height: 500px;
-        }
-        
-        .stats-card {
             background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        
-        .quick-action-btn {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-align: center;
+
+        .card-content.show {
+            max-height: 3000px;
         }
-        
-        .quick-action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+        /* إحصائيات سريعة */
+        .stats {
+            display: flex;
+            gap: 20px;
+            padding: 16px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
         }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-        
-        .data-table th {
-            background-color: #f8fafc;
-            padding: 1rem;
-            text-align: right;
-            font-weight: 700;
+
+        .stat {
+            font-size: 14px;
             color: #4b5563;
-            border-bottom: 2px solid #e5e7eb;
         }
-        
-        .data-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
+
+        .stat span {
+            font-weight: 700;
+            color: #111827;
+            margin-left: 4px;
         }
-        
-        .data-table tr:hover {
-            background-color: #f8fafc;
+
+        /* المواد */
+        .subjects {
+            padding: 20px;
         }
-        
-        .progress-bar {
-            height: 8px;
-            border-radius: 4px;
-            background-color: #e5e7eb;
-            overflow: hidden;
+
+        .subject-item {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
         }
-        
-        .progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            transition: width 0.5s ease;
+
+        /* تلوين المواد حسب عدد الحصص */
+        .subject-item.level-0 {
+            border-right: 6px solid #9ca3af;
         }
-        
-        .dashboard-card {
+        .subject-item.level-1 {
+            border-right: 6px solid #6b7280;
+        }
+        .subject-item.level-2 {
+            border-right: 6px solid #4b5563;
+        }
+        .subject-item.level-3 {
+            border-right: 6px solid #374151;
+        }
+        .subject-item.level-4 {
+            border-right: 6px solid #1f2937;
+        }
+        .subject-item.level-5 {
+            border-right: 6px solid #111827;
+        }
+        .subject-item.level-6 {
+            border-right: 6px solid #f97316;
+        }
+        .subject-item.level-7 {
+            border-right: 6px solid #f59e0b;
+        }
+        .subject-item.level-8 {
+            border-right: 6px solid #ef4444;
+            background: #fef2f2;
+        }
+        .subject-item.level-9, .subject-item.level-10, .subject-item.level-11, .subject-item.level-12 {
+            border-right: 6px solid #dc2626;
+            background: #fee2e2;
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .subject-name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .subject-fee {
             background: white;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            height: 100%;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #e5e7eb;
         }
-        
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
+
+        /* أيام الدراسة */
+        .days {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .day {
+            background: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .day.active {
+            background: #111827;
+            color: white;
+            border-color: #111827;
+        }
+
+        /* إحصائيات المادة */
+        .subject-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
             color: #6b7280;
         }
-        
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #d1d5db;
+
+        .subject-stats span {
+            font-weight: 700;
+            color: #111827;
+            margin-left: 4px;
         }
-        
-        .filter-bar {
+
+        /* شريط التقدم */
+        .progress {
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #111827;
+            border-radius: 20px;
+        }
+
+        .progress-fill.alert {
+            background: #ef4444;
+        }
+
+        .progress-fill.warning {
+            background: #f97316;
+        }
+
+        /* رسالة التنبيه */
+        .alert-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-message i {
+            color: #ef4444;
+            font-size: 16px;
+        }
+
+        /* حالة الدفع */
+        .payment-status {
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .status-due {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* الأزرار */
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .btn-green {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-black {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-red {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* الحصص والمدفوعات */
+        .records {
+            padding: 20px;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .record-item:last-child {
+            border-bottom: none;
+        }
+
+        .record-info {
+            font-size: 14px;
+        }
+
+        .record-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .record-actions button {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .record-actions button:hover {
+            color: #111827;
+        }
+
+        /* زر الإضافة */
+        .add-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 56px;
+            height: 56px;
+            background: #111827;
+            color: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        /* النوافذ المنبثقة */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
             background: white;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+            max-width: 400px;
+            width: 100%;
+            padding: 24px;
         }
-        
-        .urgent-subject {
-            border: 2px solid #f97316;
-            background: linear-gradient(to left, #fffbeb, white);
-            animation: pulse-border 2s infinite;
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
         }
-        
-        @keyframes pulse-border {
-            0% { border-color: #f97316; }
-            50% { border-color: #fb923c; }
-            100% { border-color: #f97316; }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            font-family: 'Cairo', sans-serif;
         }
-        
-        .near-subject {
-            border: 2px solid #f59e0b;
-            background: linear-gradient(to left, #fef3c7, white);
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #111827;
         }
-        
-        .session-count-badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* رسالة نجاح */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: none;
+            z-index: 1001;
+        }
+
+        /* أيام في المودال */
+        .days-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .day-option {
+            background: #f3f4f6;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid #e5e7eb;
+        }
+
+        .day-option.selected {
+            background: #111827;
+            color: white;
+            border-color: #111827;
+        }
+
+        /* حالة عدم وجود بيانات */
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+
+        /* الأرقام العربية */
+        .ar-num {
             font-weight: 700;
         }
-        
-        .session-count-7 { background-color: #fee2e2; color: #991b1b; font-weight: 700; }
-        
-        /* نمط الأرقام العربية */
-        .arabic-numbers {
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700 !important;
-            direction: ltr;
-            display: inline-block;
+
+        /* عداد التنبيهات */
+        .alert-counter {
+            background: #ef4444;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
         }
-        
-        /* تحسين تحميل التطبيق */
-        .fast-load {
-            animation: fadeIn 0.3s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+
+        /* رسالة 8 حصص */
+        .eight-alert {
+            background: #ef4444;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
     </style>
 </head>
-<body class="p-2 md:p-6 fast-load">
+<body>
 
-    <!-- Alert Modal -->
-    <div id="alert-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[200] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl border-t-8 border-orange-500">
-            <button onclick="closeAlertModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-bell text-white text-2xl"></i>
-                </div>
-                <h3 id="alert-title" class="text-2xl font-bold text-gray-800 mb-2">تنبيه: مواد تحتاج للدفع</h3>
-                <p id="alert-message" class="text-gray-600">يوجد مواد وصلت إلى <span class="arabic-numbers">٧</span> حصص وتحتاج للدفع</p>
-            </div>
-            <div id="alert-content" class="max-h-60 overflow-y-auto mb-6 space-y-3">
-                <!-- سيتم ملؤها بالجافاسكريبت -->
-            </div>
-            <button onclick="closeAlertModal()" class="w-full btn-warning py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all">
-                <i class="fas fa-check-circle ml-2"></i>حسناً، فهمت
-            </button>
+<!-- زر الإضافة -->
+<button class="add-btn" onclick="showModal('student')">
+    <i class="fas fa-plus"></i>
+</button>
+
+<!-- رسالة نجاح -->
+<div class="toast" id="toast">تم الحفظ</div>
+
+<!-- الصفحة الرئيسية -->
+<div class="max-w-3xl mx-auto" id="app">
+
+    <!-- العنوان -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">📋 متابعة الدروس</h1>
+        <div class="bg-white px-4 py-2 rounded-full flex items-center">
+            <span class="text-gray-500">العدد</span>
+            <span class="font-bold mr-2" id="total-count">0</span>
         </div>
     </div>
 
-    <!-- Payment Details Modal -->
-    <div id="payment-details-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[200] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closePaymentDetailsModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h3 id="payment-details-title" class="text-xl font-bold mb-4 text-purple-700 text-center border-b pb-2">تفاصيل المدفوعات</h3>
-            <div id="payment-details-content" class="max-h-96 overflow-y-auto space-y-3">
-                <!-- سيتم ملؤها بالجافاسكريبت -->
-            </div>
-            <button onclick="closePaymentDetailsModal()" class="w-full mt-4 btn-payment py-3 rounded-xl font-bold">إغلاق</button>
+    <!-- حصص اليوم -->
+    <div class="today-section" id="today-section">
+        <div class="today-title">
+            <i class="fas fa-sun text-yellow-500"></i>
+            حصص اليوم
+            <span class="text-sm bg-gray-200 px-3 py-1 rounded-full mr-auto" id="today-count">0</span>
         </div>
+        <div id="today-list"></div>
     </div>
 
-    <div id="loading" class="loading-overlay">
-        <div class="flex flex-col items-center">
-            <div class="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-6 pulse"></div>
-            <div class="text-2xl font-bold gradient-text mb-2">نظام متابعة الدروس</div>
-            <div id="loading-text" class="text-gray-600 font-bold">جاري تحميل البيانات...</div>
-            <div class="mt-4 text-sm text-gray-500">إشراف وتصميم: المهندس بولس سمير</div>
+    <!-- التنبيهات -->
+    <div class="alerts-section" id="alerts-section" style="display: none;">
+        <div class="today-title">
+            <i class="fas fa-exclamation-triangle text-red-500"></i>
+            مواد وصلت لـ ٨ حصص
+            <span class="alert-counter" id="alert-count">0</span>
         </div>
+        <div id="alerts-list"></div>
     </div>
 
-    <!-- Session Details Modal -->
-    <div id="details-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h3 id="modal-title" class="text-xl font-bold mb-4 text-indigo-700 text-center border-b pb-2">تفاصيل الحصص</h3>
-            <div class="max-h-96 overflow-y-auto">
-                <table class="w-full text-right border-collapse">
-                    <thead>
-                        <tr class="border-b text-gray-500 text-sm">
-                            <th class="py-2 text-right">التاريخ</th>
-                            <th class="py-2 text-center">رقم الحصة</th>
-                            <th class="py-2 text-center">اليوم</th>
-                            <th class="py-2 text-center">الحالة</th>
-                        </tr>
-                    </thead>
-                    <tbody id="modal-body"></tbody>
-                </table>
-            </div>
-            <button onclick="closeModal()" class="w-full mt-4 btn-primary py-3 rounded-xl font-bold">إغلاق</button>
+    <!-- حاوية البطاقات -->
+    <div id="cards-container"></div>
+
+</div>
+
+<!-- مودال إضافة ابن -->
+<div class="modal" id="modal-student">
+    <div class="modal-content">
+        <h2 class="modal-title">➕ إضافة ابن/ابنة</h2>
+        <input type="text" id="student-name" class="modal-input" placeholder="الاسم">
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="addStudent()">إضافة</button>
+            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('student')">إلغاء</button>
         </div>
     </div>
+</div>
 
-    <!-- Edit Subject Modal -->
-    <div id="edit-subject-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closeEditModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h3 id="edit-modal-title" class="text-xl font-bold mb-4 text-indigo-700 text-center border-b pb-2">تعديل المادة</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">اسم المادة</label>
-                    <input id="edit-subject-name" type="text" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">المبلغ الشهري</label>
-                    <input id="edit-subject-fee" type="number" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">الساعة (مثال: 1:00 م)</label>
-                    <input id="edit-subject-time" type="text" placeholder="مثال: 1:00 م" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-2">أيام الدرس:</label>
-                    <div class="flex flex-wrap gap-2 justify-start" id="edit-days-selector"></div>
-                </div>
-                <div class="flex gap-2 pt-4">
-                    <button onclick="saveEditedSubject()" class="flex-1 btn-primary py-3 rounded-xl font-bold">حفظ التعديلات</button>
-                    <button onclick="closeEditModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300">إلغاء</button>
-                </div>
-            </div>
+<!-- مودال إضافة مادة -->
+<div class="modal" id="modal-subject">
+    <div class="modal-content">
+        <h2 class="modal-title">📖 إضافة مادة</h2>
+        <input type="hidden" id="subject-student-id">
+        <input type="text" id="subject-name" class="modal-input" placeholder="اسم المادة">
+        <input type="number" id="subject-fee" class="modal-input" placeholder="المبلغ">
+        <input type="text" id="subject-time" class="modal-input" placeholder="الوقت (مثال: 4:00 م)">
+        
+        <div class="mb-4">
+            <div class="font-bold mb-2 text-sm">أيام الدراسة</div>
+            <div class="days-selector" id="days-selector"></div>
+        </div>
+
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="addSubject()">حفظ</button>
+            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('subject')">إلغاء</button>
         </div>
     </div>
+</div>
 
-    <!-- Edit Attendance Modal -->
-    <div id="edit-attendance-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closeEditAttendanceModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h3 id="edit-attendance-title" class="text-xl font-bold mb-4 text-indigo-700 text-center border-b pb-2">تعديل التسجيل</h3>
-            <div class="space-y-4">
-                <input type="hidden" id="edit-attendance-id">
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-2">الحالة</label>
-                    <div class="flex gap-4 justify-center">
-                        <label class="custom-radio presence flex items-center gap-2">
-                            <input type="radio" name="edit-status" value="حضور">
-                            <span class="checkmark"></span>
-                            <span class="font-bold text-green-700">حضور</span>
-                        </label>
-                        <label class="custom-radio absence flex items-center gap-2">
-                            <input type="radio" name="edit-status" value="غياب">
-                            <span class="checkmark"></span>
-                            <span class="font-bold text-red-700">غياب</span>
-                        </label>
+<!-- مودال تسجيل حصة -->
+<div class="modal" id="modal-attendance">
+    <div class="modal-content">
+        <h2 class="modal-title">✏️ تسجيل حصة</h2>
+        <input type="hidden" id="attendance-subject-id">
+        <input type="date" id="attendance-date" class="modal-input">
+        
+        <div class="flex gap-3 mb-4">
+            <label class="flex-1 cursor-pointer">
+                <input type="radio" name="attendance-status" value="حضور" checked class="hidden peer">
+                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-green-500 peer-checked:text-white">✅ حضور</div>
+            </label>
+            <label class="flex-1 cursor-pointer">
+                <input type="radio" name="attendance-status" value="غياب" class="hidden peer">
+                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-red-500 peer-checked:text-white">❌ غياب</div>
+            </label>
+        </div>
+
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="addAttendance()">تسجيل</button>
+            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('attendance')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تسجيل دفعة -->
+<div class="modal" id="modal-payment">
+    <div class="modal-content">
+        <h2 class="modal-title">💰 تسجيل دفعة</h2>
+        <input type="hidden" id="payment-subject-id">
+        <input type="date" id="payment-date" class="modal-input">
+        <input type="number" id="payment-amount" class="modal-input" placeholder="المبلغ">
+        
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="addPayment()">تسجيل</button>
+            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('payment')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تعديل حصة -->
+<div class="modal" id="modal-edit-attendance">
+    <div class="modal-content">
+        <h2 class="modal-title">✏️ تعديل حصة</h2>
+        <input type="hidden" id="edit-attendance-id">
+        <input type="date" id="edit-attendance-date" class="modal-input">
+        
+        <div class="flex gap-3 mb-4">
+            <label class="flex-1 cursor-pointer">
+                <input type="radio" name="edit-attendance-status" value="حضور" class="hidden peer">
+                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-green-500 peer-checked:text-white">✅ حضور</div>
+            </label>
+            <label class="flex-1 cursor-pointer">
+                <input type="radio" name="edit-attendance-status" value="غياب" class="hidden peer">
+                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-red-500 peer-checked:text-white">❌ غياب</div>
+            </label>
+        </div>
+
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="updateAttendance()">تحديث</button>
+            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('edit-attendance')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تعديل دفعة -->
+<div class="modal" id="modal-edit-payment">
+    <div class="modal-content">
+        <h2 class="modal-title">💰 تعديل دفعة</h2>
+        <input type="hidden" id="edit-payment-id">
+        <input type="date" id="edit-payment-date" class="modal-input">
+        <input type="number" id="edit-payment-amount" class="modal-input" placeholder="المبلغ">
+        
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="updatePayment()">تحديث</button>
+            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('edit-payment')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAYbNXkNQy32UnbsUUrTXyoJluZRS3wP1w",
+        authDomain: "droos-33ede.firebaseapp.com",
+        projectId: "droos-33ede",
+        storageBucket: "droos-33ede.firebasestorage.app",
+        messagingSenderId: "807210060374",
+        appId: "1:807210060374:web:3bdf1e15e44a1795f289f7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = 'droos-app-v1';
+
+    // State
+    const state = {
+        students: [],
+        subjects: [],
+        attendance: [],
+        payments: [],
+        expanded: {} // للبطاقات المفتوحة
+    };
+
+    const WEEKDAYS = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
+
+    // دوال مساعدة
+    const toArabic = (num) => {
+        const arabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        return num.toString().replace(/\d/g, d => arabic[d]);
+    };
+
+    const showToast = (msg) => {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 2000);
+    };
+
+    // تحديد نوع الجنس
+    const getGender = (name) => {
+        const boys = ['محمد', 'أحمد', 'محمود', 'علي', 'حسن', 'حسين', 'يوسف', 'عمر', 'خالد', 'ياسين', 'آدم', 'إبراهيم'];
+        return boys.some(b => name.includes(b)) ? 'boy' : 'girl';
+    };
+
+    // الاتصال بقاعدة البيانات
+    signInAnonymously(auth).then(() => {
+        const path = (col) => collection(db, 'artifacts', appId, 'public', 'data', col);
+
+        onSnapshot(path('students'), (snap) => {
+            state.students = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            render();
+            document.getElementById('total-count').textContent = state.students.length;
+        });
+
+        onSnapshot(path('subjects'), (snap) => {
+            state.subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            render();
+        });
+
+        onSnapshot(path('attendance'), (snap) => {
+            state.attendance = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            render();
+        });
+
+        onSnapshot(path('payments'), (snap) => {
+            state.payments = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            render();
+        });
+    });
+
+    // العرض الرئيسي
+    function render() {
+        renderTodayClasses();
+        renderAlerts();
+        renderCards();
+    }
+
+    // عرض حصص اليوم
+    function renderTodayClasses() {
+        const today = new Date().toISOString().split('T')[0];
+        const todayDay = new Date().toLocaleDateString('ar-EG', { weekday: 'long' });
+        
+        const todayClasses = [];
+        
+        state.subjects.forEach(subject => {
+            if (subject.days?.includes(todayDay)) {
+                const student = state.students.find(s => s.id === subject.studentId);
+                const attendance = state.attendance.find(a => a.subjectId === subject.id && a.date === today);
+                
+                todayClasses.push({
+                    subject,
+                    student,
+                    status: attendance ? attendance.status : 'pending'
+                });
+            }
+        });
+
+        const container = document.getElementById('today-list');
+        const countSpan = document.getElementById('today-count');
+        
+        countSpan.textContent = todayClasses.length;
+
+        if (todayClasses.length === 0) {
+            container.innerHTML = '<div class="empty py-4">لا توجد حصص اليوم</div>';
+            return;
+        }
+
+        let html = '';
+        todayClasses.forEach(item => {
+            html += `
+                <div class="today-item">
+                    <div class="today-info">
+                        <span>${item.student?.name || ''}</span>
+                        <span class="font-bold">${item.subject.name}</span>
+                        ${item.subject.time ? `<span class="text-sm text-gray-500">${item.subject.time}</span>` : ''}
                     </div>
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">التاريخ</label>
-                    <input id="edit-attendance-date" type="date" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
-                </div>
-                <div class="flex gap-2 pt-4">
-                    <button onclick="saveEditedAttendance()" class="flex-1 btn-primary py-3 rounded-xl font-bold">حفظ التعديل</button>
-                    <button onclick="closeEditAttendanceModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Payment Modal -->
-    <div id="add-payment-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center p-4">
-        <div class="card w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closePaymentModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h3 id="payment-modal-title" class="text-xl font-bold mb-4 text-purple-700 text-center border-b pb-2">تسجيل دفعة جديدة</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">الابن</label>
-                    <select id="payment-student" onchange="updatePaymentSubjects()" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right"></select>
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">المادة</label>
-                    <select id="payment-subject" onchange="updatePaymentInfo()" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right"></select>
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">التاريخ</label>
-                    <input id="payment-date" type="date" onchange="updatePaymentDayName()" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="text-sm font-bold text-gray-600 block text-right mb-1">اليوم</label>
-                        <input id="payment-day" type="text" readonly class="w-full p-3 border rounded-xl bg-purple-50 text-purple-700 font-bold outline-none text-right">
-                    </div>
-                    <div>
-                        <label class="text-sm font-bold text-gray-600 block text-right mb-1">المبلغ</label>
-                        <input id="payment-amount" type="number" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right" placeholder="المبلغ المدفوع">
-                    </div>
-                </div>
-                <div>
-                    <label class="text-sm font-bold text-gray-600 block text-right mb-1">ملاحظات (اختياري)</label>
-                    <textarea id="payment-notes" class="w-full p-3 border rounded-xl outline-none focus:border-purple-500 text-right" rows="2" placeholder="أي ملاحظات عن الدفعة..."></textarea>
-                </div>
-                <div class="flex gap-2 pt-4">
-                    <button onclick="savePayment()" class="flex-1 btn-payment py-3 rounded-xl font-bold">تسجيل الدفعة</button>
-                    <button onclick="closePaymentModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="max-w-7xl mx-auto">
-        <!-- Header -->
-        <header class="gradient-header text-white rounded-2xl p-6 mb-8 shadow-2xl text-center relative overflow-hidden floating">
-            <div class="absolute top-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-x-16 -translate-y-16"></div>
-            <div class="absolute bottom-0 right-0 w-40 h-40 bg-white opacity-5 rounded-full translate-x-20 translate-y-20"></div>
-            
-            <div class="relative z-10">
-                <h1 class="text-4xl font-bold mb-2">نظام متابعة دروس الأبناء</h1>
-                <p class="text-lg text-indigo-100 opacity-90 font-bold">إشراف وتصميم: المهندس بولس سمير</p>
-                <div id="auth-status" class="mt-4 glass-effect inline-block px-4 py-2 rounded-full text-sm">
-                    <i class="fas fa-cloud mr-2"></i>جاري التحقق من الاتصال...
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Navigation -->
-        <div class="flex flex-wrap gap-3 mb-8 justify-center relative">
-            <button onclick="switchTab('dashboard')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
-                <i class="fas fa-home ml-2"></i>الرئيسية
-            </button>
-            <button onclick="switchTab('quick')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
-                <i class="fas fa-bolt ml-2"></i>تسجيل سريع
-            </button>
-            <button onclick="switchTab('reports')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
-                <i class="fas fa-chart-pie ml-2"></i>التقارير
-            </button>
-            <button onclick="switchTab('payment')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md relative">
-                <i class="fas fa-credit-card ml-2"></i>الدفع الشهري
-                <span id="payment-alert-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden notification-badge"></span>
-            </button>
-            <button onclick="switchTab('upcoming')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md relative">
-                <i class="fas fa-clock ml-2"></i>قربت على الدفع
-                <span id="upcoming-alert-badge" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden notification-badge"></span>
-            </button>
-            <button onclick="switchTab('students')" class="tab-btn px-6 py-3 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all font-bold shadow-sm hover:shadow-md">
-                <i class="fas fa-cog ml-2"></i>الإعدادات
-            </button>
-        </div>
-
-        <!-- Alert Banner -->
-        <div id="alert-banner" class="hidden mb-6">
-            <div class="card p-4 border-l-8 border-orange-500 bg-gradient-to-l from-orange-50 to-amber-50 shadow-lg">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center">
-                            <i class="fas fa-bell text-white text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-800 text-lg">تنبيه: مواد تحتاج للدفع</h3>
-                            <p class="text-sm text-gray-600">يوجد مواد وصلت إلى <span class="arabic-numbers">٧</span> حصص أو أكثر</p>
-                        </div>
-                    </div>
-                    <button onclick="showAlertModal()" class="btn-warning px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                        <i class="fas fa-eye"></i>
-                        عرض التفاصيل
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboard-tab" class="tab-content">
-            <!-- Today's Overview -->
-            <div class="card p-6 mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                        <i class="fas fa-calendar-day text-indigo-600"></i>
-                        <span>دروس اليوم</span>
-                    </h2>
-                    <div class="flex items-center gap-4">
-                        <div class="text-lg font-bold text-gray-700" id="today-date"></div>
-                        <div class="text-lg font-bold text-indigo-600" id="today-day"></div>
-                    </div>
-                </div>
-                <div id="today-overview" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="grid grid-cols-1 gap-8">
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-history text-blue-600"></i>
-                            <span>التسجيلات</span>
-                        </div>
-                        <button onclick="switchTab('quick')" class="text-sm btn-primary px-4 py-2 rounded-lg">
-                            تسجيل جديد
-                        </button>
-                    </h2>
-                    <div id="recent-attendance" class="max-h-[500px] overflow-y-auto space-y-6">
-                        <!-- سيتم ملؤها بالجافاسكريبت -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Attendance Tab -->
-        <div id="quick-tab" class="tab-content hidden">
-            <!-- Quick Attendance Section -->
-            <div class="card p-8 mb-8 border-t-8 border-indigo-600">
-                <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 flex items-center justify-center gap-3">
-                    <div class="w-3 h-10 bg-gradient-to-b from-indigo-500 to-indigo-300 rounded-full"></div>
-                    <span>تسجيل حضور/غياب سريع</span>
-                    <div class="w-3 h-10 bg-gradient-to-b from-indigo-500 to-indigo-300 rounded-full"></div>
-                </h2>
-                <div class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">الابن</label>
-                            <select id="dashboard-att-student" onchange="updateDashboardAttSubjects()" class="w-full p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-indigo-500 text-right transition-all"></select>
-                        </div>
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">المادة</label>
-                            <select id="dashboard-att-subject" class="w-full p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-indigo-500 text-right transition-all"></select>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">التاريخ</label>
-                            <input id="dashboard-att-date" type="date" onchange="updateDashboardDayName()" class="w-full p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-indigo-500 text-right transition-all">
-                        </div>
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">اليوم</label>
-                            <input id="dashboard-att-day" type="text" readonly class="w-full p-4 border-2 border-gray-200 rounded-xl bg-indigo-50 text-indigo-700 font-bold outline-none text-right">
-                        </div>
-                    </div>
-                    <div class="bg-gradient-to-l from-indigo-50 to-blue-50 p-6 rounded-2xl flex items-center justify-around border border-indigo-100">
-                        <label class="custom-radio presence flex items-center gap-3 cursor-pointer">
-                            <input type="radio" name="dashboard-status" value="حضور" checked>
-                            <span class="checkmark"></span>
-                            <span class="font-bold text-green-600 hover:text-green-700 text-lg transition">حضور</span>
-                        </label>
-                        <label class="custom-radio absence flex items-center gap-3 cursor-pointer">
-                            <input type="radio" name="dashboard-status" value="غياب">
-                            <span class="checkmark"></span>
-                            <span class="font-bold text-red-600 hover:text-red-700 text-lg transition">غياب</span>
-                        </label>
-                    </div>
-                    <button id="dashboard-save-btn" onclick="saveDashboardAttendance()" class="w-full btn-primary py-4 rounded-2xl font-bold shadow-xl disabled:opacity-50 hover:shadow-2xl transition-all transform active:scale-95 text-lg">
-                        <i class="fas fa-save ml-2"></i>تأكيد التسجيل
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reports Tab -->
-        <div id="reports-tab" class="tab-content hidden">
-            <div class="card p-6 mb-6">
-                <h2 class="text-2xl font-bold mb-6 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-2 h-8 bg-gradient-to-b from-emerald-500 to-green-500 rounded-full"></div>
-                        <span class="gradient-text">تقارير الحصص</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="generateWhatsAppReport()" class="btn-secondary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                            <i class="fab fa-whatsapp"></i>
-                            تقرير واتساب
-                        </button>
-                        <button onclick="exportReportData()" class="btn-primary px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                            <i class="fas fa-file-export"></i>
-                            تصدير تقرير
-                        </button>
-                    </div>
-                </h2>
-                
-                <!-- Filters -->
-                <div class="filter-bar mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">الابن</label>
-                            <select id="report-student-filter" onchange="updateReports()" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
-                                <option value="">جميع الأبناء</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">الشهر</label>
-                            <select id="report-month-filter" onchange="updateReports()" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
-                                <option value="">جميع الشهور</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">المادة</label>
-                            <select id="report-subject-filter" onchange="updateReports()" class="w-full p-3 border rounded-xl outline-none focus:border-indigo-500 text-right">
-                                <option value="">جميع المواد</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="expense-report-by-student" class="space-y-6">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Payment Tab -->
-        <div id="payment-tab" class="tab-content hidden">
-            <div class="card p-6">
-                <h2 class="text-2xl font-bold mb-6 text-purple-700 border-b pb-3 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>الدفع الشهري</span>
-                    </div>
-                    <button onclick="openPaymentModal()" class="btn-payment px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                        <i class="fas fa-plus ml-1"></i>
-                        دفعة جديدة
-                    </button>
-                </h2>
-                
-                <div id="student-payments-summary" class="space-y-6">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Upcoming Payments Tab -->
-        <div id="upcoming-tab" class="tab-content hidden">
-            <div class="card p-6 mb-8">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-3 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <i class="fas fa-clock text-orange-600"></i>
-                        <span>المواد القريبة على الدفع</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-600">مواد قاربت على <span class="arabic-numbers">٧</span> حصص</span>
-                        <span id="upcoming-count" class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">٠</span>
-                    </div>
-                </h2>
-                
-                <div class="mb-6">
-                    <div class="p-3 bg-red-50 rounded-xl text-center mb-4">
-                        <div class="text-2xl font-bold text-red-700 arabic-numbers" id="count-7">٠</div>
-                        <div class="text-sm text-gray-600"><span class="arabic-numbers">٧</span> حصص</div>
-                    </div>
-                    <p class="text-sm text-gray-600 text-center">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        المواد التي وصلت إلى <span class="arabic-numbers">٧</span> حصص تظهر هنا. عند تسجيل دفعة في تبويب الدفع، ستختفي تلقائياً من هذه القائمة.
-                    </p>
-                </div>
-                
-                <div id="upcoming-subjects-list" class="space-y-6">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Settings Tab -->
-        <div id="students-tab" class="tab-content hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold mb-6 text-indigo-700 border-b pb-3 flex items-center gap-3">
-                        <i class="fas fa-user-plus"></i>
-                        <span>إضافة ابن جديد</span>
-                    </h2>
-                    <div class="flex gap-3">
-                        <input id="student-name" type="text" placeholder="اسم الابن..." class="flex-1 p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-indigo-500 transition-colors text-lg">
-                        <button onclick="addStudent()" class="btn-primary px-8 py-4 rounded-xl hover:shadow-lg transition-all">
-                            <i class="fas fa-plus ml-2"></i>إضافة
-                        </button>
-                    </div>
-                    <div class="mt-8">
-                        <h3 class="font-bold text-gray-600 mb-4 text-lg flex items-center gap-2">
-                            <i class="fas fa-users text-gray-400"></i>
-                            قائمة الأبناء:
-                        </h3>
-                        <div id="students-list" class="flex flex-wrap gap-3"></div>
-                    </div>
-                </div>
-
-                <div class="card p-6">
-                    <h2 class="text-xl font-bold mb-6 text-emerald-700 border-b pb-3 flex items-center gap-3">
-                        <i class="fas fa-book-medical"></i>
-                        <span>إضافة مادة جديدة</span>
-                    </h2>
-                    <div class="space-y-6">
-                        <select id="parent-student" class="w-full p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg"></select>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="subject-name" type="text" placeholder="اسم المادة" class="p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg">
-                            <input id="subject-fee" type="number" placeholder="المبلغ الشهري" class="p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg">
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="subject-time" type="text" placeholder="الساعة (مثال: 1:00 م)" class="p-4 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-500 transition-all text-lg text-right">
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-gray-600 mb-3 text-right">أيام الدرس:</p>
-                            <div class="flex flex-wrap gap-2 justify-start" id="days-selector"></div>
-                        </div>
-                        <button onclick="addSubject()" class="w-full btn-secondary py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all text-lg">
-                            <i class="fas fa-save ml-2"></i>حفظ المادة
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Subjects Schedule -->
-            <div class="card p-6 mt-8">
-                <h2 class="text-xl font-bold mb-6 text-amber-700 border-b pb-3 flex items-center gap-3">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>جدول المواد الأسبوعي</span>
-                </h2>
-                
-                <div id="subjects-schedule" class="space-y-6">
-                    <!-- سيتم ملؤها بالجافاسكريبت -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-4 rounded-2xl shadow-2xl opacity-0 transition-all pointer-events-none z-[200] flex items-center gap-3">
-        <i class="fas fa-check-circle text-green-400"></i>
-        <span id="toast-message"></span>
-    </div>
-
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAYbNXkNQy32UnbsUUrTXyoJluZRS3wP1w",
-            authDomain: "droos-33ede.firebaseapp.com",
-            databaseURL: "https://droos-33ede-default-rtdb.firebaseio.com",
-            projectId: "droos-33ede",
-            storageBucket: "droos-33ede.firebasestorage.app",
-            messagingSenderId: "807210060374",
-            appId: "1:807210060374:web:3bdf1e15e44a1795f289f7"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = 'droos-app-v1';
-
-        window.appState = {
-            students: [],
-            subjects: [],
-            attendance: [],
-            payments: [],
-            user: null,
-            isInitializing: true,
-            expandedSections: {},
-            editingSubjectId: null,
-            editingAttendanceId: null,
-            paymentAlertsShown: false,
-            expandedSubjects: {},
-            cacheTimestamp: null,
-            upcomingSubjects: []
-        };
-
-        const WEEKDAYS = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
-        const MONTHS = [
-            "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-            "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
-        ];
-
-        // دالة لتحويل الأرقام إلى عربية
-        function toArabicNumbers(num) {
-            const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-            return num.toString().replace(/\d/g, digit => arabicNumbers[digit]);
-        }
-
-        // دالة لتحويل الوقت من 24 ساعة إلى 12 ساعة
-        function convertTo12Hour(time) {
-            if (!time) return '';
-            
-            // إذا كان الوقت بالفعل بصيغة 12 ساعة (يحتوي على ص أو م)
-            if (time.includes('ص') || time.includes('م')) {
-                return time;
-            }
-            
-            // إذا كان الوقت بصيغة 24 ساعة (HH:MM)
-            const match = time.match(/^(\d{1,2}):(\d{2})$/);
-            if (!match) return time;
-            
-            let hours = parseInt(match[1]);
-            const minutes = match[2];
-            const period = hours >= 12 ? 'م' : 'ص';
-            
-            if (hours > 12) hours -= 12;
-            if (hours === 0) hours = 12;
-            
-            return `${hours}:${minutes} ${period}`;
-        }
-
-        async function init() {
-            renderDaySelectors();
-            const authStatus = document.getElementById('auth-status');
-            
-            // إعداد التواريخ تلقائياً
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('dashboard-att-date').value = today;
-            document.getElementById('payment-date').value = today;
-            updateDashboardDayName();
-            updatePaymentDayName();
-            
-            // تحديث تاريخ اليوم في الشاشة الرئيسية
-            updateTodayDate();
-            
-            // تحميل سريع بدون تأخير
-            document.getElementById('loading').style.display = 'none';
-            
-            try {
-                await signInAnonymously(auth);
-            } catch (error) {
-                console.error("Auth System Error:", error);
-                authStatus.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>خطأ في الاتصال بالسحابة`;
-                authStatus.className = "mt-4 bg-red-500/20 text-red-100 inline-block px-4 py-2 rounded-full text-sm";
-            }
-
-            onAuthStateChanged(auth, (user) => {
-                window.appState.user = user;
-                if (user) {
-                    authStatus.innerHTML = `<i class="fas fa-cloud mr-2"></i>متصل بالسحابة`;
-                    authStatus.className = "mt-4 glass-effect inline-block px-4 py-2 rounded-full text-sm";
-                    setupListeners();
-                    // فتح تبويب الرئيسية تلقائياً
-                    switchTab('dashboard');
-                } else {
-                    authStatus.innerHTML = `<i class="fas fa-cloud-slash mr-2"></i>غير متصل`;
-                }
-            });
-
-            // تحقق من التنبيهات عند التحميل
-            setTimeout(() => {
-                if (window.appState.user) {
-                    checkUpcomingPayments();
-                }
-            }, 1000);
-        }
-
-        function updateTodayDate() {
-            const today = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = today.toLocaleDateString('ar-EG', options);
-            const dayStr = today.toLocaleDateString('ar-EG', { weekday: 'long' });
-            
-            document.getElementById('today-date').textContent = dateStr;
-            document.getElementById('today-day').textContent = dayStr;
-        }
-
-        function setupListeners() {
-            if (!window.appState.user) return;
-            const path = (col) => collection(db, 'artifacts', appId, 'public', 'data', col);
-
-            onSnapshot(path('students'), (snap) => {
-                window.appState.students = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                updateUI();
-                checkUpcomingPayments();
-            });
-
-            onSnapshot(path('subjects'), (snap) => {
-                window.appState.subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                updateUI();
-                checkUpcomingPayments();
-            });
-
-            onSnapshot(path('attendance'), (snap) => {
-                window.appState.attendance = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                updateUI();
-                checkUpcomingPayments();
-            });
-
-            onSnapshot(path('payments'), (snap) => {
-                window.appState.payments = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                updateUI();
-                checkUpcomingPayments();
-            });
-        }
-
-        // وظيفة للتحقق من المواد القريبة على الدفع (7 حصص فقط)
-        function checkUpcomingPayments() {
-            const state = window.appState;
-            const upcomingBadge = document.getElementById('upcoming-alert-badge');
-            const paymentBadge = document.getElementById('payment-alert-badge');
-            const alertBanner = document.getElementById('alert-banner');
-            
-            let upcomingSubjects = [];
-            let paymentAlertSubjects = [];
-            let upcomingCount = 0;
-            let paymentAlertCount = 0;
-            
-            // إحصائيات حسب عدد الحصص
-            let count7 = 0;
-            
-            state.students.forEach(student => {
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                
-                studentSubjects.forEach(subject => {
-                    const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
-                    const attendanceCount = subjectAttendance.length;
-                    
-                    if (attendanceCount === 7) { // 7 حصص فقط
-                        const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
-                        const paidPayments = subjectPayments.length;
-                        const requiredPayments = Math.floor(attendanceCount / 8);
-                        const pendingPayments = Math.max(0, requiredPayments - paidPayments);
-                        const sessionsSinceLastPayment = attendanceCount - (paidPayments * 8);
-                        
-                        // إضافة إلى المواد القريبة
-                        upcomingSubjects.push({
-                            studentId: student.id,
-                            student: student.name,
-                            subjectId: subject.id,
-                            subject: subject.name,
-                            sessions: attendanceCount,
-                            sessionsSincePayment: sessionsSinceLastPayment,
-                            sessionsToNextPayment: 8 - sessionsSinceLastPayment,
-                            requiredPayments: requiredPayments,
-                            paidPayments: paidPayments,
-                            pendingPayments: pendingPayments,
-                            fee: subject.fee,
-                            totalDue: pendingPayments * subject.fee
-                        });
-                        
-                        upcomingCount++;
-                        
-                        // تحديث الإحصائيات
-                        if (attendanceCount === 7) count7++;
-                        
-                        // إذا كانت تحتاج للدفع (7 حصص)
-                        if (attendanceCount === 7 && pendingPayments > 0) {
-                            paymentAlertSubjects.push({
-                                studentId: student.id,
-                                student: student.name,
-                                subjectId: subject.id,
-                                subject: subject.name,
-                                sessions: attendanceCount,
-                                requiredPayments: requiredPayments,
-                                paidPayments: paidPayments,
-                                pendingPayments: pendingPayments,
-                                fee: subject.fee,
-                                totalDue: pendingPayments * subject.fee
-                            });
-                            paymentAlertCount++;
+                        ${item.status === 'pending' ? 
+                            `<button class="btn-register" onclick="quickRegister('${item.subject.id}')">تسجيل</button>` :
+                            `<span class="today-status status-done">${item.status === 'حضور' ? '✅' : '❌'} ${item.status}</span>`
                         }
-                    }
-                });
-            });
-            
-            // تحديث حالة المواد القريبة
-            window.appState.upcomingSubjects = upcomingSubjects;
-            
-            // تحديث الإحصائيات بالأرقام العربية
-            document.getElementById('count-7').textContent = toArabicNumbers(count7);
-            document.getElementById('upcoming-count').textContent = toArabicNumbers(upcomingCount);
-            
-            // تحديث شارة التنبيه
-            if (upcomingCount > 0) {
-                upcomingBadge.classList.remove('hidden');
-                upcomingBadge.textContent = toArabicNumbers(upcomingCount);
-                upcomingBadge.classList.add('shake');
-            } else {
-                upcomingBadge.classList.add('hidden');
-            }
-            
-            // تحديث شارة الدفع
-            if (paymentAlertCount > 0) {
-                paymentBadge.classList.remove('hidden');
-                paymentBadge.textContent = toArabicNumbers(paymentAlertCount);
-                paymentBadge.classList.add('shake');
-                alertBanner.classList.remove('hidden');
-            } else {
-                paymentBadge.classList.add('hidden');
-                alertBanner.classList.add('hidden');
-            }
-            
-            // تحديث قائمة المواد القريبة إذا كان التبويب مفتوحاً
-            if (document.getElementById('upcoming-tab') && !document.getElementById('upcoming-tab').classList.contains('hidden')) {
-                updateUpcomingSubjectsList();
-            }
-        }
-
-        function updateUpcomingSubjectsList() {
-            const state = window.appState;
-            const container = document.getElementById('upcoming-subjects-list');
-            
-            if (!container) return;
-            
-            if (state.upcomingSubjects.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-check-circle text-green-400 text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-700 mb-2">لا توجد مواد قريبة على الدفع</h3>
-                        <p class="text-gray-600">جميع المواد لديها أقل من <span class="arabic-numbers">٧</span> حصص مسجلة</p>
                     </div>
-                `;
-                return;
-            }
-            
-            // فرز المواد حسب عدد الحصص (الأكثر أولاً)
-            const sortedSubjects = [...state.upcomingSubjects].sort((a, b) => b.sessions - a.sessions);
-            
-            let html = '';
-            
-            sortedSubjects.forEach(item => {
-                const studentIcon = item.student.includes('مارسيلينو') ? '👦' : '👧';
-                const sessionClass = 'session-count-7';
-                const cardClass = 'urgent-subject';
-                
-                html += `
-                    <div class="card p-5 ${cardClass}">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl ${item.student.includes('مارسيلينو') ? 'student-icon-boy' : 'student-icon-girl'}">
-                                    ${studentIcon}
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-gray-800">${item.subject}</h3>
-                                    <p class="text-sm text-gray-600">${item.student}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="${sessionClass} session-count-badge arabic-numbers">
-                                    ${toArabicNumbers(item.sessions)} حصة
-                                </span>
-                                <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(item.fee)} ج.م</span>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div class="text-center p-3 bg-gray-50 rounded-xl">
-                                <div class="font-bold text-gray-800 text-lg arabic-numbers">${toArabicNumbers(item.paidPayments)}/${toArabicNumbers(item.requiredPayments)}</div>
-                                <div class="text-sm text-gray-600">الدفعات</div>
-                            </div>
-                            <div class="text-center p-3 bg-blue-50 rounded-xl">
-                                <div class="font-bold text-blue-700 text-lg arabic-numbers">${toArabicNumbers(item.sessionsSincePayment)}</div>
-                                <div class="text-sm text-gray-600">منذ آخر دفعة</div>
-                            </div>
-                            <div class="text-center p-3 ${item.sessionsToNextPayment <= 1 ? 'bg-red-50' : 'bg-green-50'} rounded-xl">
-                                <div class="font-bold ${item.sessionsToNextPayment <= 1 ? 'text-red-700' : 'text-green-700'} text-lg arabic-numbers">${toArabicNumbers(item.sessionsToNextPayment)}</div>
-                                <div class="text-sm text-gray-600">حصص للدفعة التالية</div>
-                            </div>
-                        </div>
-                        
-                        ${item.pendingPayments > 0 ? `
-                            <div class="bg-gradient-to-l from-orange-50 to-red-50 p-3 rounded-xl border border-orange-200 mb-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-bold text-orange-700">مطلوب الدفع:</span>
-                                    <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(item.pendingPayments)} × ${toArabicNumbers(item.fee)} ج.م = ${toArabicNumbers(item.totalDue)} ج.م</span>
-                                </div>
-                            </div>
-                        ` : `
-                            <div class="bg-gradient-to-l from-green-50 to-emerald-50 p-3 rounded-xl border border-green-200 mb-3">
-                                <div class="text-center">
-                                    <span class="font-bold text-green-700">✓ جميع الدفعات الحالية مدفوعة</span>
-                                </div>
-                            </div>
-                        `}
-                        
-                        <div class="flex gap-2 pt-3 border-t border-gray-200">
-                            <button onclick="quickRegisterAttendance('${item.studentId}', '${item.subjectId}')" class="flex-1 btn-primary py-2 rounded-lg">
-                                <i class="fas fa-clipboard-check ml-2"></i>تسجيل حصة
-                            </button>
-                            <button onclick="quickRegisterPayment('${item.studentId}', '${item.subjectId}')" class="flex-1 btn-payment py-2 rounded-lg">
-                                <i class="fas fa-money-bill-wave ml-2"></i>تسجيل دفعة
-                            </button>
-                            <button onclick="showSessionDetails('${item.subjectId}')" class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300">
-                                <i class="fas fa-eye ml-2"></i>عرض الحصص
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
+                </div>
+            `;
+        });
 
-        window.quickRegisterPayment = (studentId, subjectId) => {
-            const subject = window.appState.subjects.find(s => s.id === subjectId);
-            const student = window.appState.students.find(s => s.id === studentId);
-            
-            if (!subject || !student) return;
-            
-            // تعبئة بيانات الدفع
-            document.getElementById('payment-student').value = studentId;
-            updatePaymentSubjects();
-            
-            setTimeout(() => {
-                document.getElementById('payment-subject').value = subjectId;
-                document.getElementById('payment-amount').value = subject.fee;
-                
-                // فتح نافذة الدفع
-                openPaymentModal();
-                
-                switchTab('payment');
-            }, 100);
-        };
+        container.innerHTML = html;
+    }
 
-        window.showAlertModal = (alerts) => {
-            if (!alerts) {
-                const state = window.appState;
-                alerts = [];
+    // تسجيل سريع من حصص اليوم
+    window.quickRegister = (subjectId) => {
+        showModal('attendance', subjectId);
+    };
+
+    // عرض التنبيهات للمواد التي وصلت لـ 8 حصص
+    function renderAlerts() {
+        const alerts = [];
+        
+        state.subjects.forEach(subject => {
+            const attendance = state.attendance.filter(a => a.subjectId === subject.id);
+            const payments = state.payments.filter(p => p.subjectId === subject.id);
+            
+            const sessionsCount = attendance.length;
+            const paidCount = payments.length;
+            const requiredPayments = Math.floor(sessionsCount / 8);
+            
+            // إذا وصل لـ 8 حصص أو أكثر
+            if (sessionsCount >= 8) {
+                const student = state.students.find(s => s.id === subject.studentId);
+                const pending = requiredPayments - paidCount;
                 
-                state.students.forEach(student => {
-                    const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                    
-                    studentSubjects.forEach(subject => {
-                        const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
-                        const attendanceCount = subjectAttendance.length;
-                        
-                        if (attendanceCount < 7) return;
-                        
-                        const requiredPayments = Math.floor(attendanceCount / 8);
-                        const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
-                        const paidPayments = subjectPayments.length;
-                        
-                        if (requiredPayments > 0 && paidPayments < requiredPayments) {
-                            alerts.push({
-                                studentId: student.id,
-                                student: student.name,
-                                subjectId: subject.id,
-                                subject: subject.name,
-                                sessions: attendanceCount,
-                                requiredPayments: requiredPayments,
-                                paidPayments: paidPayments,
-                                pendingPayments: requiredPayments - paidPayments,
-                                fee: subject.fee,
-                                totalDue: (requiredPayments - paidPayments) * subject.fee
-                            });
-                        }
+                if (pending > 0) {
+                    alerts.push({
+                        student: student?.name || '',
+                        subject: subject.name,
+                        sessions: sessionsCount,
+                        pending,
+                        amount: pending * subject.fee
                     });
-                });
-            }
-            
-            if (alerts.length === 0) {
-                showToast("لا توجد مواد تحتاج للدفع حالياً");
-                return;
-            }
-            
-            document.getElementById('alert-title').textContent = `تنبيه: ${toArabicNumbers(alerts.length)} مواد تحتاج للدفع`;
-            document.getElementById('alert-message').textContent = `يوجد ${toArabicNumbers(alerts.length)} مادة وصلت إلى <span class="arabic-numbers">٧</span> حصص أو أكثر`;
-            
-            const alertContent = document.getElementById('alert-content');
-            alertContent.innerHTML = alerts.map(alert => {
-                const studentIcon = alert.student.includes('مارسيلينو') ? '👦' : '👧';
-                
-                return `
-                    <div class="bg-white p-4 rounded-xl border border-gray-200">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center gap-3">
-                                <span class="text-xl">${studentIcon}</span>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">${alert.subject}</h4>
-                                    <p class="text-sm text-gray-600">${alert.student}</p>
-                                </div>
-                            </div>
-                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
-                                ${toArabicNumbers(alert.pendingPayments)} دفعة
-                            </span>
-                        </div>
-                        <div class="text-sm text-gray-600 space-y-1">
-                            <div class="flex justify-between">
-                                <span>إجمالي الحصص:</span>
-                                <span class="font-bold arabic-numbers">${toArabicNumbers(alert.sessions)}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>الدفعات:</span>
-                                <span class="font-bold arabic-numbers">${toArabicNumbers(alert.paidPayments)}/${toArabicNumbers(alert.requiredPayments)} مدفوعة</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>المبلغ المستحق:</span>
-                                <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(alert.totalDue)} ج.م</span>
-                            </div>
-                            <div class="mt-2 p-2 bg-orange-50 rounded-lg">
-                                <span class="font-bold text-orange-600 arabic-numbers">مطلوب الدفع: ${toArabicNumbers(alert.pendingPayments)} × ${toArabicNumbers(alert.fee)} ج.م = ${toArabicNumbers(alert.totalDue)} ج.م</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('alert-modal').classList.remove('hidden');
-        };
-
-        window.closeAlertModal = () => {
-            document.getElementById('alert-modal').classList.add('hidden');
-        };
-
-        window.showPaymentDetails = (studentId) => {
-            const state = window.appState;
-            const student = state.students.find(s => s.id === studentId);
-            
-            if (!student) return;
-            
-            const studentPayments = state.payments.filter(p => p.studentId === studentId);
-            const studentSubjects = state.subjects.filter(s => s.studentId === studentId);
-            
-            document.getElementById('payment-details-title').textContent = `تفاصيل مدفوعات: ${student.name}`;
-            
-            const detailsContent = document.getElementById('payment-details-content');
-            
-            if (studentPayments.length === 0 && studentSubjects.length === 0) {
-                detailsContent.innerHTML = `
-                    <div class="text-center py-8 text-gray-500">
-                        <i class="fas fa-receipt text-3xl mb-3"></i>
-                        <p>لا توجد مدفوعات مسجلة لـ${student.name}</p>
-                    </div>
-                `;
-            } else {
-                let html = '';
-                
-                studentSubjects.forEach(subject => {
-                    const subjectPayments = studentPayments.filter(p => p.subjectId === subject.id);
-                    const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
-                    const attendanceCount = subjectAttendance.length;
-                    const requiredPayments = Math.floor(attendanceCount / 8);
-                    const paidPayments = subjectPayments.length;
-                    const pendingPayments = Math.max(0, requiredPayments - paidPayments);
-                    const totalPaid = subjectPayments.reduce((sum, p) => sum + p.amount, 0);
-                    
-                    html += `
-                        <div class="border-b pb-3 mb-3">
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm ${pendingPayments > 0 ? 'text-orange-600' : 'text-green-600'} font-bold arabic-numbers">
-                                        ${toArabicNumbers(paidPayments)}/${toArabicNumbers(requiredPayments)} دفعة
-                                    </span>
-                                    <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(totalPaid)} ج.م</span>
-                                </div>
-                            </div>
-                            
-                            <div class="text-sm text-gray-600 mb-2">
-                                <div class="flex justify-between">
-                                    <span>إجمالي الحصص:</span>
-                                    <span class="font-bold arabic-numbers">${toArabicNumbers(attendanceCount)}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>المبلغ الشهري:</span>
-                                    <span class="arabic-numbers">${toArabicNumbers(subject.fee)} ج.م</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>الحصص للدفعة:</span>
-                                    <span class="arabic-numbers">٨</span> حصص
-                                </div>
-                            </div>
-                            
-                            ${pendingPayments > 0 ? `
-                                <div class="bg-orange-50 p-2 rounded-lg mb-2">
-                                    <div class="flex justify-between items-center">
-                                        <span class="font-bold text-orange-700">مطلوب الدفع:</span>
-                                        <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(pendingPayments)} × ${toArabicNumbers(subject.fee)} ج.م = ${toArabicNumbers(pendingPayments * subject.fee)} ج.م</span>
-                                    </div>
-                                </div>
-                            ` : ''}
-                            
-                            ${subjectPayments.length > 0 ? `
-                                <div class="mt-2">
-                                    <h5 class="font-bold text-gray-700 mb-1">سجل الدفعات:</h5>
-                                    <div class="space-y-2">
-                                        ${subjectPayments.sort((a, b) => new Date(b.date) - new Date(a.date)).map((payment, index) => `
-                                            <div class="payment-details-item bg-gray-50 p-3 rounded-lg">
-                                                <div class="flex justify-between items-center mb-1">
-                                                    <span class="font-bold text-gray-700">الدفعة ${toArabicNumbers(index + 1)}</span>
-                                                    <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(payment.amount)} ج.م</span>
-                                                </div>
-                                                <div class="text-sm text-gray-600 grid grid-cols-2 gap-2">
-                                                    <div>
-                                                        <span class="font-bold">التاريخ:</span>
-                                                        <span> ${payment.date}</span>
-                                                    </div>
-                                                    <div>
-                                                        <span class="font-bold">اليوم:</span>
-                                                        <span> ${payment.day}</span>
-                                                    </div>
-                                                </div>
-                                                ${payment.notes ? `
-                                                    <div class="mt-1 text-sm text-gray-500">
-                                                        <span class="font-bold">ملاحظات:</span>
-                                                        <span> ${payment.notes}</span>
-                                                    </div>
-                                                ` : ''}
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            ` : `
-                                <div class="text-center py-3 text-gray-500 text-sm">
-                                    <i class="fas fa-info-circle mr-1"></i>
-                                    لم يتم تسجيل أي دفعات لهذه المادة
-                                </div>
-                            `}
-                        </div>
-                    `;
-                });
-                
-                detailsContent.innerHTML = html;
-            }
-            
-            document.getElementById('payment-details-modal').classList.remove('hidden');
-        };
-
-        window.toggleSubjectDetails = (subjectId) => {
-            const state = window.appState;
-            state.expandedSubjects[subjectId] = !state.expandedSubjects[subjectId];
-            updatePaymentSummary();
-        };
-
-        window.closePaymentDetailsModal = () => {
-            document.getElementById('payment-details-modal').classList.add('hidden');
-        };
-
-        window.addStudent = async () => {
-            if (!window.appState.user) return showToast("انتظر الاتصال بالسحابة...");
-            const name = document.getElementById('student-name').value.trim();
-            if (!name) return showToast("يرجى إدخال اسم الابن");
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'students'), { name });
-                document.getElementById('student-name').value = '';
-                showToast("تمت إضافة الابن بنجاح");
-            } catch (e) { showToast("خطأ في الحفظ: " + e.code); }
-        };
-
-        window.addSubject = async () => {
-            if (!window.appState.user) return showToast("انتظر الاتصال بالسحابة...");
-            const studentId = document.getElementById('parent-student').value;
-            const name = document.getElementById('subject-name').value.trim();
-            const fee = document.getElementById('subject-fee').value;
-            const time = document.getElementById('subject-time').value.trim();
-            const selectedDays = Array.from(document.querySelectorAll('.day-checkbox:checked')).map(cb => cb.value);
-            if (!studentId || !name || !fee || selectedDays.length === 0) return showToast("يرجى إكمال كافة البيانات");
-            
-            const formattedTime = convertTo12Hour(time);
-            
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'subjects'), {
-                    studentId, name, fee: parseFloat(fee), days: selectedDays, time: formattedTime
-                });
-                document.getElementById('subject-name').value = '';
-                document.getElementById('subject-fee').value = '';
-                document.getElementById('subject-time').value = '';
-                document.querySelectorAll('.day-checkbox').forEach(cb => cb.checked = false);
-                showToast("تم حفظ المادة بنجاح");
-            } catch (e) { showToast("خطأ في الحفظ: " + e.code); }
-        };
-
-        window.saveDashboardAttendance = async () => {
-            if (!window.appState.user) return showToast("انتظر الاتصال بالسحابة...");
-            
-            const btn = document.getElementById('dashboard-save-btn');
-            const studentId = document.getElementById('dashboard-att-student').value;
-            const subjectId = document.getElementById('dashboard-att-subject').value;
-            const date = document.getElementById('dashboard-att-date').value;
-            const day = document.getElementById('dashboard-att-day').value;
-            const status = document.querySelector('input[name="dashboard-status"]:checked').value;
-            
-            if (!studentId || !subjectId || !date) return showToast("يرجى إكمال بيانات الحضور");
-            
-            // التحقق من عدم وجود تسجيل مسبق لنفس اليوم والمادة
-            const existingRecord = window.appState.attendance.find(
-                a => a.studentId === studentId && 
-                     a.subjectId === subjectId && 
-                     a.date === date
-            );
-            
-            if (existingRecord) {
-                return showToast("تم تسجيل هذه المادة لنفس اليوم سابقاً");
-            }
-            
-            btn.disabled = true;
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance'), {
-                    studentId, subjectId, date, day, status, timestamp: Date.now()
-                });
-                showToast("تم تسجيل " + status + " بنجاح");
-                // إعادة تعيين الحقول
-                document.getElementById('dashboard-att-student').value = '';
-                document.getElementById('dashboard-att-subject').innerHTML = '<option value="">-- اختر المادة --</option>';
-                // العودة إلى تاريخ اليوم
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('dashboard-att-date').value = today;
-                updateDashboardDayName();
-            } catch (e) { showToast("خطأ في التسجيل: " + e.code); }
-            btn.disabled = false;
-        };
-
-        window.deleteStudent = async (id) => {
-            if (!window.appState.user) return;
-            if (confirm("سيتم حذف الابن وكل بياناته، هل أنت متأكد؟")) {
-                try {
-                    const subsToDelete = window.appState.subjects.filter(s => s.studentId === id);
-                    for (let s of subsToDelete) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'subjects', s.id));
-                    }
-                    const attsToDelete = window.appState.attendance.filter(a => a.studentId === id);
-                    for (let a of attsToDelete) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', a.id));
-                    }
-                    const paymentsToDelete = window.appState.payments.filter(p => p.studentId === id);
-                    for (let p of paymentsToDelete) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', p.id));
-                    }
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', id));
-                    showToast("تم حذف الابن بنجاح");
-                } catch (e) { showToast("خطأ في الحذف: " + e.message); }
-            }
-        };
-
-        window.deleteSubject = async (id) => {
-            if (!window.appState.user) return;
-            if (confirm("حذف هذه المادة؟")) {
-                try {
-                    const atts = window.appState.attendance.filter(a => a.subjectId === id);
-                    for (let a of atts) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', a.id));
-                    }
-                    const payments = window.appState.payments.filter(p => p.subjectId === id);
-                    for (let p of payments) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', p.id));
-                    }
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'subjects', id));
-                    showToast("تم حذف المادة بنجاح");
-                } catch (e) { showToast("خطأ في الحذف"); }
-            }
-        };
-
-        window.deleteAttendance = async (id) => {
-            if (!window.appState.user) return;
-            if (confirm("حذف هذا التسجيل؟")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', id));
-                    showToast("تم حذف التسجيل بنجاح");
-                } catch (e) { showToast("خطأ في الحذف"); }
-            }
-        };
-
-        window.editAttendance = (attendanceId) => {
-            const attendance = window.appState.attendance.find(a => a.id === attendanceId);
-            if (!attendance) return;
-            
-            window.appState.editingAttendanceId = attendanceId;
-            document.getElementById('edit-attendance-id').value = attendanceId;
-            document.getElementById('edit-attendance-date').value = attendance.date;
-            
-            const radioButtons = document.querySelectorAll('input[name="edit-status"]');
-            radioButtons.forEach(radio => {
-                radio.checked = radio.value === attendance.status;
-            });
-            
-            document.getElementById('edit-attendance-modal').classList.remove('hidden');
-        };
-
-        window.saveEditedAttendance = async () => {
-            if (!window.appState.user) return showToast("انتظر الاتصال بالسحابة...");
-            
-            const attendanceId = window.appState.editingAttendanceId;
-            const date = document.getElementById('edit-attendance-date').value;
-            const status = document.querySelector('input[name="edit-status"]:checked').value;
-            
-            if (!attendanceId || !date || !status) return showToast("يرجى إكمال كافة البيانات");
-            
-            const dateObj = new Date(date);
-            const dayName = dateObj.toLocaleDateString('ar-EG', { weekday: 'long' });
-            
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', attendanceId), {
-                    date,
-                    day: dayName,
-                    status,
-                    timestamp: Date.now()
-                });
-                showToast("تم تحديث التسجيل بنجاح");
-                closeEditAttendanceModal();
-            } catch (e) { showToast("خطأ في التحديث: " + e.code); }
-        };
-
-        window.closeEditAttendanceModal = () => {
-            document.getElementById('edit-attendance-modal').classList.add('hidden');
-            window.appState.editingAttendanceId = null;
-        };
-
-        window.resetSubject = async (subId) => {
-            if (!window.appState.user) return;
-            if (confirm("تصفير حصص الشهر؟")) {
-                try {
-                    const batch = window.appState.attendance.filter(a => a.subjectId === subId);
-                    for (let a of batch) {
-                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', a.id));
-                    }
-                    showToast("تم تصفير الحصص بنجاح");
-                } catch (e) { showToast("خطأ في التصفير"); }
-            }
-        };
-
-        window.editSubject = (subjectId) => {
-            const subject = window.appState.subjects.find(s => s.id === subjectId);
-            if (!subject) return;
-            
-            window.appState.editingSubjectId = subjectId;
-            document.getElementById('edit-subject-name').value = subject.name;
-            document.getElementById('edit-subject-fee').value = subject.fee;
-            document.getElementById('edit-subject-time').value = subject.time || '';
-            
-            const container = document.getElementById('edit-days-selector');
-            container.innerHTML = '';
-            
-            WEEKDAYS.forEach(day => {
-                const isChecked = subject.days.includes(day);
-                container.innerHTML += `
-                    <div class="relative">
-                        <input type="checkbox" id="edit-day-${day}" value="${day}" class="hidden day-checkbox" ${isChecked ? 'checked' : ''}>
-                        <label for="edit-day-${day}" class="px-3 py-1.5 border border-gray-200 rounded-lg text-xs cursor-pointer hover:bg-gray-50 transition-all block ${isChecked ? 'bg-indigo-600 text-white border-indigo-600' : ''}">
-                            ${day}
-                        </label>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('edit-subject-modal').classList.remove('hidden');
-        };
-
-        window.saveEditedSubject = async () => {
-            if (!window.appState.user) return showToast("انتظر الاتصال بالسحابة...");
-            const subjectId = window.appState.editingSubjectId;
-            const name = document.getElementById('edit-subject-name').value.trim();
-            const fee = document.getElementById('edit-subject-fee').value;
-            const time = document.getElementById('edit-subject-time').value.trim();
-            const selectedDays = Array.from(document.querySelectorAll('#edit-days-selector .day-checkbox:checked')).map(cb => cb.value);
-            
-            if (!name || !fee || selectedDays.length === 0) return showToast("يرجى إكمال كافة البيانات");
-            
-            const formattedTime = convertTo12Hour(time);
-            
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'subjects', subjectId), {
-                    name, fee: parseFloat(fee), days: selectedDays, time: formattedTime
-                });
-                showToast("تم تحديث المادة بنجاح");
-                closeEditModal();
-            } catch (e) { showToast("خطأ في التحديث: " + e.code); }
-        };
-
-        window.closeEditModal = () => {
-            document.getElementById('edit-subject-modal').classList.add('hidden');
-            window.appState.editingSubjectId = null;
-        };
-
-        window.openPaymentModal = () => {
-            document.getElementById('add-payment-modal').classList.remove('hidden');
-            updatePaymentDayName();
-        };
-
-        window.closePaymentModal = () => {
-            document.getElementById('add-payment-modal').classList.add('hidden');
-        };
-
-        window.updatePaymentDayName = () => {
-            const dateVal = document.getElementById('payment-date').value;
-            if (dateVal) {
-                const date = new Date(dateVal);
-                const dayName = date.toLocaleDateString('ar-EG', { weekday: 'long' });
-                document.getElementById('payment-day').value = dayName;
-            }
-        };
-
-        window.updatePaymentSubjects = () => {
-            const studentId = document.getElementById('payment-student').value;
-            const select = document.getElementById('payment-subject');
-            select.innerHTML = '<option value="">-- اختر المادة --</option>';
-            window.appState.subjects.filter(s => s.studentId === studentId).forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = `${s.name} (${toArabicNumbers(s.fee)} ج.م)`;
-                select.appendChild(opt);
-            });
-        };
-
-        window.updatePaymentInfo = () => {
-            const subjectId = document.getElementById('payment-subject').value;
-            if (!subjectId) return;
-            
-            const subject = window.appState.subjects.find(s => s.id === subjectId);
-            if (subject) {
-                document.getElementById('payment-amount').value = subject.fee;
-            }
-        };
-
-        window.savePayment = async () => {
-            if (!window.appState.user) return showToast("انتظر الاتصال بالسحابة...");
-            
-            const studentId = document.getElementById('payment-student').value;
-            const subjectId = document.getElementById('payment-subject').value;
-            const date = document.getElementById('payment-date').value;
-            const day = document.getElementById('payment-day').value;
-            const amount = document.getElementById('payment-amount').value;
-            const notes = document.getElementById('payment-notes').value;
-            
-            if (!studentId || !subjectId || !date || !amount) return showToast("يرجى إكمال بيانات الدفعة");
-            
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'payments'), {
-                    studentId,
-                    subjectId,
-                    date,
-                    day,
-                    amount: parseFloat(amount),
-                    notes: notes || '',
-                    timestamp: Date.now()
-                });
-                
-                showToast("تم تسجيل الدفعة بنجاح");
-                closePaymentModal();
-                
-                // إعادة تعيين الحقول
-                document.getElementById('payment-student').value = '';
-                document.getElementById('payment-subject').innerHTML = '<option value="">-- اختر المادة --</option>';
-                document.getElementById('payment-amount').value = '';
-                document.getElementById('payment-notes').value = '';
-                
-                // التحقق من المواد القريبة بعد التسجيل
-                setTimeout(checkUpcomingPayments, 500);
-                
-            } catch (e) { showToast("خطأ في التسجيل: " + e.code); }
-        };
-
-        window.deletePayment = async (paymentId) => {
-            if (!window.appState.user) return;
-            if (confirm("حذف هذه الدفعة؟")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', paymentId));
-                    showToast("تم حذف الدفعة بنجاح");
-                    setTimeout(checkUpcomingPayments, 500);
-                } catch (e) { showToast("خطأ في الحذف"); }
-            }
-        };
-
-        window.switchTab = (tabName) => {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            const target = document.getElementById(tabName + '-tab');
-            if(target) target.classList.remove('hidden');
-            
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('tab-active', 'text-white');
-                b.classList.add('bg-white', 'text-gray-700', 'border');
-            });
-            
-            if (event && event.target) {
-                event.target.classList.add('tab-active', 'text-white');
-                event.target.classList.remove('bg-white', 'text-gray-700', 'border');
-            }
-            
-            if (tabName === 'dashboard') {
-                updateDashboard();
-            } else if (tabName === 'payment') {
-                updatePaymentSummary();
-            } else if (tabName === 'reports') {
-                updateReports();
-            } else if (tabName === 'upcoming') {
-                updateUpcomingSubjectsList();
-            }
-        };
-
-        window.updateDashboardDayName = () => {
-            const dateVal = document.getElementById('dashboard-att-date').value;
-            if (dateVal) {
-                const date = new Date(dateVal);
-                const dayName = date.toLocaleDateString('ar-EG', { weekday: 'long' });
-                document.getElementById('dashboard-att-day').value = dayName;
-            }
-        };
-
-        window.updateDashboardAttSubjects = () => {
-            const studentId = document.getElementById('dashboard-att-student').value;
-            const select = document.getElementById('dashboard-att-subject');
-            select.innerHTML = '<option value="">-- اختر المادة --</option>';
-            window.appState.subjects.filter(s => s.studentId === studentId).forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = `${s.name} (${s.days.join(' - ')})`;
-                select.appendChild(opt);
-            });
-        };
-
-        function renderDaySelectors() {
-            const container = document.getElementById('days-selector');
-            if(!container) return;
-            WEEKDAYS.forEach(day => {
-                container.innerHTML += `
-                    <div class="relative">
-                        <input type="checkbox" id="day-${day}" value="${day}" class="hidden day-checkbox">
-                        <label for="day-${day}" class="px-4 py-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-all block font-bold">
-                            ${day}
-                        </label>
-                    </div>
-                `;
-            });
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
-            toastMsg.textContent = msg;
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(20px)';
-            }, 3000);
-        }
-
-        window.toggleExpand = (studentId) => {
-            const state = window.appState;
-            state.expandedSections[studentId] = !state.expandedSections[studentId];
-            updateUI();
-        };
-
-        window.toggleSubjectExpand = (subjectId) => {
-            const state = window.appState;
-            state.expandedSections[subjectId] = !state.expandedSections[subjectId];
-            updateUI();
-        };
-
-        window.showSessionDetails = (subId) => {
-            const subject = window.appState.subjects.find(s => s.id === subId);
-            const sessions = window.appState.attendance
-                .filter(a => a.subjectId === subId)
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            document.getElementById('modal-title').textContent = `حصص مادة: ${subject ? subject.name : ''}`;
-            const body = document.getElementById('modal-body');
-            
-            body.innerHTML = sessions.map((s, index) => `
-                <tr class="border-b text-sm hover:bg-indigo-50 transition">
-                    <td class="py-3 text-right font-bold">${s.date}</td>
-                    <td class="py-3 text-center font-bold ${s.status === 'حضور' ? 'text-green-700' : 'text-red-700'} arabic-numbers">${toArabicNumbers(index + 1)}</td>
-                    <td class="py-3 text-center text-gray-600">${s.day}</td>
-                    <td class="py-3 text-center">
-                        <span class="px-2 py-1 rounded-full text-xs font-bold ${s.status === 'حضور' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                            ${s.status}
-                        </span>
-                    </td>
-                </tr>
-            `).reverse().join('') || '<tr><td colspan="4" class="text-center py-4 text-gray-400">لا توجد حصص مسجلة</td></tr>';
-
-            document.getElementById('details-modal').classList.remove('hidden');
-        };
-
-        window.closeModal = () => {
-            document.getElementById('details-modal').classList.add('hidden');
-        };
-
-        window.generateWhatsAppReport = () => {
-            const state = window.appState;
-            
-            let report = `*تقرير دروس الأبناء*\n\n`;
-            report += `تاريخ التقرير: ${new Date().toLocaleDateString('ar-EG')}\n`;
-            report += `────────────────\n\n`;
-            
-            let totalAllSessions = 0;
-            
-            state.students.forEach(student => {
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                const studentAttendance = state.attendance.filter(a => a.studentId === student.id);
-                
-                if (studentSubjects.length > 0) {
-                    report += `*${student.name}:*\n`;
-                    
-                    let totalSessions = 0;
-                    
-                    studentSubjects.forEach(subject => {
-                        const subjectAttendance = studentAttendance.filter(a => a.subjectId === subject.id);
-                        const attendanceCount = subjectAttendance.length;
-                        const presenceCount = subjectAttendance.filter(a => a.status === 'حضور').length;
-                        const absenceCount = subjectAttendance.filter(a => a.status === 'غياب').length;
-                        
-                        totalSessions += attendanceCount;
-                        totalAllSessions += attendanceCount;
-                        
-                        report += `  - ${subject.name}: ${toArabicNumbers(attendanceCount)} حصة (${toArabicNumbers(presenceCount)} حضور، ${toArabicNumbers(absenceCount)} غياب)\n`;
-                    });
-                    
-                    report += `  *الإجمالي:* ${toArabicNumbers(totalSessions)} حصة\n\n`;
                 }
-            });
-            
-            report += `────────────────\n`;
-            report += `*المجموع الكلي:*\n`;
-            report += `• إجمالي الحصص: ${toArabicNumbers(totalAllSessions)}\n\n`;
-            report += `────────────────\n`;
-            report += `نظام متابعة الدروس\n`;
-            report += `تصميم: المهندس بولس سمير`;
-            
-            const encodedReport = encodeURIComponent(report);
-            const whatsappUrl = `https://wa.me/?text=${encodedReport}`;
-            window.open(whatsappUrl, '_blank');
-        };
-
-        window.exportReportData = () => {
-            const state = window.appState;
-            let csv = 'الابن,المادة,عدد الحصص,الحضور,الغياب,المبلغ الشهري,الدفعات المدفوعة\n';
-            
-            state.students.forEach(student => {
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                const studentAttendance = state.attendance.filter(a => a.studentId === student.id);
-                
-                studentSubjects.forEach(subject => {
-                    const subjectAttendance = studentAttendance.filter(a => a.subjectId === subject.id);
-                    const attendanceCount = subjectAttendance.length;
-                    const presenceCount = subjectAttendance.filter(a => a.status === 'حضور').length;
-                    const absenceCount = subjectAttendance.filter(a => a.status === 'غياب').length;
-                    const subjectPayments = state.payments.filter(p => p.subjectId === subject.id);
-                    const paidPayments = subjectPayments.length;
-                    
-                    csv += `${student.name},${subject.name},${attendanceCount},${presenceCount},${absenceCount},${subject.fee},${paidPayments}\n`;
-                });
-            });
-            
-            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `تقرير_الدروس_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showToast("تم تصدير التقرير بنجاح");
-        };
-
-        window.exportAttendanceData = () => {
-            const state = window.appState;
-            let csv = 'التاريخ,الابن,المادة,اليوم,الحالة\n';
-            
-            state.attendance.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(record => {
-                const student = state.students.find(s => s.id === record.studentId);
-                const subject = state.subjects.find(s => s.id === record.subjectId);
-                
-                csv += `${record.date},${student ? student.name : 'غير معروف'},${subject ? subject.name : 'مادة محذوفة'},${record.day},${record.status}\n`;
-            });
-            
-            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `تسجيلات_الدروس_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showToast("تم تصدير البيانات بنجاح");
-        };
-
-        function updatePaymentSummary() {
-            const state = window.appState;
-            const container = document.getElementById('student-payments-summary');
-            
-            if (!container) return;
-            
-            let html = '';
-            
-            state.students.forEach(student => {
-                const studentPayments = state.payments.filter(p => p.studentId === student.id);
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                
-                if (studentSubjects.length === 0) return;
-                
-                let studentTotal = studentPayments.reduce((sum, p) => sum + p.amount, 0);
-                const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
-                const studentColor = student.name.includes('مارسيلينو') ? 'student-icon-boy' : 'student-icon-girl';
-                const isExpanded = state.expandedSections[`payment_${student.id}`] || false;
-                
-                html += `
-                    <div class="card p-5 border-r-4 ${student.name.includes('مارسيلينو') ? 'border-blue-500' : 'border-purple-500'} mb-6">
-                        <div class="flex items-center justify-between mb-6 cursor-pointer" onclick="toggleExpand('payment_${student.id}')">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 ${studentColor} rounded-full flex items-center justify-center text-white text-2xl">
-                                    ${studentIcon}
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                    <p class="text-sm text-gray-600">${toArabicNumbers(studentSubjects.length)} مادة</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-2xl font-bold text-purple-700 arabic-numbers">${toArabicNumbers(studentTotal)}</span>
-                                <span class="text-lg font-bold text-purple-700">ج.م</span>
-                                <button class="expand-btn text-purple-600 hover:text-purple-800 text-xl transition-transform ${isExpanded ? 'expanded' : ''}">
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="expandable-content ${isExpanded ? 'expanded' : 'collapsed'}">
-                            <div class="space-y-4">
-                                ${studentSubjects.map(subject => {
-                                    const subjectPayments = studentPayments.filter(p => p.subjectId === subject.id);
-                                    const subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
-                                    const attendanceCount = subjectAttendance.length;
-                                    const requiredPayments = Math.floor(attendanceCount / 8);
-                                    const paidPayments = subjectPayments.length;
-                                    const pendingPayments = Math.max(0, requiredPayments - paidPayments);
-                                    const subjectTotal = subjectPayments.reduce((sum, p) => sum + p.amount, 0);
-                                    const isSubjectExpanded = state.expandedSubjects[subject.id] || false;
-                                    
-                                    return `
-                                        <div class="border border-gray-200 rounded-xl overflow-hidden">
-                                            <div class="flex items-center justify-between p-4 bg-gray-50">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                                                        ${subject.name.charAt(0)}
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="font-bold text-gray-800">${subject.name}</h4>
-                                                        <p class="text-xs text-gray-500">${toArabicNumbers(attendanceCount)} حصة</p>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center gap-3">
-                                                    ${pendingPayments > 0 ? `
-                                                        <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold arabic-numbers">
-                                                            ${toArabicNumbers(pendingPayments)} دفعة
-                                                        </span>
-                                                    ` : ''}
-                                                    <span class="font-bold text-green-700 arabic-numbers">${toArabicNumbers(subjectTotal)} ج.م</span>
-                                                    <button onclick="toggleSubjectDetails('${subject.id}')" class="expand-btn text-gray-500 ${isSubjectExpanded ? 'expanded' : ''}">
-                                                        <i class="fas fa-chevron-down"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="subject-details ${isSubjectExpanded ? 'expanded' : ''}">
-                                                <div class="p-4 bg-white border-t border-gray-100">
-                                                    <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
-                                                        <div class="text-center p-2 bg-blue-50 rounded-lg">
-                                                            <div class="font-bold text-blue-700 arabic-numbers">${toArabicNumbers(attendanceCount)}</div>
-                                                            <div class="text-xs text-gray-600">إجمالي الحصص</div>
-                                                        </div>
-                                                        <div class="text-center p-2 ${pendingPayments > 0 ? 'bg-red-50' : 'bg-green-50'} rounded-lg">
-                                                            <div class="font-bold ${pendingPayments > 0 ? 'text-red-700' : 'text-green-700'} arabic-numbers">${toArabicNumbers(paidPayments)}/${toArabicNumbers(requiredPayments)}</div>
-                                                            <div class="text-xs text-gray-600">الدفعات</div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    ${pendingPayments > 0 ? `
-                                                        <div class="bg-orange-50 p-3 rounded-lg mb-3">
-                                                            <div class="flex justify-between items-center">
-                                                                <span class="font-bold text-orange-700">مطلوب الدفع:</span>
-                                                                <span class="font-bold text-orange-700 arabic-numbers">${toArabicNumbers(pendingPayments)} × ${toArabicNumbers(subject.fee)} ج.م = ${toArabicNumbers(pendingPayments * subject.fee)} ج.م</span>
-                                                            </div>
-                                                        </div>
-                                                    ` : `
-                                                        <div class="bg-green-50 p-3 rounded-lg mb-3 text-center">
-                                                            <span class="font-bold text-green-700">✓ جميع الدفعات مدفوعة</span>
-                                                        </div>
-                                                    `}
-                                                    
-                                                    <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                                                        <div>
-                                                            <span class="font-bold">المبلغ الشهري:</span>
-                                                            <span class="arabic-numbers"> ${toArabicNumbers(subject.fee)} ج.م</span>
-                                                        </div>
-                                                        <div>
-                                                            <span class="font-bold">أيام الدراسة:</span>
-                                                            <span> ${subject.days.join('، ')}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (html === '') {
-                html = '<div class="empty-state"><i class="fas fa-credit-card"></i><p>لا توجد مواد مسجلة</p></div>';
             }
-            
-            container.innerHTML = html;
+        });
+
+        const container = document.getElementById('alerts-list');
+        const section = document.getElementById('alerts-section');
+        const countSpan = document.getElementById('alert-count');
+
+        if (alerts.length === 0) {
+            section.style.display = 'none';
+            return;
         }
 
-        window.updateUI = () => {
-            const state = window.appState;
+        section.style.display = 'block';
+        countSpan.textContent = alerts.length;
 
-            const pSt = document.getElementById('parent-student');
-            const dSt = document.getElementById('dashboard-att-student');
-            const paySt = document.getElementById('payment-student');
-            const reportSt = document.getElementById('report-student-filter');
-            
-            [pSt, dSt, paySt, reportSt].forEach(s => {
-                if (!s) return;
-                const cur = s.value;
-                s.innerHTML = '<option value="">-- اختر الابن --</option>';
-                state.students.forEach(st => {
-                    const opt = document.createElement('option');
-                    opt.value = st.id; opt.textContent = st.name;
-                    s.appendChild(opt);
-                });
-                s.value = cur;
-            });
+        let html = '';
+        alerts.forEach(alert => {
+            html += `
+                <div class="alert-item">
+                    <div class="alert-header">
+                        <span class="alert-title">${alert.subject}</span>
+                        <span class="alert-badge">${toArabic(alert.sessions)} حصة</span>
+                    </div>
+                    <div class="alert-details">
+                        <div>الطالب: ${alert.student}</div>
+                        <div class="font-bold mt-2">⚠️ مطلوب دفع ${toArabic(alert.pending)} دفعة (${toArabic(alert.amount)} ج.م)</div>
+                    </div>
+                </div>
+            `;
+        });
 
-            const sl = document.getElementById('students-list');
-            if (sl) sl.innerHTML = state.students.map(s => `
-                <div class="bg-gradient-to-l from-gray-50 to-white px-5 py-3 rounded-xl flex items-center gap-3 border shadow-sm hover:shadow-md transition-all">
-                    <span class="font-bold text-lg">${s.name}</span>
-                    <button onclick="deleteStudent('${s.id}')" class="text-red-400 hover:text-red-600 font-bold p-2 hover:bg-red-50 rounded-lg transition">
+        container.innerHTML = html;
+    }
+
+    function renderCards() {
+        const container = document.getElementById('cards-container');
+        
+        if (state.students.length === 0) {
+            container.innerHTML = '<div class="empty">لا يوجد أبناء</div>';
+            return;
+        }
+
+        let html = '';
+        state.students.forEach(student => {
+            html += renderStudent(student);
+        });
+        container.innerHTML = html;
+    }
+
+    function renderStudent(student) {
+        const gender = getGender(student.name);
+        const isExpanded = state.expanded[student.id] || false;
+        
+        const subjects = state.subjects.filter(s => s.studentId === student.id);
+        const attendance = state.attendance.filter(a => a.studentId === student.id);
+        const payments = state.payments.filter(p => p.studentId === student.id);
+
+        const totalSessions = attendance.length;
+        const totalPresence = attendance.filter(a => a.status === 'حضور').length;
+        const totalAbsence = attendance.filter(a => a.status === 'غياب').length;
+        const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+
+        return `
+            <div class="student-card">
+                <!-- الرأس -->
+                <div class="${gender === 'boy' ? 'header-boy' : 'header-girl'}" onclick="toggleCard('${student.id}')">
+                    <div class="student-name">
+                        <span>${gender === 'boy' ? '👦' : '👧'}</span>
+                        ${student.name}
+                    </div>
+                    <div class="expand-icon ${isExpanded ? 'rotated' : ''}">
+                        <i class="fas ${isExpanded ? 'fa-minus' : 'fa-plus'}"></i>
+                    </div>
+                </div>
+
+                <!-- المحتوى -->
+                <div class="card-content ${isExpanded ? 'show' : ''}">
+                    
+                    <!-- إحصائيات -->
+                    <div class="stats">
+                        <div class="stat"><span class="ar-num">${toArabic(totalSessions)}</span> حصة</div>
+                        <div class="stat"><span class="ar-num">${toArabic(totalPresence)}</span> حضور</div>
+                        <div class="stat"><span class="ar-num">${toArabic(totalAbsence)}</span> غياب</div>
+                        <div class="stat"><span class="ar-num">${toArabic(totalPaid)}</span> ج.م</div>
+                    </div>
+
+                    <!-- المواد -->
+                    <div class="subjects">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-bold">المواد</h3>
+                            <button class="text-sm bg-gray-200 px-3 py-1 rounded-full" onclick="showModal('subject', '${student.id}')">
+                                <i class="fas fa-plus ml-1"></i>إضافة
+                            </button>
+                        </div>
+
+                        ${subjects.length === 0 ? 
+                            '<div class="empty py-6">لا توجد مواد</div>' : 
+                            subjects.map(s => renderSubject(s)).join('')
+                        }
+                    </div>
+
+                    <!-- الحصص -->
+                    <div class="records">
+                        <h3 class="font-bold mb-3">آخر الحصص</h3>
+                        ${renderAttendance(attendance)}
+                    </div>
+
+                    <!-- المدفوعات -->
+                    <div class="records">
+                        <h3 class="font-bold mb-3">آخر المدفوعات</h3>
+                        ${renderPayments(payments)}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderSubject(subject) {
+        const attendance = state.attendance.filter(a => a.subjectId === subject.id);
+        const payments = state.payments.filter(p => p.subjectId === subject.id);
+        
+        const sessionsCount = attendance.length;
+        const presenceCount = attendance.filter(a => a.status === 'حضور').length;
+        const absenceCount = attendance.filter(a => a.status === 'غياب').length;
+        
+        const requiredPayments = Math.floor(sessionsCount / 8);
+        const paidPayments = payments.length;
+        const pendingPayments = requiredPayments - paidPayments;
+        
+        const sessionsSinceLastPayment = sessionsCount - (paidPayments * 8);
+        const progress = (sessionsSinceLastPayment / 8) * 100;
+
+        // تحديد مستوى التلوين (0-12)
+        let level = Math.min(sessionsCount, 12);
+        let levelClass = `level-${level}`;
+
+        return `
+            <div class="subject-item ${levelClass}">
+                <div class="subject-header">
+                    <span class="subject-name">${subject.name} ${subject.time ? `(${subject.time})` : ''}</span>
+                    <span class="subject-fee ar-num">${toArabic(subject.fee)} ج.م</span>
+                </div>
+
+                <div class="days">
+                    ${WEEKDAYS.map(day => `
+                        <span class="day ${subject.days?.includes(day) ? 'active' : ''}">${day}</span>
+                    `).join('')}
+                </div>
+
+                <div class="subject-stats">
+                    <div><span class="ar-num">${toArabic(sessionsCount)}</span> إجمالي</div>
+                    <div><span class="ar-num">${toArabic(presenceCount)}</span> حضور</div>
+                    <div><span class="ar-num">${toArabic(absenceCount)}</span> غياب</div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-label">
+                        <span>تقدم الدفعة</span>
+                        <span class="ar-num">${toArabic(sessionsSinceLastPayment)}/8</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill ${sessionsCount >= 8 ? 'alert' : sessionsCount >= 7 ? 'warning' : ''}" style="width: ${progress}%"></div>
+                    </div>
+                </div>
+
+                <!-- رسالة تنبيه عند 8 حصص -->
+                ${sessionsCount >= 8 && pendingPayments > 0 ? `
+                    <div class="eight-alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        ⚠️ وصلت لـ ${toArabic(sessionsCount)} حصص - مطلوب دفع ${toArabic(pendingPayments)} دفعة
+                    </div>
+                ` : sessionsCount >= 8 ? `
+                    <div class="payment-status status-paid">
+                        ✓ تم دفع كل المستحق حتى ${toArabic(sessionsCount)} حصة
+                    </div>
+                ` : ''}
+
+                ${pendingPayments > 0 && sessionsCount < 8 ? `
+                    <div class="payment-status status-warning">
+                        سيحتاج دفعة بعد ${toArabic(8 - sessionsSinceLastPayment)} حصص
+                    </div>
+                ` : ''}
+
+                <div class="actions">
+                    <button class="btn btn-green" onclick="showModal('attendance', '${subject.id}')">
+                        <i class="fas fa-pen"></i> حصة
+                    </button>
+                    <button class="btn btn-black" onclick="showModal('payment', '${subject.id}')">
+                        <i class="fas fa-money-bill-wave"></i> دفعة
+                    </button>
+                    <button class="btn btn-red" onclick="deleteSubject('${subject.id}')">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
-            `).join('');
+            </div>
+        `;
+    }
 
-            updateDashboard();
-            updateRecentAttendance();
-            updateExpenseReport();
-            updateSchedule();
-            updatePaymentSummary();
-            updateReportFilters();
-            checkUpcomingPayments();
-        };
-
-        function updateDashboard() {
-            updateTodayOverview();
-            updateRecentAttendance();
+    function renderAttendance(attendance) {
+        const recent = [...attendance].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+        
+        if (recent.length === 0) {
+            return '<div class="empty py-4">لا توجد حصص</div>';
         }
 
-        function updateTodayOverview() {
-            const state = window.appState;
-            const container = document.getElementById('today-overview');
-            
-            if (!container) return;
-            
-            const today = new Date().toISOString().split('T')[0];
-            const todayDay = new Date().toLocaleDateString('ar-EG', { weekday: 'long' });
-            
-            let html = '';
-            
-            state.students.forEach(student => {
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                const todaySubjects = studentSubjects.filter(s => s.days.includes(todayDay));
-                
-                if (todaySubjects.length === 0) return;
-                
-                html += `
-                    <div class="dashboard-card">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
-                                ${toArabicNumbers(todaySubjects.length)} مادة اليوم
-                            </span>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            ${todaySubjects.map(subject => {
-                                const todayAttendance = state.attendance.find(a => 
-                                    a.subjectId === subject.id && a.date === today
-                                );
-                                
-                                const timeDisplay = subject.time ? ` <span class="text-sm text-gray-500">(${subject.time})</span>` : '';
-                                
-                                return `
-                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                                        <div>
-                                            <h4 class="font-bold text-gray-800">${subject.name}${timeDisplay}</h4>
-                                            <p class="text-sm text-gray-500">${subject.days.join('، ')}</p>
-                                        </div>
-                                        <div>
-                                            ${todayAttendance ? `
-                                                <span class="px-3 py-1 rounded-full text-sm font-bold ${todayAttendance.status === 'حضور' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                                                    ${todayAttendance.status}
-                                                </span>
-                                            ` : `
-                                                <button onclick="quickRegisterAttendance('${student.id}', '${subject.id}')" class="btn-primary px-4 py-1.5 rounded-lg text-sm">
-                                                    تسجيل
-                                                </button>
-                                            `}
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
+        return recent.map(a => {
+            const subject = state.subjects.find(s => s.id === a.subjectId);
+            return `
+                <div class="record-item">
+                    <div class="record-info">
+                        <div class="font-bold">${subject?.name || ''}</div>
+                        <div class="text-sm text-gray-500">${a.date}</div>
                     </div>
-                `;
-            });
-            
-            if (html === '') {
-                html = `
-                    <div class="col-span-2">
-                        <div class="empty-state">
-                            <i class="fas fa-calendar-check"></i>
-                            <p>لا توجد دروس مجدولة لهذا اليوم</p>
-                        </div>
+                    <div class="record-actions">
+                        <span class="${a.status === 'حضور' ? 'text-green-600' : 'text-red-600'} ml-3">
+                            ${a.status === 'حضور' ? '✅' : '❌'}
+                        </span>
+                        <button onclick="editAttendance('${a.id}')"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteAttendance('${a.id}')"><i class="fas fa-trash"></i></button>
                     </div>
-                `;
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderPayments(payments) {
+        const recent = [...payments].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+        
+        if (recent.length === 0) {
+            return '<div class="empty py-4">لا توجد مدفوعات</div>';
+        }
+
+        return recent.map(p => {
+            const subject = state.subjects.find(s => s.id === p.subjectId);
+            return `
+                <div class="record-item">
+                    <div class="record-info">
+                        <div class="font-bold">${subject?.name || ''}</div>
+                        <div class="text-sm text-gray-500">${p.date}</div>
+                    </div>
+                    <div class="record-actions">
+                        <span class="text-green-600 font-bold ml-3 ar-num">${toArabic(p.amount)} ج.م</span>
+                        <button onclick="editPayment('${p.id}')"><i class="fas fa-edit"></i></button>
+                        <button onclick="deletePayment('${p.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // دوال التحكم
+    window.toggleCard = (id) => {
+        state.expanded[id] = !state.expanded[id];
+        renderCards();
+    };
+
+    // إدارة النوافذ
+    window.showModal = (type, data = null) => {
+        if (type === 'subject' && data) {
+            document.getElementById('subject-student-id').value = data;
+            renderDaysSelector();
+        }
+        if (type === 'attendance' && data) {
+            document.getElementById('attendance-subject-id').value = data;
+            document.getElementById('attendance-date').value = new Date().toISOString().split('T')[0];
+        }
+        if (type === 'payment' && data) {
+            document.getElementById('payment-subject-id').value = data;
+            document.getElementById('payment-date').value = new Date().toISOString().split('T')[0];
+            const subject = state.subjects.find(s => s.id === data);
+            if (subject) {
+                document.getElementById('payment-amount').value = subject.fee;
             }
-            
-            container.innerHTML = html;
+        }
+        document.getElementById(`modal-${type}`).classList.add('active');
+    };
+
+    window.hideModal = (type) => {
+        document.getElementById(`modal-${type}`).classList.remove('active');
+    };
+
+    function renderDaysSelector() {
+        const container = document.getElementById('days-selector');
+        container.innerHTML = '';
+        WEEKDAYS.forEach(day => {
+            const div = document.createElement('div');
+            div.className = 'day-option';
+            div.textContent = day;
+            div.onclick = () => div.classList.toggle('selected');
+            container.appendChild(div);
+        });
+    }
+
+    // الطلاب
+    window.addStudent = async () => {
+        const name = document.getElementById('student-name').value.trim();
+        if (!name) return alert('أدخل الاسم');
+        
+        try {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'students'), { name });
+            document.getElementById('student-name').value = '';
+            hideModal('student');
+            showToast('تمت الإضافة');
+        } catch (e) {
+            alert('خطأ');
+        }
+    };
+
+    // المواد
+    window.addSubject = async () => {
+        const studentId = document.getElementById('subject-student-id').value;
+        const name = document.getElementById('subject-name').value.trim();
+        const fee = document.getElementById('subject-fee').value;
+        const time = document.getElementById('subject-time').value;
+        
+        const days = Array.from(document.querySelectorAll('#days-selector .selected')).map(el => el.textContent);
+
+        if (!studentId || !name || !fee || days.length === 0) {
+            return alert('أكمل البيانات');
         }
 
-        window.quickRegisterAttendance = (studentId, subjectId) => {
-            const today = new Date().toISOString().split('T')[0];
-            const todayDay = new Date().toLocaleDateString('ar-EG', { weekday: 'long' });
-            
-            document.getElementById('dashboard-att-student').value = studentId;
-            updateDashboardAttSubjects();
-            setTimeout(() => {
-                document.getElementById('dashboard-att-subject').value = subjectId;
-                document.getElementById('dashboard-att-date').value = today;
-                updateDashboardDayName();
-                document.querySelector('input[name="dashboard-status"][value="حضور"]').checked = true;
-                
-                switchTab('quick');
-                
-                setTimeout(() => {
-                    document.getElementById('dashboard-save-btn').scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            }, 100);
-        };
-
-        function updateRecentAttendance() {
-            const state = window.appState;
-            const container = document.getElementById('recent-attendance');
-            
-            if (!container) return;
-            
-            let html = '';
-            
-            state.students.forEach(student => {
-                const studentLogs = [...state.attendance]
-                    .filter(a => a.studentId === student.id)
-                    .sort((a, b) => b.timestamp - a.timestamp);
-                
-                if (studentLogs.length === 0) return;
-                
-                const isExpanded = state.expandedSections[`attendance_${student.id}`] || false;
-                const studentClass = student.name.includes('مارسيلينو') ? 'student-card-marcelino' : 'student-card-maroseka';
-                const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
-                
-                html += `
-                    <div class="${studentClass} p-5 rounded-2xl shadow-sm">
-                        <div class="flex items-center justify-between mb-4 cursor-pointer" onclick="toggleExpand('attendance_${student.id}')">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">${studentIcon}</span>
-                                <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
-                                    ${toArabicNumbers(studentLogs.length)} تسجيل
-                                </span>
-                            </div>
-                            <button class="text-indigo-600 hover:text-indigo-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="expandable-content ${isExpanded ? 'expanded' : 'collapsed'}">
-                            <div class="space-y-3">
-                                ${studentLogs.map(log => {
-                                    const subject = state.subjects.find(s => s.id === log.subjectId);
-                                    const date = new Date(log.date);
-                                    const formattedDate = date.toLocaleDateString('ar-EG');
-                                    
-                                    return `
-                                        <div class="bg-white p-4 rounded-xl border border-gray-200 flex items-center justify-between hover:border-indigo-300 transition-all">
-                                            <div class="flex items-center gap-4">
-                                                <span class="${log.status === 'حضور' ? 'status-presence' : 'status-absence'} px-3 py-1 rounded-full text-sm font-bold">
-                                                    ${log.status}
-                                                </span>
-                                                <div>
-                                                    <div class="font-bold text-gray-800">${subject ? subject.name : 'مادة محذوفة'}</div>
-                                                    <div class="text-sm text-gray-500">${formattedDate} - ${log.day}</div>
-                                                </div>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <button onclick="editAttendance('${log.id}')" class="text-indigo-600 hover:text-indigo-800 font-bold text-sm">
-                                                    <i class="fas fa-edit ml-1"></i>تعديل
-                                                </button>
-                                                <button onclick="deleteAttendance('${log.id}')" class="text-red-500 hover:text-red-700 font-bold text-sm">
-                                                    <i class="fas fa-trash ml-1"></i>حذف
-                                                </button>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `;
+        try {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'subjects'), {
+                studentId, name, fee: parseFloat(fee), time, days
             });
-            
-            if (html === '') {
-                html = '<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد تسجيلات</p></div>';
-            }
-            
-            container.innerHTML = html;
+            hideModal('subject');
+            showToast('تمت الإضافة');
+        } catch (e) {
+            alert('خطأ');
         }
+    };
 
-        function updateReportFilters() {
-            const monthSelect = document.getElementById('report-month-filter');
-            if (!monthSelect) return;
-            
-            let currentValue = monthSelect.value;
-            monthSelect.innerHTML = '<option value="">جميع الشهور</option>';
-            
-            const monthsSet = new Set();
-            window.appState.attendance.forEach(record => {
-                const date = new Date(record.date);
-                const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                const monthName = `${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
-                monthsSet.add(`${monthYear}|${monthName}`);
-            });
-            
-            const sortedMonths = Array.from(monthsSet).sort((a, b) => {
-                const [aYear, aMonth] = a.split('|')[0].split('-').map(Number);
-                const [bYear, bMonth] = b.split('|')[0].split('-').map(Number);
-                return bYear - aYear || bMonth - aMonth;
-            });
-            
-            sortedMonths.forEach(month => {
-                const [value, text] = month.split('|');
-                const option = document.createElement('option');
-                option.value = value;
-                option.textContent = text;
-                monthSelect.appendChild(option);
-            });
-            
-            monthSelect.value = currentValue;
+    window.deleteSubject = async (id) => {
+        if (!confirm('حذف المادة؟')) return;
+        try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'subjects', id));
+            showToast('تم الحذف');
+        } catch (e) {
+            alert('خطأ');
         }
+    };
 
-        window.updateReports = () => {
-            const state = window.appState;
-            const container = document.getElementById('expense-report-by-student');
-            
-            if (!container) return;
-            
-            const filterStudent = document.getElementById('report-student-filter').value;
-            const filterMonth = document.getElementById('report-month-filter').value;
-            const filterSubject = document.getElementById('report-subject-filter').value;
-            
-            let html = '';
-            
-            state.students.forEach(student => {
-                if (filterStudent && student.id !== filterStudent) return;
-                
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                
-                if (studentSubjects.length === 0) return;
-                
-                const isExpanded = state.expandedSections[`expense_${student.id}`] || false;
-                const studentClass = student.name.includes('مارسيلينو') ? 'student-card-marcelino' : 'student-card-maroseka';
-                const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
-                
-                let totalSessions = 0;
-                let filteredSubjects = studentSubjects;
-                
-                if (filterSubject) {
-                    filteredSubjects = filteredSubjects.filter(s => s.id === filterSubject);
-                }
-                
-                if (filteredSubjects.length === 0) return;
-                
-                html += `
-                    <div class="${studentClass} p-5 rounded-2xl shadow-sm">
-                        <div class="flex items-center justify-between mb-4 cursor-pointer" onclick="toggleExpand('expense_${student.id}')">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">${studentIcon}</span>
-                                <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
-                                    ${toArabicNumbers(filteredSubjects.length)} مادة
-                                </span>
-                            </div>
-                            <button class="text-emerald-600 hover:text-emerald-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="expandable-content ${isExpanded ? 'expanded' : 'collapsed'}">
-                            <div class="space-y-4">
-                                ${filteredSubjects.map(subject => {
-                                    let subjectAttendance = state.attendance.filter(a => a.subjectId === subject.id);
-                                    
-                                    if (filterMonth) {
-                                        subjectAttendance = subjectAttendance.filter(a => {
-                                            const date = new Date(a.date);
-                                            const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                                            return monthYear === filterMonth;
-                                        });
-                                    }
-                                    
-                                    const presenceCount = subjectAttendance.filter(a => a.status === 'حضور').length;
-                                    const absenceCount = subjectAttendance.filter(a => a.status === 'غياب').length;
-                                    totalSessions += subjectAttendance.length;
-                                    
-                                    return `
-                                        <div class="subject-item bg-white p-4 rounded-xl border border-gray-200">
-                                            <div class="flex items-center justify-between mb-2">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="w-3 h-3 bg-indigo-500 rounded-full"></div>
-                                                    <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
-                                                </div>
-                                                <div class="flex items-center gap-4">
-                                                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
-                                                        ${toArabicNumbers(subjectAttendance.length)} حصة
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="mb-2">
-                                                <div class="flex gap-4 text-sm text-gray-600">
-                                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded arabic-numbers">${toArabicNumbers(presenceCount)} حضور</span>
-                                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded arabic-numbers">${toArabicNumbers(absenceCount)} غياب</span>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center justify-between text-sm text-gray-600">
-                                                <span>أيام الدراسة: ${subject.days.join('، ')}</span>
-                                                <div class="flex gap-2">
-                                                    <button onclick="showSessionDetails('${subject.id}')" class="text-indigo-600 hover:text-indigo-800 font-bold">
-                                                        <i class="fas fa-eye ml-1"></i>عرض الحصص
-                                                    </button>
-                                                    <button onclick="resetSubject('${subject.id}')" class="text-orange-600 hover:text-orange-800 font-bold">
-                                                        <i class="fas fa-redo ml-1"></i>تصفير
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                                
-                                <div class="bg-gradient-to-l from-emerald-50 to-green-50 p-4 rounded-xl border border-emerald-200 flex items-center justify-between mt-4">
-                                    <div class="font-bold text-gray-800 text-lg">الإجمالي</div>
-                                    <div class="flex items-center gap-6">
-                                        <span class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full font-bold arabic-numbers">
-                                            ${toArabicNumbers(totalSessions)} حصة
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+    // الحصص
+    window.addAttendance = async () => {
+        const subjectId = document.getElementById('attendance-subject-id').value;
+        const date = document.getElementById('attendance-date').value;
+        const status = document.querySelector('input[name="attendance-status"]:checked').value;
+
+        if (!subjectId || !date) return alert('أكمل البيانات');
+
+        const subject = state.subjects.find(s => s.id === subjectId);
+        if (!subject) return;
+
+        const exists = state.attendance.find(a => a.subjectId === subjectId && a.date === date);
+        if (exists) return alert('تم التسجيل مسبقاً');
+
+        const day = new Date(date).toLocaleDateString('ar-EG', { weekday: 'long' });
+
+        try {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance'), {
+                studentId: subject.studentId,
+                subjectId,
+                date,
+                day,
+                status
             });
-            
-            if (html === '') {
-                html = '<div class="empty-state"><i class="fas fa-receipt"></i><p>لا توجد مواد مسجلة</p></div>';
-            }
-            
-            container.innerHTML = html;
+            hideModal('attendance');
+            showToast('تم التسجيل');
+        } catch (e) {
+            alert('خطأ');
         }
+    };
 
-        function updateExpenseReport() {
-            updateReports();
-        }
+    window.editAttendance = (id) => {
+        const a = state.attendance.find(a => a.id === id);
+        if (!a) return;
 
-        function updateSchedule() {
-            const state = window.appState;
-            const container = document.getElementById('subjects-schedule');
-            
-            if (!container) return;
-            
-            let html = '';
-            
-            state.students.forEach(student => {
-                const studentSubjects = state.subjects.filter(s => s.studentId === student.id);
-                
-                if (studentSubjects.length === 0) return;
-                
-                const isExpanded = state.expandedSections[`schedule_${student.id}`] || false;
-                const studentClass = student.name.includes('مارسيلينو') ? 'student-card-marcelino' : 'student-card-maroseka';
-                const studentIcon = student.name.includes('مارسيلينو') ? '👦' : '👧';
-                
-                html += `
-                    <div class="${studentClass} p-5 rounded-2xl shadow-sm">
-                        <div class="flex items-center justify-between mb-4 cursor-pointer" onclick="toggleExpand('schedule_${student.id}')">
-                            <div class="flex items-center gap-3">
-                                <span class="text-2xl">${studentIcon}</span>
-                                <h3 class="text-xl font-bold text-gray-800">${student.name}</h3>
-                                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-bold arabic-numbers">
-                                    ${toArabicNumbers(studentSubjects.length)} مادة
-                                </span>
-                            </div>
-                            <button class="text-amber-600 hover:text-amber-800 text-xl transition-transform ${isExpanded ? 'rotate-45' : ''}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="expandable-content ${isExpanded ? 'expanded' : 'collapsed'}">
-                            <div class="space-y-4">
-                                ${studentSubjects.map(subject => `
-                                    <div class="subject-item bg-white p-5 rounded-xl border border-gray-200 hover:shadow-md transition-all">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold">
-                                                    ${subject.name.charAt(0)}
-                                                </div>
-                                                <div>
-                                                    <h4 class="font-bold text-gray-800 text-lg">${subject.name}</h4>
-                                                    <p class="text-sm text-gray-500">${toArabicNumbers(subject.fee)} ج.م شهرياً ${subject.time ? `- ${subject.time}` : ''}</p>
-                                                </div>
-                                            </div>
-                                            <div class="edit-btn">
-                                                <button onclick="editSubject('${subject.id}')" class="btn-accent px-4 py-2 rounded-lg font-bold">
-                                                    <i class="fas fa-edit ml-1"></i>تعديل
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="mb-3">
-                                            <label class="text-sm font-bold text-gray-600 block text-right mb-2">أيام الدراسة:</label>
-                                            <div class="flex flex-wrap gap-2">
-                                                ${WEEKDAYS.map(day => `
-                                                    <span class="px-3 py-1.5 rounded-lg text-sm font-bold ${subject.days.includes(day) ? 'bg-indigo-100 text-indigo-700 border border-indigo-200' : 'bg-gray-100 text-gray-500'}">
-                                                        ${day}
-                                                    </span>
-                                                `).join('')}
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-                                            <span class="text-sm text-gray-500">
-                                                آخر تحديث: ${new Date().toLocaleDateString('ar-EG')}
-                                            </span>
-                                            <div class="flex gap-2">
-                                                <button onclick="deleteSubject('${subject.id}')" class="text-red-500 hover:text-red-700 font-bold text-sm">
-                                                    <i class="fas fa-trash ml-1"></i>حذف
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `;
+        document.getElementById('edit-attendance-id').value = id;
+        document.getElementById('edit-attendance-date').value = a.date;
+        
+        const radio = document.querySelector(`input[name="edit-attendance-status"][value="${a.status}"]`);
+        if (radio) radio.checked = true;
+
+        document.getElementById('modal-edit-attendance').classList.add('active');
+    };
+
+    window.updateAttendance = async () => {
+        const id = document.getElementById('edit-attendance-id').value;
+        const date = document.getElementById('edit-attendance-date').value;
+        const status = document.querySelector('input[name="edit-attendance-status"]:checked').value;
+
+        if (!id || !date || !status) return alert('أكمل البيانات');
+
+        const day = new Date(date).toLocaleDateString('ar-EG', { weekday: 'long' });
+
+        try {
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', id), {
+                date, day, status
             });
-            
-            if (html === '') {
-                html = '<div class="empty-state"><i class="fas fa-calendar-times"></i><p>لا توجد مواد مسجلة</p></div>';
-            }
-            
-            container.innerHTML = html;
+            hideModal('edit-attendance');
+            showToast('تم التحديث');
+        } catch (e) {
+            alert('خطأ');
         }
+    };
 
-        window.onload = init;
-    </script>
+    window.deleteAttendance = async (id) => {
+        if (!confirm('حذف الحصة؟')) return;
+        try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', id));
+            showToast('تم الحذف');
+        } catch (e) {
+            alert('خطأ');
+        }
+    };
+
+    // المدفوعات
+    window.addPayment = async () => {
+        const subjectId = document.getElementById('payment-subject-id').value;
+        const date = document.getElementById('payment-date').value;
+        const amount = document.getElementById('payment-amount').value;
+
+        if (!subjectId || !date || !amount) return alert('أكمل البيانات');
+
+        const subject = state.subjects.find(s => s.id === subjectId);
+        if (!subject) return;
+
+        const day = new Date(date).toLocaleDateString('ar-EG', { weekday: 'long' });
+
+        try {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'payments'), {
+                studentId: subject.studentId,
+                subjectId,
+                date,
+                day,
+                amount: parseFloat(amount)
+            });
+            hideModal('payment');
+            showToast('تم التسجيل');
+        } catch (e) {
+            alert('خطأ');
+        }
+    };
+
+    window.editPayment = (id) => {
+        const p = state.payments.find(p => p.id === id);
+        if (!p) return;
+
+        document.getElementById('edit-payment-id').value = id;
+        document.getElementById('edit-payment-date').value = p.date;
+        document.getElementById('edit-payment-amount').value = p.amount;
+
+        document.getElementById('modal-edit-payment').classList.add('active');
+    };
+
+    window.updatePayment = async () => {
+        const id = document.getElementById('edit-payment-id').value;
+        const date = document.getElementById('edit-payment-date').value;
+        const amount = document.getElementById('edit-payment-amount').value;
+
+        if (!id || !date || !amount) return alert('أكمل البيانات');
+
+        const day = new Date(date).toLocaleDateString('ar-EG', { weekday: 'long' });
+
+        try {
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', id), {
+                date, day, amount: parseFloat(amount)
+            });
+            hideModal('edit-payment');
+            showToast('تم التحديث');
+        } catch (e) {
+            alert('خطأ');
+        }
+    };
+
+    window.deletePayment = async (id) => {
+        if (!confirm('حذف الدفعة؟')) return;
+        try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', id));
+            showToast('تم الحذف');
+        } catch (e) {
+            alert('خطأ');
+        }
+    };
+</script>
 </body>
 </html>
