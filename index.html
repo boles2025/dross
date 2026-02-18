@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متابعة الدروس</title>
+    <title>متابعة الدروس | مهندس بولس سمير</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,18 +16,56 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: #f1f5f9;
+            background: linear-gradient(145deg, #f6f8fd 0%, #f0f3fa 100%);
             padding: 16px;
+            padding-bottom: 80px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* توقيع مهندس بولس سمير متحرك */
+        .signature {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px -10px rgba(102, 126, 234, 0.5);
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .signature i {
+            font-size: 20px;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* قسم حصص اليوم */
         .today-section {
             background: white;
-            border-radius: 24px;
+            border-radius: 30px;
             padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
 
         .today-title {
@@ -37,88 +75,48 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #1e293b;
         }
 
         .today-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            background: #f8fafc;
-            border-radius: 16px;
+            padding: 12px 16px;
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            border-radius: 20px;
             margin-bottom: 10px;
             border: 1px solid #e2e8f0;
         }
 
-        .today-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .today-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .today-status {
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .status-done {
-            background: #22c55e;
-            color: white;
-        }
-
         .btn-register {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border: none;
-            padding: 6px 16px;
+            padding: 6px 20px;
             border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-        }
-
-        .btn-register:hover {
-            background: #2563eb;
+            box-shadow: 0 4px 10px -5px #3b82f6;
         }
 
         /* قسم التنبيهات */
         .alerts-section {
             background: white;
-            border-radius: 24px;
+            border-radius: 30px;
             padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px -15px rgba(239, 68, 68, 0.2);
             border-right: 8px solid #ef4444;
         }
 
         .alert-item {
             background: #fef2f2;
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 15px;
             margin-bottom: 10px;
             border: 1px solid #fee2e2;
-        }
-
-        .alert-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .alert-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .alert-title {
-            font-weight: 700;
-            font-size: 16px;
         }
 
         .alert-badge {
@@ -130,23 +128,19 @@
             font-weight: 600;
         }
 
-        .alert-details {
-            font-size: 14px;
-            color: #7f1d1d;
-        }
-
         /* البطاقة الرئيسية */
         .student-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px -15px rgba(0,0,0,0.1);
             overflow: hidden;
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
 
         /* رأس البطاقة - ولد */
         .header-boy {
-            background: #1e3a8a;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
             color: white;
             padding: 16px 20px;
             display: flex;
@@ -157,7 +151,7 @@
 
         /* رأس البطاقة - بنت */
         .header-girl {
-            background: #831843;
+            background: linear-gradient(135deg, #831843, #db2777);
             color: white;
             padding: 16px 20px;
             display: flex;
@@ -192,7 +186,7 @@
         }
 
         .card-content.show {
-            max-height: 3000px;
+            max-height: 5000px;
         }
 
         /* إحصائيات سريعة */
@@ -200,19 +194,20 @@
             display: flex;
             gap: 20px;
             padding: 16px 20px;
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
         }
 
         .stat {
             font-size: 14px;
-            color: #4b5563;
+            color: #475569;
         }
 
         .stat span {
             font-weight: 700;
-            color: #111827;
+            color: #0f172a;
             margin-left: 4px;
+            font-size: 18px;
         }
 
         /* المواد */
@@ -221,43 +216,48 @@
         }
 
         .subject-item {
-            background: #f9fafb;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
             transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
+        /* خط فاصل لوني بين المواد - كل مادة لها لون مختلف */
+        .subject-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 8px 0 0 8px;
+        }
+
+        /* ألوان مختلفة للمواد - كل مادة بلون مختلف */
+        .subject-item:nth-child(1)::before { background: linear-gradient(to bottom, #3b82f6, #1e40af); }
+        .subject-item:nth-child(2)::before { background: linear-gradient(to bottom, #10b981, #047857); }
+        .subject-item:nth-child(3)::before { background: linear-gradient(to bottom, #f59e0b, #b45309); }
+        .subject-item:nth-child(4)::before { background: linear-gradient(to bottom, #ef4444, #b91c1c); }
+        .subject-item:nth-child(5)::before { background: linear-gradient(to bottom, #8b5cf6, #5b21b6); }
+        .subject-item:nth-child(6)::before { background: linear-gradient(to bottom, #ec4899, #9d174d); }
+        .subject-item:nth-child(7)::before { background: linear-gradient(to bottom, #14b8a6, #115e59); }
+        .subject-item:nth-child(8)::before { background: linear-gradient(to bottom, #f97316, #c2410c); }
+
         /* تلوين المواد حسب عدد الحصص */
-        .subject-item.level-0 {
-            border-right: 6px solid #9ca3af;
-        }
-        .subject-item.level-1 {
-            border-right: 6px solid #6b7280;
-        }
-        .subject-item.level-2 {
-            border-right: 6px solid #4b5563;
-        }
-        .subject-item.level-3 {
-            border-right: 6px solid #374151;
-        }
-        .subject-item.level-4 {
-            border-right: 6px solid #1f2937;
-        }
-        .subject-item.level-5 {
-            border-right: 6px solid #111827;
-        }
-        .subject-item.level-6 {
-            border-right: 6px solid #f97316;
-        }
-        .subject-item.level-7 {
-            border-right: 6px solid #f59e0b;
-        }
-        .subject-item.level-8 {
-            border-right: 6px solid #ef4444;
-            background: #fef2f2;
-        }
+        .subject-item.level-0 { border-right: 6px solid #94a3b8; }
+        .subject-item.level-1 { border-right: 6px solid #64748b; }
+        .subject-item.level-2 { border-right: 6px solid #475569; }
+        .subject-item.level-3 { border-right: 6px solid #334155; }
+        .subject-item.level-4 { border-right: 6px solid #1e293b; }
+        .subject-item.level-5 { border-right: 6px solid #0f172a; }
+        .subject-item.level-6 { border-right: 6px solid #f97316; background: #fff7ed; }
+        .subject-item.level-7 { border-right: 6px solid #f59e0b; background: #fef3c7; }
+        .subject-item.level-8 { border-right: 6px solid #ef4444; background: #fef2f2; }
         .subject-item.level-9, .subject-item.level-10, .subject-item.level-11, .subject-item.level-12 {
             border-right: 6px solid #dc2626;
             background: #fee2e2;
@@ -267,21 +267,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .subject-name {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
+            color: #0f172a;
         }
 
         .subject-fee {
-            background: white;
-            padding: 4px 12px;
-            border-radius: 20px;
+            background: #f1f5f9;
+            padding: 5px 15px;
+            border-radius: 30px;
             font-size: 13px;
             font-weight: 600;
-            border: 1px solid #e5e7eb;
+            color: #0f172a;
         }
 
         /* أيام الدراسة */
@@ -293,203 +294,171 @@
         }
 
         .day {
-            background: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            border: 1px solid #e5e7eb;
+            background: #f1f5f9;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            color: #334155;
+            font-weight: 500;
         }
 
         .day.active {
-            background: #111827;
+            background: #0f172a;
             color: white;
-            border-color: #111827;
         }
 
         /* إحصائيات المادة */
         .subject-stats {
             display: flex;
-            gap: 16px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            color: #6b7280;
+            gap: 20px;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-top: 1px dashed #e2e8f0;
+            border-bottom: 1px dashed #e2e8f0;
         }
 
-        .subject-stats span {
+        .subject-stat {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .subject-stat span {
             font-weight: 700;
-            color: #111827;
-            margin-left: 4px;
+            color: #0f172a;
+            margin-left: 5px;
+            font-size: 15px;
         }
 
         /* شريط التقدم */
         .progress {
-            margin-bottom: 12px;
+            margin: 15px 0;
         }
 
         .progress-label {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 4px;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 5px;
+            font-weight: 500;
         }
 
         .progress-bar {
-            height: 6px;
-            background: #e5e7eb;
+            height: 8px;
+            background: #e2e8f0;
             border-radius: 20px;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            background: #111827;
+            background: linear-gradient(90deg, #667eea, #764ba2);
             border-radius: 20px;
         }
 
         .progress-fill.alert {
-            background: #ef4444;
+            background: linear-gradient(90deg, #ef4444, #dc2626);
         }
 
         .progress-fill.warning {
-            background: #f97316;
+            background: linear-gradient(90deg, #f97316, #ea580c);
         }
 
-        /* رسالة التنبيه */
+        /* رسالة تنبيه */
         .alert-message {
             background: #fee2e2;
             color: #991b1b;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 12px 15px;
+            border-radius: 16px;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin: 12px 0;
             display: flex;
             align-items: center;
             gap: 8px;
             border: 1px solid #fecaca;
         }
 
-        .alert-message i {
-            color: #ef4444;
-            font-size: 16px;
-        }
-
-        /* حالة الدفع */
-        .payment-status {
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .status-due {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .status-paid {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-
         /* الأزرار */
         .actions {
             display: flex;
             gap: 8px;
+            margin-top: 15px;
         }
 
         .btn {
             flex: 1;
-            padding: 8px;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 10px;
+            border-radius: 16px;
+            font-size: 13px;
             font-weight: 600;
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
+            transition: all 0.2s;
         }
 
         .btn-green {
-            background: #22c55e;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
         }
 
         .btn-black {
-            background: #111827;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
             color: white;
         }
 
         .btn-red {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
         }
 
-        /* الحصص والمدفوعات */
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* سجل الحصص والمدفوعات */
         .records {
             padding: 20px;
+            background: #f8fafc;
         }
 
         .record-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .record-item:last-child {
             border-bottom: none;
         }
 
-        .record-info {
-            font-size: 14px;
-        }
-
         .record-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .record-actions button {
             background: none;
             border: none;
-            color: #9ca3af;
+            color: #94a3b8;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .record-actions button:hover {
-            color: #111827;
-        }
-
-        /* زر الإضافة */
-        .add-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 56px;
-            height: 56px;
-            background: #111827;
-            color: white;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 100;
+            color: #0f172a;
         }
 
         /* النوافذ المنبثقة */
@@ -497,11 +466,12 @@
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
             display: none;
             align-items: center;
             justify-content: center;
             padding: 16px;
-            z-index: 1000;
+            z-index: 2000;
         }
 
         .modal.active {
@@ -510,35 +480,62 @@
 
         .modal-content {
             background: white;
-            border-radius: 24px;
-            max-width: 400px;
+            border-radius: 30px;
+            max-width: 450px;
             width: 100%;
-            padding: 24px;
+            padding: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             margin-bottom: 20px;
+            color: #0f172a;
         }
 
         .modal-input {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 16px;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
             margin-bottom: 16px;
             font-family: 'Cairo', sans-serif;
+            font-size: 15px;
         }
 
         .modal-input:focus {
             outline: none;
-            border-color: #111827;
+            border-color: #667eea;
         }
 
         .modal-buttons {
             display: flex;
             gap: 12px;
+        }
+
+        /* أيام في المودال */
+        .days-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .day-option {
+            background: #f1f5f9;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .day-option.selected {
+            background: #0f172a;
+            color: white;
+            border-color: #0f172a;
         }
 
         /* رسالة نجاح */
@@ -547,43 +544,21 @@
             bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: #111827;
+            background: #0f172a;
             color: white;
-            padding: 12px 24px;
+            padding: 15px 30px;
             border-radius: 50px;
             font-weight: 600;
             display: none;
-            z-index: 1001;
-        }
-
-        /* أيام في المودال */
-        .days-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .day-option {
-            background: #f3f4f6;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            cursor: pointer;
-            border: 1px solid #e5e7eb;
-        }
-
-        .day-option.selected {
-            background: #111827;
-            color: white;
-            border-color: #111827;
+            z-index: 2001;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         /* حالة عدم وجود بيانات */
         .empty {
             text-align: center;
             padding: 40px;
-            color: #9ca3af;
+            color: #94a3b8;
         }
 
         /* الأرقام العربية */
@@ -606,38 +581,36 @@
             margin-right: 10px;
         }
 
-        /* رسالة 8 حصص */
-        .eight-alert {
-            background: #ef4444;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 13px;
+        /* باقي كام حصة */
+        .remaining-badge {
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #475569;
         }
     </style>
 </head>
 <body>
 
-<!-- زر الإضافة -->
-<button class="add-btn" onclick="showModal('student')">
-    <i class="fas fa-plus"></i>
-</button>
+<!-- توقيع مهندس بولس سمير متحرك -->
+<div class="signature">
+    <i class="fas fa-crown"></i>
+    مهندس بولس سمير
+    <i class="fas fa-code"></i>
+</div>
 
 <!-- رسالة نجاح -->
-<div class="toast" id="toast">تم الحفظ</div>
+<div class="toast" id="toast">تم الحفظ بنجاح</div>
 
 <!-- الصفحة الرئيسية -->
 <div class="max-w-3xl mx-auto" id="app">
 
     <!-- العنوان -->
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold">📋 متابعة الدروس</h1>
-        <div class="bg-white px-4 py-2 rounded-full flex items-center">
+        <h1 class="text-2xl font-bold text-gray-800">📋 متابعة الدروس</h1>
+        <div class="bg-white px-4 py-2 rounded-full shadow-sm">
             <span class="text-gray-500">العدد</span>
             <span class="font-bold mr-2" id="total-count">0</span>
         </div>
@@ -668,14 +641,14 @@
 
 </div>
 
-<!-- مودال إضافة ابن -->
+<!-- مودال إضافة ابن (مخفي - يظهر من زر في رأس الصفحة) -->
 <div class="modal" id="modal-student">
     <div class="modal-content">
         <h2 class="modal-title">➕ إضافة ابن/ابنة</h2>
-        <input type="text" id="student-name" class="modal-input" placeholder="الاسم">
+        <input type="text" id="student-name" class="modal-input" placeholder="الاسم كاملاً">
         <div class="modal-buttons">
             <button class="btn btn-black flex-1" onclick="addStudent()">إضافة</button>
-            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('student')">إلغاء</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('student')">إلغاء</button>
         </div>
     </div>
 </div>
@@ -689,14 +662,31 @@
         <input type="number" id="subject-fee" class="modal-input" placeholder="المبلغ">
         <input type="text" id="subject-time" class="modal-input" placeholder="الوقت (مثال: 4:00 م)">
         
-        <div class="mb-4">
-            <div class="font-bold mb-2 text-sm">أيام الدراسة</div>
-            <div class="days-selector" id="days-selector"></div>
-        </div>
+        <div class="mb-2 font-bold">أيام الدراسة</div>
+        <div class="days-selector" id="days-selector"></div>
 
         <div class="modal-buttons">
             <button class="btn btn-black flex-1" onclick="addSubject()">حفظ</button>
-            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('subject')">إلغاء</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('subject')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تعديل مادة -->
+<div class="modal" id="modal-edit-subject">
+    <div class="modal-content">
+        <h2 class="modal-title">✏️ تعديل مادة</h2>
+        <input type="hidden" id="edit-subject-id">
+        <input type="text" id="edit-subject-name" class="modal-input" placeholder="اسم المادة">
+        <input type="number" id="edit-subject-fee" class="modal-input" placeholder="المبلغ">
+        <input type="text" id="edit-subject-time" class="modal-input" placeholder="الوقت (مثال: 4:00 م)">
+        
+        <div class="mb-2 font-bold">أيام الدراسة</div>
+        <div class="days-selector" id="edit-days-selector"></div>
+
+        <div class="modal-buttons">
+            <button class="btn btn-black flex-1" onclick="updateSubject()">تحديث</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('edit-subject')">إلغاء</button>
         </div>
     </div>
 </div>
@@ -711,32 +701,32 @@
         <div class="flex gap-3 mb-4">
             <label class="flex-1 cursor-pointer">
                 <input type="radio" name="attendance-status" value="حضور" checked class="hidden peer">
-                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-green-500 peer-checked:text-white">✅ حضور</div>
+                <div class="text-center p-3 border-2 rounded-2xl peer-checked:bg-green-500 peer-checked:text-white">✅ حضور</div>
             </label>
             <label class="flex-1 cursor-pointer">
                 <input type="radio" name="attendance-status" value="غياب" class="hidden peer">
-                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-red-500 peer-checked:text-white">❌ غياب</div>
+                <div class="text-center p-3 border-2 rounded-2xl peer-checked:bg-red-500 peer-checked:text-white">❌ غياب</div>
             </label>
         </div>
 
         <div class="modal-buttons">
             <button class="btn btn-black flex-1" onclick="addAttendance()">تسجيل</button>
-            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('attendance')">إلغاء</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('attendance')">إلغاء</button>
         </div>
     </div>
 </div>
 
-<!-- مودال تسجيل دفعة -->
+<!-- مودال تسجيل دفع -->
 <div class="modal" id="modal-payment">
     <div class="modal-content">
-        <h2 class="modal-title">💰 تسجيل دفعة</h2>
+        <h2 class="modal-title">💰 تسجيل دفع</h2>
         <input type="hidden" id="payment-subject-id">
         <input type="date" id="payment-date" class="modal-input">
         <input type="number" id="payment-amount" class="modal-input" placeholder="المبلغ">
         
         <div class="modal-buttons">
             <button class="btn btn-black flex-1" onclick="addPayment()">تسجيل</button>
-            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('payment')">إلغاء</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('payment')">إلغاء</button>
         </div>
     </div>
 </div>
@@ -751,32 +741,32 @@
         <div class="flex gap-3 mb-4">
             <label class="flex-1 cursor-pointer">
                 <input type="radio" name="edit-attendance-status" value="حضور" class="hidden peer">
-                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-green-500 peer-checked:text-white">✅ حضور</div>
+                <div class="text-center p-3 border-2 rounded-2xl peer-checked:bg-green-500 peer-checked:text-white">✅ حضور</div>
             </label>
             <label class="flex-1 cursor-pointer">
                 <input type="radio" name="edit-attendance-status" value="غياب" class="hidden peer">
-                <div class="text-center p-3 border-2 rounded-xl peer-checked:bg-red-500 peer-checked:text-white">❌ غياب</div>
+                <div class="text-center p-3 border-2 rounded-2xl peer-checked:bg-red-500 peer-checked:text-white">❌ غياب</div>
             </label>
         </div>
 
         <div class="modal-buttons">
             <button class="btn btn-black flex-1" onclick="updateAttendance()">تحديث</button>
-            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('edit-attendance')">إلغاء</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('edit-attendance')">إلغاء</button>
         </div>
     </div>
 </div>
 
-<!-- مودال تعديل دفعة -->
+<!-- مودال تعديل دفع -->
 <div class="modal" id="modal-edit-payment">
     <div class="modal-content">
-        <h2 class="modal-title">💰 تعديل دفعة</h2>
+        <h2 class="modal-title">💰 تعديل دفع</h2>
         <input type="hidden" id="edit-payment-id">
         <input type="date" id="edit-payment-date" class="modal-input">
         <input type="number" id="edit-payment-amount" class="modal-input" placeholder="المبلغ">
         
         <div class="modal-buttons">
             <button class="btn btn-black flex-1" onclick="updatePayment()">تحديث</button>
-            <button class="btn" style="background:#e5e7eb; flex:1;" onclick="hideModal('edit-payment')">إلغاء</button>
+            <button class="btn" style="background:#e2e8f0; color:#475569; flex:1;" onclick="hideModal('edit-payment')">إلغاء</button>
         </div>
     </div>
 </div>
@@ -807,7 +797,7 @@
         subjects: [],
         attendance: [],
         payments: [],
-        expanded: {} // للبطاقات المفتوحة
+        expanded: {}
     };
 
     const WEEKDAYS = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
@@ -827,7 +817,6 @@
         }, 2000);
     };
 
-    // تحديد نوع الجنس
     const getGender = (name) => {
         const boys = ['محمد', 'أحمد', 'محمود', 'علي', 'حسن', 'حسين', 'يوسف', 'عمر', 'خالد', 'ياسين', 'آدم', 'إبراهيم'];
         return boys.some(b => name.includes(b)) ? 'boy' : 'girl';
@@ -859,14 +848,13 @@
         });
     });
 
-    // العرض الرئيسي
     function render() {
         renderTodayClasses();
         renderAlerts();
         renderCards();
     }
 
-    // عرض حصص اليوم
+    // حصص اليوم
     function renderTodayClasses() {
         const today = new Date().toISOString().split('T')[0];
         const todayDay = new Date().toLocaleDateString('ar-EG', { weekday: 'long' });
@@ -900,15 +888,15 @@
         todayClasses.forEach(item => {
             html += `
                 <div class="today-item">
-                    <div class="today-info">
-                        <span>${item.student?.name || ''}</span>
-                        <span class="font-bold">${item.subject.name}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold">${item.student?.name || ''}</span>
+                        <span>${item.subject.name}</span>
                         ${item.subject.time ? `<span class="text-sm text-gray-500">${item.subject.time}</span>` : ''}
                     </div>
                     <div>
                         ${item.status === 'pending' ? 
                             `<button class="btn-register" onclick="quickRegister('${item.subject.id}')">تسجيل</button>` :
-                            `<span class="today-status status-done">${item.status === 'حضور' ? '✅' : '❌'} ${item.status}</span>`
+                            `<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">${item.status === 'حضور' ? '✅' : '❌'} ${item.status}</span>`
                         }
                     </div>
                 </div>
@@ -918,12 +906,11 @@
         container.innerHTML = html;
     }
 
-    // تسجيل سريع من حصص اليوم
     window.quickRegister = (subjectId) => {
         showModal('attendance', subjectId);
     };
 
-    // عرض التنبيهات للمواد التي وصلت لـ 8 حصص
+    // التنبيهات
     function renderAlerts() {
         const alerts = [];
         
@@ -935,7 +922,6 @@
             const paidCount = payments.length;
             const requiredPayments = Math.floor(sessionsCount / 8);
             
-            // إذا وصل لـ 8 حصص أو أكثر
             if (sessionsCount >= 8) {
                 const student = state.students.find(s => s.id === subject.studentId);
                 const pending = requiredPayments - paidCount;
@@ -968,13 +954,13 @@
         alerts.forEach(alert => {
             html += `
                 <div class="alert-item">
-                    <div class="alert-header">
-                        <span class="alert-title">${alert.subject}</span>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold">${alert.subject}</span>
                         <span class="alert-badge">${toArabic(alert.sessions)} حصة</span>
                     </div>
-                    <div class="alert-details">
+                    <div class="text-sm text-red-800">
                         <div>الطالب: ${alert.student}</div>
-                        <div class="font-bold mt-2">⚠️ مطلوب دفع ${toArabic(alert.pending)} دفعة (${toArabic(alert.amount)} ج.م)</div>
+                        <div class="font-bold mt-2">⚠️ مطلوب دفع ${toArabic(alert.pending)} دفع (${toArabic(alert.amount)} ج.م)</div>
                     </div>
                 </div>
             `;
@@ -983,11 +969,18 @@
         container.innerHTML = html;
     }
 
+    // البطاقات
     function renderCards() {
         const container = document.getElementById('cards-container');
         
         if (state.students.length === 0) {
-            container.innerHTML = '<div class="empty">لا يوجد أبناء</div>';
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl p-12 text-center">
+                    <i class="fas fa-child text-5xl text-gray-300 mb-3"></i>
+                    <p class="text-gray-400">لا يوجد أبناء</p>
+                    <button class="btn btn-black mt-4 px-6" onclick="showModal('student')">إضافة ابن</button>
+                </div>
+            `;
             return;
         }
 
@@ -1013,7 +1006,6 @@
 
         return `
             <div class="student-card">
-                <!-- الرأس -->
                 <div class="${gender === 'boy' ? 'header-boy' : 'header-girl'}" onclick="toggleCard('${student.id}')">
                     <div class="student-name">
                         <span>${gender === 'boy' ? '👦' : '👧'}</span>
@@ -1024,10 +1016,8 @@
                     </div>
                 </div>
 
-                <!-- المحتوى -->
                 <div class="card-content ${isExpanded ? 'show' : ''}">
                     
-                    <!-- إحصائيات -->
                     <div class="stats">
                         <div class="stat"><span class="ar-num">${toArabic(totalSessions)}</span> حصة</div>
                         <div class="stat"><span class="ar-num">${toArabic(totalPresence)}</span> حضور</div>
@@ -1035,30 +1025,27 @@
                         <div class="stat"><span class="ar-num">${toArabic(totalPaid)}</span> ج.م</div>
                     </div>
 
-                    <!-- المواد -->
                     <div class="subjects">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold">المواد</h3>
-                            <button class="text-sm bg-gray-200 px-3 py-1 rounded-full" onclick="showModal('subject', '${student.id}')">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg">المواد</h3>
+                            <button class="bg-gray-200 px-4 py-2 rounded-full text-sm" onclick="showModal('subject', '${student.id}')">
                                 <i class="fas fa-plus ml-1"></i>إضافة
                             </button>
                         </div>
 
                         ${subjects.length === 0 ? 
                             '<div class="empty py-6">لا توجد مواد</div>' : 
-                            subjects.map(s => renderSubject(s)).join('')
+                            subjects.map((s, index) => renderSubject(s, index)).join('')
                         }
                     </div>
 
-                    <!-- الحصص -->
                     <div class="records">
                         <h3 class="font-bold mb-3">آخر الحصص</h3>
                         ${renderAttendance(attendance)}
                     </div>
 
-                    <!-- المدفوعات -->
                     <div class="records">
-                        <h3 class="font-bold mb-3">آخر المدفوعات</h3>
+                        <h3 class="font-bold mb-3">آخر عمليات الدفع</h3>
                         ${renderPayments(payments)}
                     </div>
                 </div>
@@ -1066,7 +1053,7 @@
         `;
     }
 
-    function renderSubject(subject) {
+    function renderSubject(subject, index) {
         const attendance = state.attendance.filter(a => a.subjectId === subject.id);
         const payments = state.payments.filter(p => p.subjectId === subject.id);
         
@@ -1080,17 +1067,19 @@
         
         const sessionsSinceLastPayment = sessionsCount - (paidPayments * 8);
         const progress = (sessionsSinceLastPayment / 8) * 100;
+        const remainingForNext = 8 - sessionsSinceLastPayment;
 
-        // تحديد مستوى التلوين (0-12)
         let level = Math.min(sessionsCount, 12);
         let levelClass = `level-${level}`;
 
         return `
-            <div class="subject-item ${levelClass}">
+            <div class="subject-item ${levelClass}" style="animation: fadeIn 0.3s ease-out ${index * 0.1}s both;">
                 <div class="subject-header">
-                    <span class="subject-name">${subject.name} ${subject.time ? `(${subject.time})` : ''}</span>
+                    <span class="subject-name">${subject.name}</span>
                     <span class="subject-fee ar-num">${toArabic(subject.fee)} ج.م</span>
                 </div>
+
+                <div class="text-sm text-gray-500 mb-2">${subject.time || ''}</div>
 
                 <div class="days">
                     ${WEEKDAYS.map(day => `
@@ -1099,36 +1088,29 @@
                 </div>
 
                 <div class="subject-stats">
-                    <div><span class="ar-num">${toArabic(sessionsCount)}</span> إجمالي</div>
-                    <div><span class="ar-num">${toArabic(presenceCount)}</span> حضور</div>
-                    <div><span class="ar-num">${toArabic(absenceCount)}</span> غياب</div>
+                    <div class="subject-stat"><span class="ar-num">${toArabic(sessionsCount)}</span> إجمالي</div>
+                    <div class="subject-stat"><span class="ar-num">${toArabic(presenceCount)}</span> حضور</div>
+                    <div class="subject-stat"><span class="ar-num">${toArabic(absenceCount)}</span> غياب</div>
                 </div>
 
                 <div class="progress">
                     <div class="progress-label">
-                        <span>تقدم الدفعة</span>
-                        <span class="ar-num">${toArabic(sessionsSinceLastPayment)}/8</span>
+                        <span>باقي ${toArabic(remainingForNext)} حصة للدفع القادم</span>
+                        <span class="remaining-badge ar-num">${toArabic(sessionsSinceLastPayment)}/8</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill ${sessionsCount >= 8 ? 'alert' : sessionsCount >= 7 ? 'warning' : ''}" style="width: ${progress}%"></div>
+                        <div class="progress-fill ${sessionsCount >= 8 ? 'alert' : sessionsCount >= 6 ? 'warning' : ''}" style="width: ${progress}%"></div>
                     </div>
                 </div>
 
-                <!-- رسالة تنبيه عند 8 حصص -->
                 ${sessionsCount >= 8 && pendingPayments > 0 ? `
-                    <div class="eight-alert">
+                    <div class="alert-message">
                         <i class="fas fa-exclamation-circle"></i>
-                        ⚠️ وصلت لـ ${toArabic(sessionsCount)} حصص - مطلوب دفع ${toArabic(pendingPayments)} دفعة
+                        ⚠️ وصلت لـ ${toArabic(sessionsCount)} حصص - مطلوب دفع ${toArabic(pendingPayments)} دفع
                     </div>
                 ` : sessionsCount >= 8 ? `
-                    <div class="payment-status status-paid">
-                        ✓ تم دفع كل المستحق حتى ${toArabic(sessionsCount)} حصة
-                    </div>
-                ` : ''}
-
-                ${pendingPayments > 0 && sessionsCount < 8 ? `
-                    <div class="payment-status status-warning">
-                        سيحتاج دفعة بعد ${toArabic(8 - sessionsSinceLastPayment)} حصص
+                    <div class="bg-green-100 text-green-700 p-3 rounded-2xl text-sm font-bold mb-3">
+                        ✓ تم دفع كل المستحق
                     </div>
                 ` : ''}
 
@@ -1137,7 +1119,10 @@
                         <i class="fas fa-pen"></i> حصة
                     </button>
                     <button class="btn btn-black" onclick="showModal('payment', '${subject.id}')">
-                        <i class="fas fa-money-bill-wave"></i> دفعة
+                        <i class="fas fa-money-bill-wave"></i> دفع
+                    </button>
+                    <button class="btn btn-blue" onclick="editSubject('${subject.id}')">
+                        <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-red" onclick="deleteSubject('${subject.id}')">
                         <i class="fas fa-trash"></i>
@@ -1158,7 +1143,7 @@
             const subject = state.subjects.find(s => s.id === a.subjectId);
             return `
                 <div class="record-item">
-                    <div class="record-info">
+                    <div>
                         <div class="font-bold">${subject?.name || ''}</div>
                         <div class="text-sm text-gray-500">${a.date}</div>
                     </div>
@@ -1185,7 +1170,7 @@
             const subject = state.subjects.find(s => s.id === p.subjectId);
             return `
                 <div class="record-item">
-                    <div class="record-info">
+                    <div>
                         <div class="font-bold">${subject?.name || ''}</div>
                         <div class="text-sm text-gray-500">${p.date}</div>
                     </div>
@@ -1199,7 +1184,7 @@
         }).join('');
     }
 
-    // دوال التحكم
+    // التحكم في البطاقات
     window.toggleCard = (id) => {
         state.expanded[id] = !state.expanded[id];
         renderCards();
@@ -1209,7 +1194,7 @@
     window.showModal = (type, data = null) => {
         if (type === 'subject' && data) {
             document.getElementById('subject-student-id').value = data;
-            renderDaysSelector();
+            renderDaysSelector('days-selector');
         }
         if (type === 'attendance' && data) {
             document.getElementById('attendance-subject-id').value = data;
@@ -1230,8 +1215,53 @@
         document.getElementById(`modal-${type}`).classList.remove('active');
     };
 
-    function renderDaysSelector() {
-        const container = document.getElementById('days-selector');
+    // تعديل مادة
+    window.editSubject = (id) => {
+        const subject = state.subjects.find(s => s.id === id);
+        if (!subject) return;
+
+        document.getElementById('edit-subject-id').value = id;
+        document.getElementById('edit-subject-name').value = subject.name;
+        document.getElementById('edit-subject-fee').value = subject.fee;
+        document.getElementById('edit-subject-time').value = subject.time || '';
+
+        const container = document.getElementById('edit-days-selector');
+        container.innerHTML = '';
+        WEEKDAYS.forEach(day => {
+            const div = document.createElement('div');
+            div.className = `day-option ${subject.days?.includes(day) ? 'selected' : ''}`;
+            div.textContent = day;
+            div.onclick = () => div.classList.toggle('selected');
+            container.appendChild(div);
+        });
+
+        document.getElementById('modal-edit-subject').classList.add('active');
+    };
+
+    window.updateSubject = async () => {
+        const id = document.getElementById('edit-subject-id').value;
+        const name = document.getElementById('edit-subject-name').value.trim();
+        const fee = document.getElementById('edit-subject-fee').value;
+        const time = document.getElementById('edit-subject-time').value;
+        const days = Array.from(document.querySelectorAll('#edit-days-selector .selected')).map(el => el.textContent);
+
+        if (!name || !fee || days.length === 0) {
+            return alert('أكمل البيانات');
+        }
+
+        try {
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'subjects', id), {
+                name, fee: parseFloat(fee), time, days
+            });
+            hideModal('edit-subject');
+            showToast('تم التحديث');
+        } catch (e) {
+            alert('خطأ');
+        }
+    };
+
+    function renderDaysSelector(selectorId) {
+        const container = document.getElementById(selectorId);
         container.innerHTML = '';
         WEEKDAYS.forEach(day => {
             const div = document.createElement('div');
@@ -1425,7 +1455,7 @@
     };
 
     window.deletePayment = async (id) => {
-        if (!confirm('حذف الدفعة؟')) return;
+        if (!confirm('حذف الدفع؟')) return;
         try {
             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'payments', id));
             showToast('تم الحذف');
