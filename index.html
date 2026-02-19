@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متابعة الدروس | مهندس بولس سمير</title>
+    <title>متابعة الدروس | بولس سمير</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- إضافة خط حديث -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -24,38 +24,29 @@
             position: relative;
         }
 
-        /* توقيع مهندس بولس سمير - تصميم أكثر عصرية */
+        /* توقيع مهندس بولس سمير - تصميم مصغر وثابت في الأعلى */
         .signature {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             color: #1e293b;
-            padding: 12px 28px;
+            padding: 6px 16px;
             border-radius: 60px;
-            font-weight: 700;
+            font-weight: 600;
             box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            animation: gentleFloat 4s ease-in-out infinite;
             border: 1px solid rgba(255,255,255,0.3);
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 1.1rem;
+            gap: 6px;
+            font-size: 0.9rem;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .signature i {
-            font-size: 22px;
+            font-size: 16px;
             color: #3b82f6;
             animation: subtleSpin 8s linear infinite;
-        }
-
-        @keyframes gentleFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-8px) scale(1.02); }
         }
 
         @keyframes subtleSpin {
@@ -226,7 +217,7 @@
             max-height: 5000px;
         }
 
-        /* إحصائيات سريعة - لمسة عصرية */
+        /* إحصائيات سريعة - لمسة عصرية وجعلها قابلة للنقر */
         .stats {
             display: flex;
             gap: 24px;
@@ -242,6 +233,15 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            cursor: pointer; /* مؤشر يدل على إمكانية النقر */
+            transition: all 0.2s ease;
+            padding: 4px 8px;
+            border-radius: 40px;
+        }
+        .stat:hover {
+            background: rgba(255,255,255,0.8);
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .stat span {
@@ -382,6 +382,14 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            cursor: pointer; /* جعل الإحصائيات قابلة للنقر لعرض التفاصيل */
+            padding: 4px 10px;
+            border-radius: 40px;
+            transition: all 0.2s;
+        }
+        .subject-stat:hover {
+            background: rgba(255,255,255,0.9);
+            transform: scale(1.05);
         }
 
         .subject-stat span {
@@ -673,61 +681,94 @@
             backdrop-filter: blur(4px);
         }
 
-        /* زر إضافة عائم */
-        .fab {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            background: linear-gradient(145deg, #3b82f6, #2563eb);
+        /* تصميم جديد للنافذة المنبثقة لتفاصيل الحصص */
+        .sessions-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-left: 5px;
+        }
+        .session-item {
+            background: rgba(255,255,255,0.6);
+            border-radius: 50px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(203, 213, 225, 0.7);
+            transition: all 0.2s;
+        }
+        .session-item:hover {
+            background: white;
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .session-number {
+            background: #3b82f6;
             color: white;
-            width: 65px;
-            height: 65px;
+            width: 45px;
+            height: 45px;
             border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 15px 30px -8px #1e3a8a;
-            cursor: pointer;
-            z-index: 999;
-            transition: all 0.2s;
-            border: 2px solid rgba(255,255,255,0.3);
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 8px 15px -5px #3b82f6;
+            border: 2px solid white;
         }
-        .fab:hover {
-            transform: scale(1.15) rotate(90deg);
+        .session-info {
+            flex: 1;
+            padding-right: 20px;
+        }
+        .session-date {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 16px;
+        }
+        .session-day {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .session-status-badge {
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .status-present {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status-absent {
+            background: #fee2e2;
+            color: #991b1b;
         }
     </style>
 </head>
 <body>
 
-<!-- توقيع مهندس بولس سمير متحرك -->
-<div class="signature">
-    <i class="fas fa-crown"></i>
-    <span>مهندس بولس سمير</span>
-    <i class="fas fa-code"></i>
-</div>
-
-<!-- زر إضافة عائم -->
-<div class="fab" onclick="showModal('student')">
-    <i class="fas fa-plus"></i>
-</div>
-
-<!-- رسالة نجاح -->
-<div class="toast" id="toast">✅ تم الحفظ بنجاح</div>
-
-<!-- الصفحة الرئيسية -->
-<div class="max-w-3xl mx-auto" id="app">
-
-    <!-- العنوان مع أيقونة -->
-    <div class="flex justify-between items-center mb-6">
+<!-- رأس الصفحة: العنوان والتوقيع معاً -->
+<div class="max-w-3xl mx-auto mb-6">
+    <div class="flex justify-between items-center">
         <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-l from-indigo-600 to-purple-600 flex items-center gap-2">
             <i class="fas fa-book-open"></i> متابعة الدروس
         </h1>
+        <!-- توقيع مهندس بولس سمير أصبح هنا بجانب العنوان -->
+        <div class="signature">
+            <i class="fas fa-crown"></i>
+            <span>مهندس بولس سمير</span>
+            <i class="fas fa-code"></i>
+        </div>
         <div class="bg-white/70 backdrop-blur-sm px-5 py-2 rounded-full shadow-sm border border-white/50">
             <span class="text-gray-600">العدد</span>
             <span class="font-bold mr-2 text-indigo-600 text-lg" id="total-count">0</span>
         </div>
     </div>
+</div>
+
+<!-- الصفحة الرئيسية -->
+<div class="max-w-3xl mx-auto" id="app">
 
     <!-- حصص اليوم -->
     <div class="today-section" id="today-section">
@@ -752,8 +793,6 @@
     <!-- حاوية البطاقات -->
     <div id="cards-container"></div>
 </div>
-
-<!-- باقي المودالات (نفس الهيكل ولكن مع تحسين بسيط في النصوص) -->
 
 <!-- مودال إضافة ابن -->
 <div class="modal" id="modal-student">
@@ -875,7 +914,20 @@
     </div>
 </div>
 
-<!-- Firebase ونفس الـ JavaScript (لم يتغير) -->
+<!-- مودال عرض تفاصيل الحصص لمادة معينة -->
+<div class="modal" id="modal-sessions-detail">
+    <div class="modal-content" style="max-width: 600px;">
+        <h2 class="modal-title" id="sessions-modal-title">📅 تفاصيل الحصص</h2>
+        <div id="sessions-list-container" class="sessions-list">
+            <!-- هنا سيتم عرض الحصص ديناميكياً -->
+        </div>
+        <div class="modal-buttons mt-4">
+            <button class="btn btn-black flex-1" onclick="hideModal('sessions-detail')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase ونفس الـ JavaScript (مع إضافة دالة عرض تفاصيل الحصص) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
@@ -1123,9 +1175,9 @@
                 <div class="card-content ${isExpanded ? 'show' : ''}">
                     
                     <div class="stats">
-                        <div class="stat"><span class="ar-num">${toArabic(totalSessions)}</span> حصة</div>
-                        <div class="stat"><span class="ar-num">${toArabic(totalPresence)}</span> حضور</div>
-                        <div class="stat"><span class="ar-num">${toArabic(totalAbsence)}</span> غياب</div>
+                        <div class="stat" onclick="showSessionsDetail('all', '${student.id}')" title="عرض كل الحصص"><span class="ar-num">${toArabic(totalSessions)}</span> حصة</div>
+                        <div class="stat" onclick="showSessionsDetail('present', '${student.id}')" title="عرض الحضور فقط"><span class="ar-num">${toArabic(totalPresence)}</span> حضور</div>
+                        <div class="stat" onclick="showSessionsDetail('absent', '${student.id}')" title="عرض الغياب فقط"><span class="ar-num">${toArabic(totalAbsence)}</span> غياب</div>
                         <div class="stat"><span class="ar-num">${toArabic(totalPaid)}</span> ج.م</div>
                     </div>
 
@@ -1192,9 +1244,9 @@
                 </div>
 
                 <div class="subject-stats">
-                    <div class="subject-stat"><span class="ar-num">${toArabic(sessionsCount)}</span> إجمالي</div>
-                    <div class="subject-stat"><span class="ar-num">${toArabic(presenceCount)}</span> حضور</div>
-                    <div class="subject-stat"><span class="ar-num">${toArabic(absenceCount)}</span> غياب</div>
+                    <div class="subject-stat" onclick="showSessionsDetail('subject', '${subject.id}', 'all')" title="عرض كل حصص هذه المادة"><span class="ar-num">${toArabic(sessionsCount)}</span> إجمالي</div>
+                    <div class="subject-stat" onclick="showSessionsDetail('subject', '${subject.id}', 'present')" title="عرض حضور هذه المادة"><span class="ar-num">${toArabic(presenceCount)}</span> حضور</div>
+                    <div class="subject-stat" onclick="showSessionsDetail('subject', '${subject.id}', 'absent')" title="عرض غياب هذه المادة"><span class="ar-num">${toArabic(absenceCount)}</span> غياب</div>
                 </div>
 
                 <div class="progress">
@@ -1559,6 +1611,80 @@
             alert('خطأ');
         }
     };
+
+    // دالة عرض تفاصيل الحصص في نافذة منبثقة
+    window.showSessionsDetail = (type, id, filter = 'all') => {
+        let title = '';
+        let sessions = [];
+        let subjectName = '';
+
+        if (type === 'all') {
+            // عرض كل حصص الطالب
+            const student = state.students.find(s => s.id === id);
+            title = `📋 كل حصص ${student?.name || 'الطالب'}`;
+            sessions = state.attendance.filter(a => a.studentId === id);
+        } else if (type === 'present') {
+            const student = state.students.find(s => s.id === id);
+            title = `✅ حضور ${student?.name || 'الطالب'}`;
+            sessions = state.attendance.filter(a => a.studentId === id && a.status === 'حضور');
+        } else if (type === 'absent') {
+            const student = state.students.find(s => s.id === id);
+            title = `❌ غياب ${student?.name || 'الطالب'}`;
+            sessions = state.attendance.filter(a => a.studentId === id && a.status === 'غياب');
+        } else if (type === 'subject') {
+            const subject = state.subjects.find(s => s.id === id);
+            subjectName = subject?.name || '';
+            if (filter === 'all') {
+                title = `📚 كل حصص مادة: ${subjectName}`;
+                sessions = state.attendance.filter(a => a.subjectId === id);
+            } else if (filter === 'present') {
+                title = `✅ حضور مادة: ${subjectName}`;
+                sessions = state.attendance.filter(a => a.subjectId === id && a.status === 'حضور');
+            } else if (filter === 'absent') {
+                title = `❌ غياب مادة: ${subjectName}`;
+                sessions = state.attendance.filter(a => a.subjectId === id && a.status === 'غياب');
+            }
+        }
+
+        // ترتيب الحصص تنازلياً حسب التاريخ (الأحدث أولاً)
+        sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        document.getElementById('sessions-modal-title').textContent = title;
+
+        const container = document.getElementById('sessions-list-container');
+        if (sessions.length === 0) {
+            container.innerHTML = '<div class="empty py-4">لا توجد حصص مسجلة</div>';
+        } else {
+            let html = '';
+            sessions.forEach((session, index) => {
+                const subject = state.subjects.find(s => s.id === session.subjectId);
+                html += `
+                    <div class="session-item">
+                        <div class="session-number">${toArabic(index + 1)}</div>
+                        <div class="session-info">
+                            <div class="session-date">${subject?.name || ''} - ${session.date}</div>
+                            <div class="session-day">${session.day || ''}</div>
+                        </div>
+                        <div>
+                            <span class="session-status-badge ${session.status === 'حضور' ? 'status-present' : 'status-absent'}">
+                                ${session.status === 'حضور' ? '✅ حضور' : '❌ غياب'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        document.getElementById('modal-sessions-detail').classList.add('active');
+    };
+
+    // تعريف الدالة على النافذة لتكون متاحة عالمياً
+    window.showSessionsDetail = showSessionsDetail;
 </script>
+
+<!-- رسالة نجاح (موجودة مسبقاً) -->
+<div class="toast" id="toast">✅ تم الحفظ بنجاح</div>
+
 </body>
 </html>
