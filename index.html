@@ -308,11 +308,34 @@
             display: flex;
             gap: 8px;
         }
+
+        /* إشعارات */
+        .notification-permission {
+            background: #e0f2fe;
+            border-radius: 60px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #7dd3fc;
+        }
     </style>
 </head>
 <body>
 
 <div class="max-w-4xl mx-auto">
+    <!-- شريط طلب الإذن بالإشعارات -->
+    <div id="notification-permission-bar" class="notification-permission" style="display: none;">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-bell text-blue-600 text-xl"></i>
+            <span class="font-medium text-blue-800">شغل الإشعارات عشان توصلك التنبيهات</span>
+        </div>
+        <button onclick="enableNotifications()" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold">
+            تفعيل
+        </button>
+    </div>
+
     <!-- رأس الصفحة مع إضافة طالب -->
     <div class="flex justify-between items-center mb-6">
         <div class="bg-white px-5 py-3 rounded-full shadow-sm flex items-center gap-2">
@@ -529,7 +552,8 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAYbNXkNQy32UnbsUUrTXyoJluZRS3wP1w",
@@ -543,6 +567,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
     const appId = 'droos-app-v1';
 
     const state = {
@@ -566,6 +591,44 @@
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 2000);
     }
+
+    // دالة لإرسال إشعار محلي
+    function showNotification(title, body) {
+        if (Notification.permission === 'granted') {
+            new Notification(title, { 
+                body, 
+                icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png' 
+            });
+        }
+    }
+
+    // دالة تفعيل الإشعارات
+    window.enableNotifications = async function() {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                document.getElementById('notification-permission-bar').style.display = 'none';
+                showToast('✅ الإشعارات مفعلة');
+                
+                // الحصول على التوكن
+                const token = await getToken(messaging, { 
+                    vapidKey: 'BGY56cKzh5V9bVZfWYSEMHdps28SLJZfV7UIYQmeAD_X-C5HsEw6NkL2aJRdftx__gvvckg8WjyYTWJq5CZD5M4' 
+                });
+                
+                // حفظ التوكن في Firestore
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'fcmTokens', 'currentUser'), {
+                    token,
+                    updatedAt: new Date()
+                }, { merge: true });
+                
+                console.log('Token saved:', token);
+            } else {
+                showToast('❌ تم رفض الإشعارات');
+            }
+        } catch (err) {
+            console.log('خطأ في تفعيل الإشعارات', err);
+        }
+    };
 
     // حساب إحصائيات المادة
     function calculateSubjectStats(subjectId) {
@@ -616,6 +679,18 @@
     }
 
     signInAnonymously(auth).then(() => {
+        // التحقق من إذن الإشعارات
+        if (Notification.permission === 'default') {
+            document.getElementById('notification-permission-bar').style.display = 'flex';
+        }
+
+        // استقبال الإشعارات أثناء فتح الصفحة
+        onMessage(messaging, (payload) => {
+            console.log('إشعار واصل:', payload);
+            showToast(`🔔 ${payload.notification.title}`);
+            showNotification(payload.notification.title, payload.notification.body);
+        });
+
         const path = (col) => collection(db, 'artifacts', appId, 'public', 'data', col);
 
         onSnapshot(path('students'), (snap) => {
@@ -1291,8 +1366,22 @@
                 day,
                 status
             });
+
             hideModal('attendance');
             showToast('تم التسجيل');
+
+            // إشعار: لو الحصة النهاردة
+            const today = new Date().toISOString().split('T')[0];
+            if (date === today) {
+                showNotification('📅 حصة اليوم', `حصة ${subject.name} الساعة ${subject.time || 'غير محدد'}`);
+            }
+
+            // إشعار: لو وصلنا للحصة 8
+            const stats = calculateSubjectStats(subjectId);
+            if (stats.totalSessions % 8 === 0) {
+                showNotification('💰 اكتمل شهر', `شهر كامل لـ ${subject.name} - سجل الدفع`);
+            }
+
         } catch (e) {
             alert('خطأ في التسجيل');
         }
